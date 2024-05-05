@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
 using SOSRS.Api.Helpers;
@@ -82,7 +83,8 @@ public static class AbrigoEndpoints
     private static async Task<IResult> Post(
         [FromBody] AbrigoRequestViewModel abrigoRequest, 
         [FromServices] AppDbContext dbContext,
-        [FromServices] IValidadorService validadorService)
+        [FromServices] IValidadorService validadorService,
+        [FromHeader(Name = "codAcesso")] int codAcesso)
     {
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
@@ -115,6 +117,7 @@ public static class AbrigoEndpoints
         }
 
         await dbContext.AddAsync(abrigo);
+        dbContext.Logs.Add(new Log(0, codAcesso, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
         await dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
@@ -123,8 +126,15 @@ public static class AbrigoEndpoints
         [FromRoute] int id,
         [FromBody] AbrigoRequestViewModel abrigoRequest,
         [FromServices] AppDbContext dbContext,
-        [FromServices] IValidadorService validadorService)
+        [FromServices] IValidadorService validadorService,
+        [FromHeader(Name = "codAcesso")] int codAcesso)
     {
+        var abrigoExiste = dbContext.Abrigos.Any(x => x.Id == id);
+        if (!abrigoExiste)
+        {
+            return Results.NotFound();
+        }
+
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
             abrigoRequest.Endereco.Numero,
@@ -158,11 +168,15 @@ public static class AbrigoEndpoints
         var alimentosAnteriores = await dbContext.Alimentos.AsNoTracking().Where(x => x.AbrigoId == id && !abrigo.Alimentos.Select(x => x.Id).Contains(x.Id)).ToListAsync();
         dbContext.RemoveRange(alimentosAnteriores);
         dbContext.Update(abrigo);
+        dbContext.Logs.Add(new Log(0, codAcesso, ETipoOperacao.Atualizar, JsonConvert.SerializeObject(abrigoRequest)));
         await dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
 
-    private static async Task<IResult> Delete([FromRoute] int id, [FromServices] AppDbContext dbContext)
+    private static async Task<IResult> Delete(
+        [FromRoute] int id, 
+        [FromServices] AppDbContext dbContext,
+        [FromHeader(Name = "codAcesso")] int codAcesso)
     {
         var abrigo = await dbContext.Abrigos.FirstOrDefaultAsync(x => x.Id == id);
         if (abrigo == null)
@@ -171,6 +185,7 @@ public static class AbrigoEndpoints
         }
 
         dbContext.Remove(abrigo);
+        dbContext.Logs.Add(new Log(0, codAcesso, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
         await dbContext.SaveChangesAsync();
         return Results.Ok();
     }

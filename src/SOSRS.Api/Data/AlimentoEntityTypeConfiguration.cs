@@ -29,4 +29,4 @@ public class AlimentoEntityTypeConfiguration : IEntityTypeConfiguration<Alimento
         //builder.Property(x => x.QuantidadeNecessaria)
         //     .IsRequired();
     }
-}
+}   

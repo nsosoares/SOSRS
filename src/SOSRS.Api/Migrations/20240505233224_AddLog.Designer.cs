@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SOSRS.Api.Data;
 
@@ -11,9 +12,11 @@ using SOSRS.Api.Data;
 namespace SOSRS.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505233224_AddLog")]
+    partial class AddLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,14 +88,8 @@ namespace SOSRS.Api.Migrations
 
             modelBuilder.Entity("SOSRS.Api.Entities.Log", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CodAcesso")
-                        .HasColumnType("int");
+                    b.Property<string>("CodAcesso")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Json")
                         .IsRequired()
@@ -101,7 +98,7 @@ namespace SOSRS.Api.Migrations
                     b.Property<int>("TipoOperacao")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CodAcesso");
 
                     b.ToTable("Logs", (string)null);
                 });
