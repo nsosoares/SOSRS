@@ -23,6 +23,10 @@ public static class AbrigoEndpoints
            .WithTags("Abrigos")
            .WithOpenApi();
 
+        app.MapPut("api/abrigos/{id}", Put)
+          .WithTags("Abrigos")
+          .WithOpenApi();
+
         app.MapDelete("api/abrigos/{id}", Delete)
           .WithTags("Abrigos")
           .WithOpenApi();
@@ -34,8 +38,7 @@ public static class AbrigoEndpoints
         HttpContext httpContext)
     {
         const int TEMPO_ARMAZENAMENTO_CACHE = 10;
-        httpContext.Response.Headers[HeaderNames.CacheControl] =
-            "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
+        httpContext.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
         var abrigos = await dbContext.Abrigos
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
                 , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
@@ -54,7 +57,7 @@ public static class AbrigoEndpoints
                 , x => !x.Alimentos.Any(a => a.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Alimento!.ToSerachable())))
             .Select(x => new AbrigoResponseViewModel
             {
-                Id = x.Id,
+                Codigo = x.Id,
                 Nome = x.Nome.Value,
                 Cidade = x.Endereco.Cidade.Value,
                 Bairro = x.Endereco.Bairro.Value,
@@ -111,8 +114,51 @@ public static class AbrigoEndpoints
             return Results.BadRequest(result.Errors.Select(error => new ErrorResponseDTO { MensagemErro = error.ErrorMessage }));
         }
 
-        dbContext.Add(abrigo);
-        dbContext.SaveChanges();
+        await dbContext.AddAsync(abrigo);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(abrigoRequest);
+    }
+
+    private static async Task<IResult> Put(
+        [FromRoute] int id,
+        [FromBody] AbrigoRequestViewModel abrigoRequest,
+        [FromServices] AppDbContext dbContext,
+        [FromServices] IValidadorService validadorService)
+    {
+        var endereco = new EnderecoVO(
+            abrigoRequest.Endereco.Rua,
+            abrigoRequest.Endereco.Numero,
+            abrigoRequest.Endereco.Bairro,
+            abrigoRequest.Endereco.Cidade,
+            "RS",
+            abrigoRequest.Endereco.Complemento,
+            abrigoRequest.Endereco.Cep);
+
+        var alimentos = abrigoRequest.Alimentos == null ? new List<Alimento>()
+            : abrigoRequest.Alimentos.Select(x => new Alimento(x.Id, x.AbrigoId, x.Nome, x.QuantidadeNecessaria)).ToList();
+
+        var abrigo = new Abrigo(
+            id,
+            abrigoRequest.Nome,
+            abrigoRequest.QuantidadeNecessariaVoluntarios,
+            abrigoRequest.QuantidadeVagasDisponiveis,
+            abrigoRequest.CapacidadeTotalPessoas,
+            abrigoRequest.TipoChavePix,
+            abrigoRequest.ChavePix,
+            abrigoRequest.Observacao,
+            endereco,
+            alimentos);
+
+        var result = validadorService.Validar(abrigo, new AbrigoValidador());
+        if (!result.IsValid)
+        {
+            return Results.BadRequest(result.Errors.Select(error => new ErrorResponseDTO { MensagemErro = error.ErrorMessage }));
+        }
+
+        var alimentosAnteriores = await dbContext.Alimentos.AsNoTracking().Where(x => x.AbrigoId == id && !abrigo.Alimentos.Select(x => x.Id).Contains(x.Id)).ToListAsync();
+        dbContext.RemoveRange(alimentosAnteriores);
+        dbContext.Update(abrigo);
+        await dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
 

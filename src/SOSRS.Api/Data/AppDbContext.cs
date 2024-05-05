@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Abrigo> Abrigos { get; set; }
+    public DbSet<Alimento> Alimentos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
