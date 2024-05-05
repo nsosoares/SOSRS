@@ -22,6 +22,10 @@ public static class AbrigoEndpoints
         app.MapPost("api/abrigos", Post)
            .WithTags("Abrigos")
            .WithOpenApi();
+
+        app.MapDelete("api/abrigos/{id}", Delete)
+          .WithTags("Abrigos")
+          .WithOpenApi();
     }
 
     private static async Task<IResult> Get(
@@ -50,6 +54,7 @@ public static class AbrigoEndpoints
                 , x => !x.Alimentos.Any(a => a.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Alimento!.ToSerachable())))
             .Select(x => new AbrigoResponseViewModel
             {
+                Id = x.Id,
                 Nome = x.Nome.Value,
                 Cidade = x.Endereco.Cidade.Value,
                 Bairro = x.Endereco.Bairro.Value,
@@ -109,5 +114,18 @@ public static class AbrigoEndpoints
         dbContext.Add(abrigo);
         dbContext.SaveChanges();
         return Results.Ok(abrigoRequest);
+    }
+
+    private static async Task<IResult> Delete([FromRoute] int id, [FromServices] AppDbContext dbContext)
+    {
+        var abrigo = await dbContext.Abrigos.FirstOrDefaultAsync(x => x.Id == id);
+        if (abrigo == null)
+        {
+            return Results.NotFound();
+        }
+
+        dbContext.Remove(abrigo);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok();
     }
 }
