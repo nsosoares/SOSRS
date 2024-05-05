@@ -27,6 +27,7 @@ public class Abrigo : Entity
         ChavePix = chavePix;
         Endereco = endereco;
         Alimentos = alimentos;
+        Lotado = quantidadeVagasDisponiveis == 0;
     }
 
     //Ef
@@ -41,7 +42,7 @@ public class Abrigo : Entity
     public EnderecoVO Endereco { get; private set; } = default!;
     public string Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
-    public bool Lotado => QuantidadeVagasDisponiveis == 0;
+    public bool Lotado { get; private set; } = default!;
 
     public void AddAlimento(Alimento alimento)
     {
@@ -56,11 +57,13 @@ public class Abrigo : Entity
     public void AumentarQuantidadeVagasDisponiveis(int quantidadeVagasDisponiveis)
     {
         QuantidadeVagasDisponiveis += quantidadeVagasDisponiveis;
+        Lotado = QuantidadeVagasDisponiveis == 0; 
     }
 
     public void DiminiurQuantidadeVagasDisponiveis(int quantidadeVagasDisponiveis)
     {
         if (QuantidadeVagasDisponiveis == 0) return;
         QuantidadeVagasDisponiveis -= quantidadeVagasDisponiveis;
+        Lotado = QuantidadeVagasDisponiveis == 0;
     }
 }

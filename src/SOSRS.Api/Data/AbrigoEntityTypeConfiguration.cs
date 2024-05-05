@@ -95,6 +95,6 @@ public class AbrigoEntityTypeConfiguration : IEntityTypeConfiguration<Abrigo>
               .HasMaxLength(150);
 
         builder.Property(x => x.TipoChavePix)
-              .HasMaxLength(150);
+              .HasMaxLength(150);      
     }
 }

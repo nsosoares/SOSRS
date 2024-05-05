@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
+using SOSRS.Api.Helpers;
 using SOSRS.Api.Services;
 using SOSRS.Api.Validations;
 using SOSRS.Api.ValueObjects;
@@ -20,12 +22,81 @@ public static class AbrigoEndpoints
            .WithOpenApi();
     }
 
-    private static async Task<IResult> Get([FromServices] AppDbContext dbContext)
+    private static async Task<IResult> Get(
+        [AsParameters] FiltroAbrigoViewModel filtroAbrigoViewModel, 
+        [FromServices] AppDbContext dbContext)
     {
-        var abrigos = dbContext.Abrigos.ToList();
+        var abrigos = await dbContext.Abrigos
+            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
+            , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
+            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Cidade) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Cidade)
+            , x => x.Endereco.Cidade.SearchableValue.Contains(filtroAbrigoViewModel.Cidade!.ToSerachable()))
+            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Bairro) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Bairro)
+            , x => x.Endereco.Bairro.SearchableValue.Contains(filtroAbrigoViewModel.Bairro!.ToSerachable()))
+            .When(filtroAbrigoViewModel.Capacidade != EFiltroStatusCapacidade.Todos && filtroAbrigoViewModel.Capacidade.HasValue
+            , x => (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Lotado && x.Lotado)
+                || (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Disponivel && !x.Lotado))
+            .When(filtroAbrigoViewModel.PrecisaAlimento.HasValue
+            , x => (x.Alimentos == null || x.Alimentos.Count == 0) == filtroAbrigoViewModel.PrecisaAlimento)
+            .When(filtroAbrigoViewModel.PrecisaAjudante.HasValue
+            , x => (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0) == filtroAbrigoViewModel.PrecisaAjudante)
+            .Select(x => new AbrigoResponseViewModel
+            {
+                Nome = x.Nome.Value,
+                Cidade = x.Endereco.Cidade.Value,
+                Bairro = x.Endereco.Bairro.Value,
+                Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
+                PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
+                PrecisaAlimento = (x.Alimentos == null || x.Alimentos.Count == 0)
+            })
+            .ToListAsync();
 
+        if (abrigos == null)
+        {
+            Results.NotFound();
+        }
 
-        return Results.Ok();
+        return Results.Ok(new FiltroAbrigoResponseViewModel { Abrigos = abrigos!, QuantidadeTotalRegistros = dbContext.Abrigos.Count() });
+    }
+
+    public class FiltroAbrigoResponseViewModel
+    {
+        public List<AbrigoResponseViewModel> Abrigos { get; set; } = default!;
+        public int QuantidadeTotalRegistros { get; set; }
+    }
+
+    public class AbrigoResponseViewModel
+    {
+        public string Nome { get; set; } = default!;
+        public string Cidade { get; set; } = default!;
+        public string Bairro { get; set; } = default!;
+        public EStatusCapacidade Capacidade { get; set; } = default!;
+        public bool PrecisaAjudante { get; set; } = default!;
+        public bool PrecisaAlimento { get; set; } = default!;
+    }
+
+    public enum EStatusCapacidade
+    {
+        Lotado,
+        Disponivel
+    }
+
+    public class FiltroAbrigoViewModel
+    {
+        public string? Nome { get; set; } = default!;
+        public string? Cidade { get; set; } = default!;
+        public string? Bairro { get; set; } = default!;
+        public string? Alimento { get; set; } = default!;
+        public EFiltroStatusCapacidade? Capacidade { get; set; } = EFiltroStatusCapacidade.Todos;
+        public bool? PrecisaAjudante { get; set; } = default!;
+        public bool? PrecisaAlimento { get; set; } = default!;
+    }
+
+    public enum EFiltroStatusCapacidade
+    {
+        Lotado,
+        Disponivel,
+        Todos
     }
 
     private static async Task<IResult> Post(
