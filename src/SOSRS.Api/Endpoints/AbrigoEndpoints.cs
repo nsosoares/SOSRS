@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
 using SOSRS.Api.Helpers;
@@ -25,8 +26,12 @@ public static class AbrigoEndpoints
 
     private static async Task<IResult> Get(
         [AsParameters] FiltroAbrigoViewModel filtroAbrigoViewModel, 
-        [FromServices] AppDbContext dbContext)
+        [FromServices] AppDbContext dbContext,
+        HttpContext httpContext)
     {
+        const int TEMPO_ARMAZENAMENTO_CACHE = 10;
+        httpContext.Response.Headers[HeaderNames.CacheControl] =
+            "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
         var abrigos = await dbContext.Abrigos
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
             , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
