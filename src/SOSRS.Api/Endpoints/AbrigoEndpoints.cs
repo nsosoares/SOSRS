@@ -11,9 +11,18 @@ public static class AbrigoEndpoints
 {
     public static void MapAbrigoEndpoints(this IEndpointRouteBuilder app)
     {
+        app.MapGet("api/abrigos", Get)
+            .WithTags("Abrigos")
+            .WithOpenApi();
+
         app.MapPost("api/abrigos", Post)
            .WithTags("Abrigos")
            .WithOpenApi();
+    }
+
+    private static async Task<IResult> Get()
+    {
+        return Results.Ok();
     }
 
     private static async Task<IResult> Post(
@@ -27,6 +36,7 @@ public static class AbrigoEndpoints
             abrigoRequest.Endereco.Bairro,
             abrigoRequest.Endereco.Cidade,
             "RS",
+            abrigoRequest.Endereco.Complemento,
             abrigoRequest.Endereco.Cep);
 
         var alimentos = abrigoRequest.Alimentos == null ? new List<Alimento>()
@@ -37,6 +47,7 @@ public static class AbrigoEndpoints
             abrigoRequest.Nome,
             abrigoRequest.QuantidadeNecessariaVoluntarios,
             abrigoRequest.QuantidadeVagasDisponiveis,
+            abrigoRequest.CapacidadeTotalPessoas,
             abrigoRequest.TipoChavePix,
             abrigoRequest.ChavePix,
             abrigoRequest.Observacao,
@@ -51,7 +62,7 @@ public static class AbrigoEndpoints
 
         dbContext.Add(abrigo);
         dbContext.SaveChanges();
-        return Results.Ok(abrigo);
+        return Results.Ok(abrigoRequest);
     }
 }
 
@@ -66,6 +77,7 @@ public class AbrigoRequestViewModel
     public string Nome { get; set; } = default!;
     public int? QuantidadeNecessariaVoluntarios { get; set; } = default!;
     public int? QuantidadeVagasDisponiveis { get; set; } = default!;
+    public int? CapacidadeTotalPessoas { get; set; } = default!;
     public string TipoChavePix { get; set; } = default!;
     public string ChavePix { get; set; } = default!;
     public string Observacao { get; set; } = default!;
@@ -87,5 +99,6 @@ public class EnderecoViewModel
     public int Numero { get; set; } = default!;
     public string Bairro { get; set; } = default!;
     public string Cidade { get; set; } = default!;
+    public string Complemento { get; set; } = default!;
     public string Cep { get; set; } = default!;
 }

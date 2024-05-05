@@ -63,6 +63,9 @@ public class AbrigoEntityTypeConfiguration : IEntityTypeConfiguration<Abrigo>
                      });
                    navigationBuilder.Property(x => x.Numero)
                          .HasColumnName("Numero");
+                   navigationBuilder.Property(x => x.Complemento)
+                        .HasMaxLength(300)
+                        .HasColumnName("Complemento");
                    navigationBuilder.Property(x => x.Cep)
                          .HasMaxLength(10)
                          .HasColumnName("Cep");

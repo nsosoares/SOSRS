@@ -4,13 +4,24 @@ namespace SOSRS.Api.Entities;
 
 public class Abrigo : Entity
 {
-    public Abrigo(int id, string nome, int? quantidadeNecessariaVoluntarios, int? quantidadeVagasDisponiveis, string tipoChavePix, string chavePix, string observacao, EnderecoVO endereco, List<Alimento> alimentos)
+    public Abrigo(
+        int id, 
+        string nome, 
+        int? quantidadeNecessariaVoluntarios, 
+        int? quantidadeVagasDisponiveis,
+        int? capacidadeTotalPessoas,
+        string tipoChavePix, 
+        string chavePix, 
+        string observacao, 
+        EnderecoVO endereco, 
+        List<Alimento> alimentos)
         : base(id)
     {
         Id = id;
         Nome = new SearchableStringVO(nome);
         QuantidadeNecessariaVoluntarios = quantidadeNecessariaVoluntarios;
         QuantidadeVagasDisponiveis = quantidadeVagasDisponiveis;
+        CapacidadeTotalPessoas = capacidadeTotalPessoas;
         TipoChavePix = tipoChavePix;
         Observacao = observacao;
         ChavePix = chavePix;
@@ -24,6 +35,7 @@ public class Abrigo : Entity
     public SearchableStringVO Nome { get; private set; } = default!;
     public int? QuantidadeNecessariaVoluntarios { get; private set; } = default!;
     public int? QuantidadeVagasDisponiveis { get; private set; } = default!;
+    public int? CapacidadeTotalPessoas { get; private set; } = default!;
     public string TipoChavePix { get; private set; } = default!;
     public string ChavePix { get; private set; } = default!;
     public EnderecoVO Endereco { get; private set; } = default!;
