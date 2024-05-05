@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using SOSRS.Api.Data;
+using SOSRS.Api.Configuration;
 using SOSRS.Api.Endpoints;
 using SOSRS.Api.Services;
 
@@ -10,8 +9,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IValidadorService, ValidadorService>();
 
-builder.Services.AddDbContext<AppDbContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.SincroniseDatabaseEF();
 
 var app = builder.Build();
 

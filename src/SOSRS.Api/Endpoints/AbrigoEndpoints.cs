@@ -20,8 +20,11 @@ public static class AbrigoEndpoints
            .WithOpenApi();
     }
 
-    private static async Task<IResult> Get()
+    private static async Task<IResult> Get([FromServices] AppDbContext dbContext)
     {
+        var abrigos = dbContext.Abrigos.ToList();
+
+
         return Results.Ok();
     }
 
