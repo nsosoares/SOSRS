@@ -12,6 +12,8 @@ public class AbrigoResponseViewModel
     public string Nome { get; set; } = default!;
     public string Cidade { get; set; } = default!;
     public string Bairro { get; set; } = default!;
+    public string TipoChavePix { get; set; } = default!;
+    public string ChavePix { get; set; } = default!;
     public EStatusCapacidade Capacidade { get; set; } = default!;
     public bool PrecisaAjudante { get; set; } = default!;
     public bool PrecisaAlimento { get; set; } = default!;

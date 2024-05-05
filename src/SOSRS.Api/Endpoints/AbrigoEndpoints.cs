@@ -46,6 +46,8 @@ public static class AbrigoEndpoints
                 Nome = x.Nome.Value,
                 Cidade = x.Endereco.Cidade.Value,
                 Bairro = x.Endereco.Bairro.Value,
+                TipoChavePix = x.TipoChavePix,
+                ChavePix = x.ChavePix,
                 Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
                 PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
                 PrecisaAlimento = (x.Alimentos == null || x.Alimentos.Count == 0)
