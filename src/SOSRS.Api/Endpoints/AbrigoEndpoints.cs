@@ -46,6 +46,8 @@ public static class AbrigoEndpoints
                 Nome = x.Nome.Value,
                 Cidade = x.Endereco.Cidade.Value,
                 Bairro = x.Endereco.Bairro.Value,
+                Numero = x.Endereco.Numero,
+                Complemento = x.Endereco.Complemento,
                 TipoChavePix = x.TipoChavePix,
                 ChavePix = x.ChavePix,
                 Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
