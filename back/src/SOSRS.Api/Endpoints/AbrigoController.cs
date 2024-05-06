@@ -72,7 +72,9 @@ public class AbrigoController : ControllerBase
                 PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
                 PrecisaAlimento = x.Alimentos.Count > 0
             })
-        .ToListAsync();
+            .OrderBy(x => x.Cidade)
+            .ThenBy(x => x.Nome)
+            .ToListAsync();
 
         if (abrigos == null)
         {
