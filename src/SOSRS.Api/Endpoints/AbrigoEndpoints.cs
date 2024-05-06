@@ -58,7 +58,7 @@ public static class AbrigoEndpoints
                 , x => !x.Alimentos.Any(a => a.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Alimento!.ToSerachable())))
             .Select(x => new AbrigoResponseViewModel
             {
-                Codigo = x.Id,
+                Id = x.Id,
                 Nome = x.Nome.Value,
                 Cidade = x.Endereco.Cidade.Value,
                 Bairro = x.Endereco.Bairro.Value,
