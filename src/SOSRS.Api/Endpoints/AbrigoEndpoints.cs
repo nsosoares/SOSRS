@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -19,6 +20,10 @@ public static class AbrigoEndpoints
         app.MapGet("api/abrigos", Get)
             .WithTags("Abrigos")
             .WithOpenApi();
+
+        app.MapGet("api/abrigos/{id}", GetById)
+          .WithTags("Abrigos")
+          .WithOpenApi();
 
         app.MapPost("api/abrigos", Post)
            .WithTags("Abrigos")
@@ -78,6 +83,45 @@ public static class AbrigoEndpoints
         }
 
         return Results.Ok(new FiltroAbrigoResponseViewModel { Abrigos = abrigos!, QuantidadeTotalRegistros = dbContext.Abrigos.Count() });
+    }
+
+    private static async Task<IResult> GetById(
+        [FromRoute] int id,
+        [FromServices] AppDbContext dbContext)
+    {
+        var abrigo = await dbContext.Abrigos
+            .Select(x => new AbrigoRequestViewModel 
+            { 
+                Id = x.Id,
+                Nome = x.Nome.Value,
+                ChavePix = x.ChavePix,
+                CapacidadeTotalPessoas = x.CapacidadeTotalPessoas,
+                Observacao = x.Observacao,
+                QuantidadeNecessariaVoluntarios = x.QuantidadeNecessariaVoluntarios,
+                TipoChavePix = x.TipoChavePix,
+                QuantidadeVagasDisponiveis = x.QuantidadeVagasDisponiveis,
+                Endereco = new EnderecoViewModel
+                {
+                    Rua = x.Endereco.Rua.Value,
+                    Cep = x.Endereco.Cep,
+                    Cidade = x.Endereco.Cidade.Value,
+                    Complemento = x.Endereco.Complemento,
+                    Bairro = x.Endereco.Bairro.Value,
+                    Numero = x.Endereco.Numero,
+                },
+                Alimentos = x.Alimentos.Select(a => new AlimentoViewModel
+                {
+                    Id = a.Id,
+                    AbrigoId = a.AbrigoId,
+                    QuantidadeNecessaria = a.QuantidadeNecessaria,
+                    Nome = a.Nome.Value
+                }).ToList()
+            })
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return abrigo is not null
+            ? Results.Ok(abrigo)
+            : Results.NotFound();
     }
 
     private static async Task<IResult> Post(
