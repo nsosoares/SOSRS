@@ -1,7 +1,6 @@
-<div class=" position-relative" [@startUpward]
-  *ngIf="params()?.entities && params()?.entities!.length > 0">
+<div class=" position-relative" [@startUpward] *ngIf="params()?.entities && params()?.entities!.length > 0">
   @for(entity of params()!.entities; track entity.id){
-  <table class="cw-table">
+  <table class="cw-table" style="background-color: #fff;">
     <tr *ngFor="let column of params()?.columns">
       <th>{{column.displayName}}</th>
       <td>
@@ -10,8 +9,19 @@
           verCurto(entity[column.property])}} </span>
       </td>
     </tr>
+
+    <tr>
+      <td colspan="2">
+        <cw-btn-edit (click)="onEdit.emit(entity)"></cw-btn-edit>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <cw-btn-remove [useDescribe]="false" (click)="onRemove.emit(entity)"></cw-btn-remove>
+      </td>
+    </tr>
   </table>
-  <br/>
+  <br />
   }
   <!-- <table class="cw-table">
     <thead>

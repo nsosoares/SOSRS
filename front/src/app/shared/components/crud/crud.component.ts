@@ -63,6 +63,7 @@ export class CrudComponent {
   }
 
   openCreate(): void {
+    console.log('this.params()');
     const ref = this._dialog.open(CreateFormComponent, {
       data: {
         formParams: new CreateFormParams(this.params()?.title!, this.params()!.controls, this.params()!.funcCreateEntity)

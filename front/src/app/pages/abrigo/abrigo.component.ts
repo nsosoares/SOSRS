@@ -79,8 +79,8 @@ export class AbrigoComponent {
         new CrudListColumn('nome', 'Nome'),
         new CrudListColumn('cidade', 'Cidade'),
         new CrudListColumn('bairro', 'Bairro'),
-        // new CrudListColumn('precisaAjudanteDesc', 'Precisa de ajuda'),
-        // new CrudListColumn('precisaAlimentoDesc', 'Precisa de alimento'),
+        new CrudListColumn('precisaAjudanteDesc', 'Quer ajuda'),
+        new CrudListColumn('precisaAlimentoDesc', 'Quer alimento'),
         new CrudListColumn('capacidadeDesc', 'Capacidade'),
 
       ]);

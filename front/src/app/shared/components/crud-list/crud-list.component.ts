@@ -17,7 +17,7 @@ export class CrudListComponent {
   params = input<CrudListParams>();
 
   verCurto(texto: string): string {
-    const tamanho = 5;
+    const tamanho = 25;
     return texto.length > tamanho ? texto.substring(0, tamanho) + '...' : texto;
 
   }

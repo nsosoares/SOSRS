@@ -1,28 +1,25 @@
-<span [formGroup]="form">
-  <div class="container-fluid position-relative" [@startUpward]>
-    <div class="section-painel section-painel-crud ">
-      <div class="row">
-        <div class="col-12">
-          <div class="crud-title"><b>{{params()?.title}} </b></div>
-        </div>
-        <div class="col-12">
-          <span>
-            <br />
-            <cw-btn-add (click)="openCreate()" [describe]="'Novo'"></cw-btn-add>
-          </span>
-        </div>
-
-        <cw-control-cva [class]="controls.id.params!.cssClass" [controlProvider]="controls.id"
-          formControlName="id"></cw-control-cva>
-        <cw-control-cva [class]="controls.nome.params!.cssClass" [controlProvider]="controls.nome"
-          formControlName="nome"></cw-control-cva>
-        <cw-control-cva [class]="controls.cidade.params!.cssClass" [controlProvider]="controls.cidade"
-          formControlName="cidade"></cw-control-cva>
-
+<div [formGroup]="form">
+  <div class="section-painel-crud " style="background-color: #fff; margin: 10px 0; padding: 0 5px; border-radius: 5px; display: block;">
+    <div class="row" >
+      <div class="col-12">
+        <div class="crud-title"><b>{{params()?.title}} </b></div>
       </div>
-    </div>
-    <cw-crud-list *ngIf="!searching" [params]="params()?.listParams" (onRemove)="openRemove($event)"
-    (onEdit)="openUpdate($event)"></cw-crud-list>
-  </div>
+      <div class="col-12">
+        <br />
+        <cw-btn-add (click)="openCreate()" [describe]="'Novo'"></cw-btn-add>
+      </div>
 
-</span>
+      <cw-control-cva [class]="controls.id.params!.cssClass" [controlProvider]="controls.id"
+        formControlName="id"></cw-control-cva>
+      <cw-control-cva [class]="controls.nome.params!.cssClass" [controlProvider]="controls.nome"
+        formControlName="nome"></cw-control-cva>
+      <cw-control-cva [class]="controls.cidade.params!.cssClass" [controlProvider]="controls.cidade"
+        formControlName="cidade"></cw-control-cva>
+
+    </div>
+  </div>
+  <div class="col-12">
+    <cw-crud-list *ngIf="!searching" [params]="params()?.listParams" (onRemove)="openRemove($event)"
+      (onEdit)="openUpdate($event)"></cw-crud-list>
+  </div>
+</div>
