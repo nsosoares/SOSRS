@@ -60,6 +60,15 @@
           <span [class]="abrigo.precisaAlimentoCssClass + ' card-link'">Precisa de recursos?
             {{abrigo.precisaAlimentoDesc}}</span><br />
           <span [class]="abrigo.capacidadeCssClass + ' card-link'">Capacidade: {{abrigo.capacidadeDesc}}</span><br />
+
+          <div class='cw-button' style="width: 100%;" (click)="verDetalhesAbrigo(abrigo.id)">
+            <div class="cw-button-content">
+              <div class="cw-button-content-item">
+                <mat-icon>info</mat-icon>
+              </div>
+              <div class="cw-button-content-item">ver detalhes</div>
+            </div>
+          </div>
         </div>
       </div>
       <br />

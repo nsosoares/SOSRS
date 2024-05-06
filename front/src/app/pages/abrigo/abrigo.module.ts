@@ -7,6 +7,7 @@ import { AbrigoComponent } from './abrigo.component';
 import { AbrigoAjudaComponent } from './abrigo-ajuda/abrigo-ajuda.component';
 import { AbrigoAjudaPesquisaAvancadaComponent } from './abrigo-ajuda/abrigo-ajuda-pesquisa-avancada/abrigo-ajuda-pesquisa-avancada.component';
 import { AbrigoAjudaSobreComponent } from './abrigo-ajuda/abrigo-ajuda-sobre/abrigo-ajuda-sobre.component';
+import { AbrigoAjudaDetalheComponent } from './abrigo-ajuda/abrigo-ajuda-detalhe/abrigo-ajuda-detalhe.component';
 
 
 
@@ -15,7 +16,8 @@ import { AbrigoAjudaSobreComponent } from './abrigo-ajuda/abrigo-ajuda-sobre/abr
     AbrigoComponent,
     AbrigoAjudaComponent,
     AbrigoAjudaPesquisaAvancadaComponent,
-    AbrigoAjudaSobreComponent
+    AbrigoAjudaSobreComponent,
+    AbrigoAjudaDetalheComponent
   ],
   imports: [
     CoreModule,

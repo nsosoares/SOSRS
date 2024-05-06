@@ -1,0 +1,39 @@
+<div class="container-fluid" style="padding: 20px;">
+  <div class="row" *ngIf="carregando">
+    carregando detalhes...
+  </div>
+  <div class="row" *ngIf="!carregando && abrigo">
+    <div class="col-12">
+      <h3> {{obterNome()}} </h3>
+    </div>
+    <div class="col-12">
+      <table class="cw-table">
+        <tr>
+          <th>Quantos voluntarios precisamos?</th>
+          <td>{{abrigo.quantidadeNecessariaVoluntarios}}</td>
+        </tr>
+        <tr>
+          <th>Quantas vagas temos?</th>
+          <td>{{abrigo.quantidadeVagasDisponiveis}}</td>
+        </tr>
+        <tr>
+          <th>Quanto é a capacidade total do estabelecimento?</th>
+          <td *ngIf="abrigo.capacidadeTotalPessoas">{{abrigo.capacidadeTotalPessoas}}</td>
+          <td *ngIf="!abrigo.capacidadeTotalPessoas">não informado</td>
+        </tr>
+      </table>
+      <br/>
+      <table class="cw-table">
+        <tr>
+          <th>Recursos Necessarios</th>
+          <th>Quantidade</th>
+        </tr>
+        <tr *ngFor="let recurso of abrigo.alimentos">
+          <td>{{recurso.nome}}</td>
+          <td>{{recurso.quantidadeNecessaria}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-12"></div>
+  </div>
+</div>
