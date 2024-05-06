@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SOSRS.Api.Data;
 
@@ -11,9 +12,11 @@ using SOSRS.Api.Data;
 namespace SOSRS.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506155011_observacao")]
+    partial class observacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,6 +37,7 @@ namespace SOSRS.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ChavePix")
+                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
@@ -41,6 +45,7 @@ namespace SOSRS.Api.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Observacao")
+                        .IsRequired()
                         .HasMaxLength(800)
                         .HasColumnType("nvarchar(800)");
 
@@ -51,6 +56,7 @@ namespace SOSRS.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TipoChavePix")
+                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
@@ -136,11 +142,13 @@ namespace SOSRS.Api.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<string>("Cep")
+                                .IsRequired()
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)")
                                 .HasColumnName("Cep");
 
                             b1.Property<string>("Complemento")
+                                .IsRequired()
                                 .HasMaxLength(300)
                                 .HasColumnType("nvarchar(300)")
                                 .HasColumnName("Complemento");
@@ -212,11 +220,13 @@ namespace SOSRS.Api.Migrations
                                         .HasColumnType("int");
 
                                     b2.Property<string>("SearchableValue")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("EstadoSearchable");
 
                                     b2.Property<string>("Value")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("Estado");
@@ -235,11 +245,13 @@ namespace SOSRS.Api.Migrations
                                         .HasColumnType("int");
 
                                     b2.Property<string>("SearchableValue")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("RuaSearchable");
 
                                     b2.Property<string>("Value")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("Rua");

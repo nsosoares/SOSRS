@@ -30,6 +30,6 @@ public class EnderecoVO
     public SearchableStringVO Bairro { get; private set; } = default!;
     public SearchableStringVO Cidade { get; private set; } = default!;
     public SearchableStringVO Estado { get; private set; } = default!;
-    public string Complemento { get; private set; } = default!;
-    public string Cep { get; private set; } = default!;
+    public string? Complemento { get; private set; } = default!;
+    public string? Cep { get; private set; } = default!;
 }

@@ -5,7 +5,7 @@ namespace SOSRS.Api.Validations;
 
 public class SearchableStringValidador : AbstractValidator<SearchableStringVO>
 {
-    public SearchableStringValidador(string campo, int min = 3, int max = 150)
+    public SearchableStringValidador(string campo, int min = 1, int max = 150)
     {
         RuleFor(x => x.Value)
            .Cascade(CascadeMode.Stop)

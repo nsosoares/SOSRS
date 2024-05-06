@@ -10,6 +10,6 @@ public class SearchableStringVO
         SearchableValue = value.ToSerachable();
     }
 
-    public string Value { get; private set; }
-    public string SearchableValue { get; private set; }
+    public string? Value { get; private set; }
+    public string? SearchableValue { get; private set; }
 }

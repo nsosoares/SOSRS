@@ -8,9 +8,9 @@ public class AbrigoRequestViewModel
     public int? QuantidadeNecessariaVoluntarios { get; set; } = default!;
     public int? QuantidadeVagasDisponiveis { get; set; } = default!;
     public int? CapacidadeTotalPessoas { get; set; } = default!;
-    public string TipoChavePix { get; set; } = default!;
-    public string ChavePix { get; set; } = default!;
-    public string Observacao { get; set; } = default!;
+    public string? TipoChavePix { get; set; } = default!;
+    public string? ChavePix { get; set; } = default!;
+    public string? Observacao { get; set; } = ""!;
     public EnderecoViewModel Endereco { get; set; } = default!;
-    public List<AlimentoViewModel> Alimentos { get; set; } = default!;
+    public List<AlimentoViewModel>? Alimentos { get; set; } = default!;
 }

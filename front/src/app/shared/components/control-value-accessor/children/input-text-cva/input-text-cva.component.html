@@ -3,7 +3,7 @@
   <mat-form-field *ngIf="params" [color]="colorControl.value!" appearance="outline" style="width: 100%;">
 
     <mat-label>{{params.label}}</mat-label>
-    <input formControlName='currentValue' matInput [placeholder]="params.placeholder">
+    <input formControlName='currentValue' matInput [type]="params.type" [placeholder]="params.placeholder">
 
     <mat-hint *ngIf="(control.touched || control.dirty) && control.valid"> <mat-icon
         style="color: green;">check_circle</mat-icon> </mat-hint>

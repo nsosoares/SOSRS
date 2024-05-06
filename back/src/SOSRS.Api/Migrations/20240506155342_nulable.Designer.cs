@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SOSRS.Api.Data;
 
@@ -11,9 +12,11 @@ using SOSRS.Api.Data;
 namespace SOSRS.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506155342_nulable")]
+    partial class nulable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,11 +215,13 @@ namespace SOSRS.Api.Migrations
                                         .HasColumnType("int");
 
                                     b2.Property<string>("SearchableValue")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("EstadoSearchable");
 
                                     b2.Property<string>("Value")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("Estado");
@@ -235,11 +240,13 @@ namespace SOSRS.Api.Migrations
                                         .HasColumnType("int");
 
                                     b2.Property<string>("SearchableValue")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("RuaSearchable");
 
                                     b2.Property<string>("Value")
+                                        .IsRequired()
                                         .HasMaxLength(150)
                                         .HasColumnType("nvarchar(150)")
                                         .HasColumnName("Rua");

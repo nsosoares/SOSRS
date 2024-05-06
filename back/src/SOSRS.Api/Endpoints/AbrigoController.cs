@@ -139,7 +139,7 @@ public class AbrigoController : ControllerBase
             abrigoRequest.CapacidadeTotalPessoas,
             abrigoRequest.TipoChavePix,
             abrigoRequest.ChavePix,
-            abrigoRequest.Observacao,
+            abrigoRequest.Observacao ?? "",
             endereco,
             alimentos);
 
@@ -184,7 +184,7 @@ public class AbrigoController : ControllerBase
             abrigoRequest.CapacidadeTotalPessoas,
             abrigoRequest.TipoChavePix,
             abrigoRequest.ChavePix,
-            abrigoRequest.Observacao,
+            abrigoRequest.Observacao ?? "",
             endereco,
             alimentos);
 

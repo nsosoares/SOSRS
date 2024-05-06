@@ -12,7 +12,7 @@ public class Abrigo : Entity
         int? capacidadeTotalPessoas,
         string tipoChavePix, 
         string chavePix, 
-        string observacao, 
+        string? observacao, 
         EnderecoVO endereco, 
         List<Alimento> alimentos)
         : base(id)
@@ -37,10 +37,10 @@ public class Abrigo : Entity
     public int? QuantidadeNecessariaVoluntarios { get; private set; } = default!;
     public int? QuantidadeVagasDisponiveis { get; private set; } = default!;
     public int? CapacidadeTotalPessoas { get; private set; } = default!;
-    public string TipoChavePix { get; private set; } = default!;
-    public string ChavePix { get; private set; } = default!;
+    public string? TipoChavePix { get; private set; } = default!;
+    public string? ChavePix { get; private set; } = default!;
     public EnderecoVO Endereco { get; private set; } = default!;
-    public string Observacao { get; private set; } = default!;
+    public string? Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
     public bool Lotado { get; private set; } = default!;
 
