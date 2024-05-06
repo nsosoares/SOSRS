@@ -18,10 +18,10 @@ namespace SOSRS.Api.Endpoints;
 public class AbrigoController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
-    private readonly HttpContext _httpContext;
+    private readonly IHttpContextAccessor _httpContext;
     private readonly IValidadorService _validadorService;
 
-    public AbrigoController(AppDbContext dbContext, HttpContext httpContext, IValidadorService validadorService)
+    public AbrigoController(AppDbContext dbContext, IHttpContextAccessor httpContext, IValidadorService validadorService)
     {
         _dbContext = dbContext;
         _httpContext = httpContext;
@@ -32,7 +32,7 @@ public class AbrigoController : ControllerBase
     public async Task<IResult> Get([FromQuery] FiltroAbrigoViewModel filtroAbrigoViewModel)
     {
         const int TEMPO_ARMAZENAMENTO_CACHE = 10;
-        _httpContext.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
+        _httpContext.HttpContext!.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
         var abrigos = await _dbContext.Abrigos
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
                 , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
