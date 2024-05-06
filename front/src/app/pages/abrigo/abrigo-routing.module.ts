@@ -4,7 +4,7 @@ import { AbrigoComponent } from './abrigo.component';
 import { AbrigoAjudaComponent } from './abrigo-ajuda/abrigo-ajuda.component';
 
 const routes: Routes = [
-  {path: 'abrigo', component: AbrigoComponent, data: {title: 'Abrigo'}},
+  {path: 'abrigo-adm-hash', component: AbrigoComponent, data: {title: 'Abrigo'}},
   {path: 'abrigo-ajuda', component: AbrigoAjudaComponent, data: {title: 'Abrigo'}},
 ];
 

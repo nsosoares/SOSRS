@@ -9,6 +9,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class AbrigoService {
   readonly entities: Abrigo[] = abrigos;
 
+  baseUrl = 'https://sosrs.azurewebsites.net/'
+
   constructor(private _httpClient: HttpClient) { }
 
   codigosDeAcesso = [
@@ -64,10 +66,10 @@ if (finalValue.precisaAjudante) {
 if (finalValue.precisaAlimento) {
   httpParams = httpParams.set('precisaAlimento', finalValue.precisaAlimento);
 }
-      return this._httpClient.get<AbrigosResult>('https://localhost:7228/api/abrigos', { params: httpParams });
+      return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos', { params: httpParams });
   }
   getById = (id: any): Observable<Abrigo> => {
-    return this._httpClient.get<any>('https://localhost:7228/api/abrigos/' + id);
+    return this._httpClient.get<any>(this.baseUrl + 'api/abrigos/' + id);
   }
   searchByName = (data: any): Observable<any[]> => {
     return this.pesquisar(data).pipe(
@@ -97,10 +99,10 @@ if (finalValue.precisaAlimento) {
       entity.alimentos = [];
     }
     this.entities.push(entity);
-    return this._httpClient.post<any[]>('https://localhost:7228/api/abrigos', entity, this.getHeader());
+    return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, this.getHeader());
   }
   update = (entity: Abrigo): Observable<any> => {
-    return this._httpClient.put<any[]>('https://localhost:7228/api/abrigos/' + entity.id, entity, this.getHeader());
+    return this._httpClient.put<any[]>(this.baseUrl + 'api/abrigos/' + entity.id, entity, this.getHeader());
   }
 
   delete = (id: string): Observable<any> => {
