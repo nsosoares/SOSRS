@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
+using SOSRS.Api.Extensions;
 using SOSRS.Api.Helpers;
 using SOSRS.Api.Services;
 using SOSRS.Api.Validations;
@@ -31,9 +33,9 @@ public class AbrigoController : ControllerBase
     [HttpGet("version")]
     public IResult GetVersion()
     {
-        return Results.Ok(new { version="3" });
+        return Results.Ok(new { version = "3" });
     }
-    
+
     [HttpGet()]
     public async Task<IResult> Get([FromQuery] FiltroAbrigoViewModel filtroAbrigoViewModel)
     {
@@ -71,6 +73,7 @@ public class AbrigoController : ControllerBase
                 PrecisaAlimento = x.Alimentos.Count > 0
             })
         .ToListAsync();
+
         if (abrigos == null)
         {
             Results.NotFound();
@@ -118,9 +121,12 @@ public class AbrigoController : ControllerBase
             : Results.NotFound();
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest, [FromHeader(Name = "codAcesso")] int codAcesso)
     {
+        var abrigoId = HttpContext.GetAbrigos();
+
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
             abrigoRequest.Endereco.Numero,
