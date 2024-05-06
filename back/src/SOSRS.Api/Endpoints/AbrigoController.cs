@@ -31,7 +31,7 @@ public class AbrigoController : ControllerBase
     [HttpGet("version")]
     public IResult GetVersion()
     {
-        return Results.Ok(new { version="2" });
+        return Results.Ok(new { version="3" });
     }
     
     [HttpGet()]
@@ -65,6 +65,7 @@ public class AbrigoController : ControllerBase
                 Complemento = x.Endereco.Complemento,
                 TipoChavePix = x.TipoChavePix,
                 ChavePix = x.ChavePix,
+                Telefone = x.Telefone,
                 Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
                 PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
                 PrecisaAlimento = x.Alimentos.Count > 0
@@ -92,6 +93,7 @@ public class AbrigoController : ControllerBase
                 QuantidadeNecessariaVoluntarios = x.QuantidadeNecessariaVoluntarios,
                 TipoChavePix = x.TipoChavePix,
                 QuantidadeVagasDisponiveis = x.QuantidadeVagasDisponiveis,
+                Telefone = x.Telefone,
                 Endereco = new EnderecoViewModel
                 {
                     Rua = x.Endereco.Rua.Value,
@@ -139,6 +141,7 @@ public class AbrigoController : ControllerBase
             abrigoRequest.CapacidadeTotalPessoas,
             abrigoRequest.TipoChavePix,
             abrigoRequest.ChavePix,
+            abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
             endereco,
             alimentos);
@@ -184,6 +187,7 @@ public class AbrigoController : ControllerBase
             abrigoRequest.CapacidadeTotalPessoas,
             abrigoRequest.TipoChavePix,
             abrigoRequest.ChavePix,
+            abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
             endereco,
             alimentos);

@@ -12,6 +12,7 @@ public class Abrigo : Entity
         int? capacidadeTotalPessoas,
         string tipoChavePix, 
         string chavePix, 
+        string telefone,
         string? observacao, 
         EnderecoVO endereco, 
         List<Alimento> alimentos)
@@ -25,6 +26,7 @@ public class Abrigo : Entity
         TipoChavePix = tipoChavePix;
         Observacao = observacao;
         ChavePix = chavePix;
+        Telefone = telefone;
         Endereco = endereco;
         Alimentos = alimentos;
         Lotado = quantidadeVagasDisponiveis == 0;
@@ -39,6 +41,7 @@ public class Abrigo : Entity
     public int? CapacidadeTotalPessoas { get; private set; } = default!;
     public string? TipoChavePix { get; private set; } = default!;
     public string? ChavePix { get; private set; } = default!;
+    public string Telefone { get; private set; } = default!;
     public EnderecoVO Endereco { get; private set; } = default!;
     public string? Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
