@@ -9,7 +9,7 @@ public class FiltroAbrigoResponseViewModel
 
 public class AbrigoResponseViewModel
 {
-    public int Codigo { get; set; } = default!;
+    public int Id { get; set; } = default!;
     public string Nome { get; set; } = default!;
     public string Cidade { get; set; } = default!;
     public string Bairro { get; set; } = default!;
