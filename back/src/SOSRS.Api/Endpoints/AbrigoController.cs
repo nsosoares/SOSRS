@@ -44,7 +44,7 @@ public class AbrigoController : ControllerBase
                 , x => (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Lotado && x.Lotado)
                     || (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Disponivel && !x.Lotado))
             .When(filtroAbrigoViewModel.PrecisaAlimento.HasValue
-                , x => (x.Alimentos == null || x.Alimentos.Count == 0) == filtroAbrigoViewModel.PrecisaAlimento)
+                , x => x.Alimentos.Count > 0 == filtroAbrigoViewModel.PrecisaAlimento)
             .When(filtroAbrigoViewModel.PrecisaAjudante.HasValue
                 , x => (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0) == filtroAbrigoViewModel.PrecisaAjudante)
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Alimento) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Alimento)
