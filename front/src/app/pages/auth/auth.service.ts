@@ -31,7 +31,6 @@ export class AuthService {
             }),
             map(() => true),
             catchError((error) => {
-                this.message('Usuário ou senha inválidos');
                 return of(false);
             })
         );

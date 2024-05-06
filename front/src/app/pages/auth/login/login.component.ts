@@ -6,24 +6,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styles: [
-        `
-          mat-card {
-            max-width: 400px;
-            margin: 2em auto;
-            text-align: center;
-          }
-
-          mat-form-field {
-            display: block;
-          }
-        `,
-    ],
+    styleUrl: './login.component.scss',
 })
 export class LoginComponent {
     valCheck: string[] = ['remember'];
     password!: string;
+    loginValid: boolean = true;
     public form!: FormGroup;
+
 
     constructor(
         private formBuilder: FormBuilder,
@@ -41,9 +31,11 @@ export class LoginComponent {
                 })
                 .subscribe((success) => {
                     if (success) {
+                        this.loginValid = true;
                         this.authService.message('Login com relizado com sucesso');
                         this.router.navigate(['/']);
                     }
+                    this.loginValid = false;
                 });
         }
     }
