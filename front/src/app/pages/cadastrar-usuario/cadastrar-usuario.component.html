@@ -1,0 +1,14 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="cadastrarUsuario()">
+    <label>Nome:</label>
+    <input type="text" formControlName="nome">
+
+    <label>Senha:</label>
+    <input type="password" formControlName="senha">
+
+    <label>CPF:</label>
+    <input type="text" formControlName="cpf">
+
+    <button type="submit" [disabled]="!form.valid">Cadastrar</button>
+  </form>
+</div>
