@@ -16,7 +16,9 @@ builder.Services.AddCors(options =>
             });
 });
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
+
+//builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IValidadorService, ValidadorService>();
@@ -32,11 +34,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseHttpsRedirection();
 
 app.UseCors();
 
-app.MapAbrigoEndpoints();
+//app.MapAbrigoEndpoints();
 
 app.Run();
 
