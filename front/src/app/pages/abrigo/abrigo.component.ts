@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EnvironmentInjector } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 import {
@@ -17,6 +17,7 @@ import { CrudParams } from '../../shared/components/crud/crud.params';
 import { AbrigoService } from './core/abrigo.service';
 import { Subject, debounce, debounceTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'cw-abrigo',
@@ -27,6 +28,7 @@ export class AbrigoComponent {
   params: CrudParams;
   controls: ControlCvaProvider<any, any>[] = [];
   logado = false;
+  env = environment.env;
   form: FormGroup;
 
   constructor(private abrigoService: AbrigoService, fb: FormBuilder, private _snackBar: MatSnackBar ) {
@@ -48,7 +50,7 @@ export class AbrigoComponent {
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('rua', 'Rua', 50, 1).withPlaceholder('Digite a rua').withCssClass(RESPONSIVE_SIZE_6)),
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('numero', 'Número', 50, 1).withPlaceholder('Digite o número').withCssClass(RESPONSIVE_SIZE_2)),
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('complemento', 'Complemento', 50, 1).withPlaceholder('Digite o complemento').withCssClass(RESPONSIVE_SIZE_12)),
-      ])),
+      ]).asRequired()),
 
       alimentos: ControlCvaProvider.subforms(() => new SubformCvaParams('alimentos', 'Alimentos necessários', [
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Alimento', 50, 5).asRequired().withPlaceholder('Digite o alimento').withCssClass(RESPONSIVE_SIZE_6)),
@@ -77,12 +79,12 @@ export class AbrigoComponent {
         new CrudListColumn('nome', 'Nome'),
         new CrudListColumn('cidade', 'Cidade'),
         new CrudListColumn('bairro', 'Bairro'),
-        new CrudListColumn('precisaAjudanteDesc', 'Precisa de ajuda'),
-        new CrudListColumn('precisaAlimentoDesc', 'Precisa de alimento'),
+        // new CrudListColumn('precisaAjudanteDesc', 'Precisa de ajuda'),
+        // new CrudListColumn('precisaAlimentoDesc', 'Precisa de alimento'),
         new CrudListColumn('capacidadeDesc', 'Capacidade'),
 
       ]);
-    this.params = new CrudParams('Abrigo', listParams, this.controls, abrigoService.searchByName, abrigoService.getById, abrigoService.create, abrigoService.update, abrigoService.delete);
+    this.params = new CrudParams('Abrigos', listParams, this.controls, abrigoService.searchByName, abrigoService.getById, abrigoService.create, abrigoService.update, abrigoService.delete);
 
     this.onlogin.pipe(debounceTime(500)).subscribe((codAcesso) => {
       const usuario = abrigoService.codigosDeAcesso.find(x => x.id === parseInt(codAcesso.toString(), 10));
@@ -95,6 +97,11 @@ export class AbrigoComponent {
 
       }
     });
+
+    if (environment.env === 'dev') {
+      this.logado = true;
+      this.abrigoService.codAcesso = 1;
+    }
   }
 
   onlogin = new  Subject<number>();

@@ -3,29 +3,26 @@
     <div class="section-painel section-painel-crud ">
       <div class="row">
         <div class="col-12">
-          <div class="crud-title"> Gerenciar <b>{{params()?.title}} </b></div>
+          <div class="crud-title"><b>{{params()?.title}} </b></div>
         </div>
         <div class="col-12">
-          <span class="subtitle-area" id="add">
+          <span>
             <br />
             <cw-btn-add (click)="openCreate()" [describe]="'Novo'"></cw-btn-add>
           </span>
         </div>
 
-        <cw-control-cva  [class]="controls.id.params!.cssClass" [controlProvider]="controls.id" formControlName="id"></cw-control-cva>
-        <cw-control-cva  [class]="controls.nome.params!.cssClass" [controlProvider]="controls.nome" formControlName="nome"></cw-control-cva>
-        <cw-control-cva  [class]="controls.cidade.params!.cssClass" [controlProvider]="controls.cidade" formControlName="cidade"></cw-control-cva>
+        <cw-control-cva [class]="controls.id.params!.cssClass" [controlProvider]="controls.id"
+          formControlName="id"></cw-control-cva>
+        <cw-control-cva [class]="controls.nome.params!.cssClass" [controlProvider]="controls.nome"
+          formControlName="nome"></cw-control-cva>
+        <cw-control-cva [class]="controls.cidade.params!.cssClass" [controlProvider]="controls.cidade"
+          formControlName="cidade"></cw-control-cva>
 
       </div>
     </div>
-    <div class="section-painel">
-      <div class="row">
-        <div class="col-12 ">
-          <cw-crud-list *ngIf="!searching" [params]="params()?.listParams" (onRemove)="openRemove($event)"
-            (onEdit)="openUpdate($event)"></cw-crud-list>
-        </div>
-      </div>
-    </div>
+    <cw-crud-list *ngIf="!searching" [params]="params()?.listParams" (onRemove)="openRemove($event)"
+    (onEdit)="openUpdate($event)"></cw-crud-list>
   </div>
 
 </span>

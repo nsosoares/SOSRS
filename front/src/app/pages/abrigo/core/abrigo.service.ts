@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Abrigo, AbrigosResult, EStatusCapacidade, abrigos } from './abrigo.model';
 import { Observable, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class AbrigoService {
   readonly entities: Abrigo[] = abrigos;
 
-  baseUrl = 'https://sosrs.azurewebsites.net/'
+  baseUrlLocal = environment.api;
+  baseUrl = this.baseUrlLocal;
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {
+    this.updateByVersion();
+  }
 
   codigosDeAcesso = [
     { id: 20704, nome: 'user1' },
@@ -117,5 +121,16 @@ if (finalValue.precisaAlimento) {
       'codAcesso': this.codAcesso!.toString()
     });
     return { headers: headers };
+  }
+
+  updateByVersion(): void {
+    this._httpClient.get<any>(this.baseUrl + 'api/abrigos/version').subscribe(result => {
+      const version = result.version;
+      if (version !== localStorage.getItem('version')) {
+        localStorage.setItem('version', version);
+        const currentUrl = window.location.href;
+        window.location.href = currentUrl + '?eraseCache=' + Date.now();
+      }
+    });
   }
 }

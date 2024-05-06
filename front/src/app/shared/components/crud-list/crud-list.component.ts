@@ -15,4 +15,12 @@ export class CrudListComponent {
   @Output() onEdit = new EventEmitter<IEntity>();
   @Output() onRemove = new EventEmitter<INamedEntity>();
   params = input<CrudListParams>();
+
+  verCurto(texto: string): string {
+    const tamanho = 5;
+    return texto.length > tamanho ? texto.substring(0, tamanho) + '...' : texto;
+
+  }
+
+
 }

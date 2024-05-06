@@ -2,32 +2,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700&display=swap');
 
 * {
-  font-family: "Open Sans", sans-serif ;
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
 }
+
 h1,
 h2,
 h3,
-h4{
+h4 {
   font-family: "Open Sans", sans-serif !important;
 
 }
-html, body { height: 100%; }
-body { margin: 0; background-color: #bdcad5; }
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #bdcad5;
+}
+
 ::ng-deep .mat-focused .mat-form-field-label {
   /*change color of label*/
   color: green !important;
- }
+}
 
- ::ng-deep.mat-form-field-underline {
+::ng-deep.mat-form-field-underline {
   /*change color of underline*/
   background-color: green !important;
 }
 
 ::ng-deep.mat-form-field-ripple {
- /*change color of underline when focused*/
- background-color: green !important;
+  /*change color of underline when focused*/
+  background-color: green !important;
 }
+
 .section {
   border: 1px solid #aaa;
   border-radius: 6px;
@@ -35,6 +46,7 @@ body { margin: 0; background-color: #bdcad5; }
   transition: 0.3s;
   padding: 10px 0;
 }
+
 .section-painel {
   display: block;
   border-radius: 10px;
@@ -50,6 +62,7 @@ body { margin: 0; background-color: #bdcad5; }
     box-shadow: 0 0 10px -1px #00579a;
   }
 }
+
 .cw-table-around {
   margin: 5px 0;
   border-radius: 10px;
@@ -58,28 +71,34 @@ body { margin: 0; background-color: #bdcad5; }
   transition: 0.3s;
   box-shadow: 0 0 5px -2px #555;
 
-  &:hover{
+  &:hover {
     box-shadow: 0 0 6px -1px #ccc;
   }
 }
-.cw-table{
+
+.cw-table {
   border-radius: 15px !important;
   transition: 0.3s;
   width: 100%;
+  border-top: 1px solid #aaa;
 
   tr {
-    border-bottom:1px solid #aaa;
+    border-bottom: 1px solid #aaa;
     text-align: left;
     transition: 0.3s;
+
     th {
       font-weight: 700;
-      text-align: center;
+      text-align: left;
     }
-    td, th {
+
+    td,
+    th {
       padding: 10px;
       border-left: 1px solid #aaa;
 
     }
+
     &:hover {
       background-color: #f0f0f0;
     }
@@ -109,6 +128,7 @@ body { margin: 0; background-color: #bdcad5; }
 .space-left-right {
   margin: 0 10px;
 }
+
 .cw-button {
   display: inline-block;
   background-color: #fff;
@@ -123,15 +143,17 @@ body { margin: 0; background-color: #bdcad5; }
   width: auto;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: #00508e;
     color: #eee;
   }
 }
+
 .cw-button-content {
   display: block;
   width: 100%;
-  .cw-button-content-item{
+
+  .cw-button-content-item {
     display: block;
     float: left;
     width: auto;
@@ -140,7 +162,7 @@ body { margin: 0; background-color: #bdcad5; }
   }
 }
 
-.cw-icon{
+.cw-icon {
   position: relative;
   top: 6px;
 }

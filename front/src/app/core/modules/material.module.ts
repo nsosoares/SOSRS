@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 export const CORE_APP_MATERIAL_MODULES: Array<Type<any> | ModuleWithProviders<{}> | any[]> = [
   MatFormFieldModule,
@@ -20,6 +21,7 @@ export const CORE_APP_MATERIAL_MODULES: Array<Type<any> | ModuleWithProviders<{}
   MatDialogModule,
   MatMenuModule,
   MatSelectModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatTooltipModule,
 ]
 

@@ -4,4 +4,5 @@ import { ControlCvaProvider } from './../control-value-accessor/control-cva/cont
 export abstract class BaseFormParams {
 
   constructor(public readonly label: string, public readonly controlsCvaProvider: ControlCvaProvider<any, any>[], public readonly submitFunc: (entity: IEntity) => Observable<any>) { }
+
 }

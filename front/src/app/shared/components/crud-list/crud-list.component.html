@@ -1,6 +1,19 @@
-<div class="cw-table-around position-relative" [@startUpward]
+<div class=" position-relative" [@startUpward]
   *ngIf="params()?.entities && params()?.entities!.length > 0">
+  @for(entity of params()!.entities; track entity.id){
   <table class="cw-table">
+    <tr *ngFor="let column of params()?.columns">
+      <th>{{column.displayName}}</th>
+      <td>
+        <span mat-raised-button [matTooltip]="entity[column.property]" #tooltip="matTooltip" (click)="tooltip.toggle()">
+          {{
+          verCurto(entity[column.property])}} </span>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  }
+  <!-- <table class="cw-table">
     <thead>
       <tr>
         <th *ngFor="let column of params()!.columns">{{column.displayName}}</th>
@@ -10,9 +23,9 @@
     <tbody>
       @for(entity of params()!.entities; track entity.id){
       <tr>
-        <td class="" *ngFor="let column of params()?.columns">{{entity[column.property]}}</td>
+        <td class="" *ngFor="let column of params()?.columns"> </td>
 
-        <td >
+        <td>
           <div class="options">
 
             <div *ngIf="params()!.options.length">
@@ -37,7 +50,7 @@
       </tr>
       }
     </tbody>
-  </table>
+  </table> -->
 
 </div>
 <div *ngIf="params()?.entities && params()?.entities?.length === 0">

@@ -25,6 +25,7 @@ export class CreateFormComponent extends CoreForm {
   override generateForm(formBuilder: FormBuilder): FormGroup<any> {
     const form = formBuilder.group({});
     this.addControlsCvaToForm(form, this.params.controlsCvaProvider);
+    form.reset();
     return form;
   }
 

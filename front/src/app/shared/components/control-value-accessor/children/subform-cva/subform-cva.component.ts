@@ -13,7 +13,7 @@ import { SubformCvaParams } from './subform-cva.params';
   templateUrl: './subform-cva.component.html',
   styleUrl: './subform-cva.component.scss'
 })
-export class SubformCvaComponent extends CoreControlValueAccessor<object | null>  {
+export class SubformCvaComponent extends CoreControlValueAccessor<object | null> {
 
   formTools: SubformCvaFormTools;
   params?: SubformCvaParams;
@@ -39,6 +39,14 @@ export class SubformCvaComponent extends CoreControlValueAccessor<object | null>
     }
   }
   override writeValue(obj: any): void {
+    console.log('reseted', obj);
+    if (!obj) {
+      setTimeout(() => {
+        this.formTools.form.reset();
+        console.log('reset');
+      }, 200);
+      return;
+    }
     setTimeout(() => {
       this.formTools.form.patchValue(obj);
     }, 100);

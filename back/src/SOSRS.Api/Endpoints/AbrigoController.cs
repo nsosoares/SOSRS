@@ -28,6 +28,12 @@ public class AbrigoController : ControllerBase
         _validadorService = validadorService;
     }
 
+    [HttpGet("version")]
+    public IResult GetVersion()
+    {
+        return Results.Ok(new { version="1" });
+    }
+    
     [HttpGet()]
     public async Task<IResult> Get([FromQuery] FiltroAbrigoViewModel filtroAbrigoViewModel)
     {
