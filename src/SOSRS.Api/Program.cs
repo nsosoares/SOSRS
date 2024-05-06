@@ -1,7 +1,5 @@
 using SOSRS.Api.Configuration;
-using SOSRS.Api.Endpoints;
 using SOSRS.Api.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -16,7 +14,7 @@ builder.Services.AddCors(options =>
             });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(); ;
 
 //builder.Services.AddEndpointsApiExplorer();]
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

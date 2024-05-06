@@ -13,7 +13,7 @@ public class AbrigoResponseViewModel
     public string Nome { get; set; } = default!;
     public string Cidade { get; set; } = default!;
     public string Bairro { get; set; } = default!;
-    public int Numero { get; set; } = default!;
+    public int? Numero { get; set; } = default!;
     public string Complemento { get; set; } = default!;
     public string TipoChavePix { get; set; } = default!;
     public string ChavePix { get; set; } = default!;

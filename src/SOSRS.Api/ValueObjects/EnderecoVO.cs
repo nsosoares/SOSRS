@@ -9,7 +9,7 @@ public class EnderecoVO
 
     public EnderecoVO(
         string rua, 
-        int numero, 
+        int? numero, 
         string bairro, 
         string cidade, 
         string estado, 
@@ -26,7 +26,7 @@ public class EnderecoVO
     }
 
     public SearchableStringVO Rua { get; private set; } = default!;
-    public int Numero { get; private set; } = default!;
+    public int? Numero { get; private set; } = default!;
     public SearchableStringVO Bairro { get; private set; } = default!;
     public SearchableStringVO Cidade { get; private set; } = default!;
     public SearchableStringVO Estado { get; private set; } = default!;
