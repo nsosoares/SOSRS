@@ -31,7 +31,7 @@ public class AbrigoController : ControllerBase
     [HttpGet("version")]
     public IResult GetVersion()
     {
-        return Results.Ok(new { version="1" });
+        return Results.Ok(new { version="2" });
     }
     
     [HttpGet()]
