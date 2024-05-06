@@ -1,0 +1,10 @@
+<div *ngIf="inited" class="section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="co-12">
+        <div class="subtitle">{{params?.label}}</div>
+      </div>
+    </div>
+  </div>
+  <cw-form-cva-viwer [form]="formTools.form" [cvaControls]="params!.controlsProvider"></cw-form-cva-viwer>
+</div>

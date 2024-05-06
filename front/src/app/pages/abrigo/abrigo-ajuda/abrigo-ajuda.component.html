@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-12 ">
+    <div class="section-painel section-painel-crud position-relative" [@startUpward]>
+      <form [formGroup]="form">
+        <div class="row">
+          <cw-control-cva [controlProvider]="control.nome"
+            [formControlName]="control.nome.params!.controlName"></cw-control-cva>
+          <cw-control-cva [controlProvider]="control.cidade"
+            [formControlName]="control.cidade.params!.controlName"></cw-control-cva>
+          <div class="col-12">
+            <div class='cw-button' style="width: 100%;" (click)="abrirPesquisaAvancada()">
+              <div class="cw-button-content">
+                <div class="cw-button-content-item">
+                  <mat-icon>search</mat-icon>
+                </div>
+                <div class="cw-button-content-item">Filtro avançado</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-container *ngFor="let abrigo of abrigos">
+    <div class="col-12 col-md-3 position-relative" [@startUpward]>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title"><b>{{abrigo.nome}}</b> </h3>
+          <p class="card-text">
+            <b>Endereço</b>: {{abrigo.enderecoDesc}} <br />
+            <ng-container *ngIf="abrigo.chavePix">
+              <b>pix de ajuda local</b>: {{abrigo.chavePix}} - {{abrigo.tipoChavePix}}, <b
+                style="cursor: pointer; border: 1px solid #999; border-radius: 2px; padding: 2px 3px;"
+                (click)="copyMessage(abrigo.chavePix)"> copiar</b><br />
+            </ng-container>
+          </p>
+          <span [class]="abrigo.precisaAjudanteCssClass + ' card-link'">Precisa de ajudante?
+            {{abrigo.precisaAjudanteDesc}}</span><br />
+          <span [class]="abrigo.precisaAlimentoCssClass + ' card-link'">Precisa de alimento?
+            {{abrigo.precisaAlimentoDesc}}</span><br />
+          <span [class]="abrigo.capacidadeCssClass + ' card-link'">Capacidade: {{abrigo.capacidadeDesc}}</span><br />
+        </div>
+      </div>
+      <br />
+    </div>
+  </ng-container>
+</div>

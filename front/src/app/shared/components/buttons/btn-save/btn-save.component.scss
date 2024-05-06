@@ -1,0 +1,27 @@
+.cw-button-save {
+  color: #43a800;
+  height: 50px;
+  margin: 10px 0;
+  padding: 0 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: 0.3s;
+  font-size: 49px !important;
+  float: right;
+  border-color: #087f00;
+  &:hover {
+    background-color: #247729;
+    color: #eee
+  }
+  &:disabled {
+    background-color: #eee;
+    color: #555;
+    cursor: not-allowed;
+  }
+}
+#icon{
+  font-size: 30px;
+  height: auto !important;
+  width: auto !important;
+}

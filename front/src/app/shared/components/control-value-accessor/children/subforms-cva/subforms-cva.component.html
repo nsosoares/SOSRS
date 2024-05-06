@@ -1,0 +1,31 @@
+@if(inited) {
+<div class="section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div>
+          <cw-btn-add (click)="newForm()" [describe]="params?.label"></cw-btn-add>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @for (formTool of formTools; track formTool) {
+  <br />
+  <div class="container-fluid position-relative" [@stratFalling]>
+    <div class="section" [class.section-error]="formTool.form.invalid">
+      <div class="row">
+        <div class="col-12 col-md-10">
+          <cw-form-cva-viwer cw-form-cva-viwer [form]="formTool.form"
+            [cvaControls]="formTool.currentControlsCvaProvider"></cw-form-cva-viwer>
+        </div>
+        <div class="col-12 col-md-2">
+          <cw-btn-remove (click)="removeForm(formTool)"></cw-btn-remove>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  }
+</div>
+}

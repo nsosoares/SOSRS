@@ -1,0 +1,45 @@
+<div class="cw-table-around position-relative" [@startUpward]
+  *ngIf="params()?.entities && params()?.entities!.length > 0">
+  <table class="cw-table">
+    <thead>
+      <tr>
+        <th *ngFor="let column of params()!.columns">{{column.displayName}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(entity of params()!.entities; track entity.id){
+      <tr>
+        <td class="" *ngFor="let column of params()?.columns">{{entity[column.property]}}</td>
+
+        <td >
+          <div class="options">
+
+            <div *ngIf="params()!.options.length">
+              <button class="cw-button space-left-right"
+                [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+              <mat-menu #menu="matMenu">
+                <button *ngFor="let option of params()?.options" mat-menu-item
+                  (click)="option.action(entity)">{{option.displayName}}</button>
+              </mat-menu>
+            </div>
+
+            <div class="option">
+              <cw-btn-remove [useDescribe]="false" (click)="onRemove.emit(entity)"></cw-btn-remove>
+            </div>
+
+            <div class="option">
+              <cw-btn-edit (click)="onEdit.emit(entity)"></cw-btn-edit>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+</div>
+<div *ngIf="params()?.entities && params()?.entities?.length === 0">
+  <div class="cw-empty-list-title">Nenhum registro encontrado</div>
+</div>

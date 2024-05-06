@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <br />
+  <br />
+  <form [formGroup]="form">
+    <div class="row">
+      <h2 class="col-7 col-md-10">Pesquisa avançada</h2>
+      <div class="col-4 col-md-2">
+        <div class='cw-button' style="width: 100%;" (click)="fechar()">
+          <div class="cw-button-content">
+            <div style="text-align: center;" >
+              <mat-icon>close</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <cw-control-cva [controlProvider]="control.bairro"
+        [formControlName]="control.bairro.params!.controlName"></cw-control-cva>
+      <cw-control-cva [controlProvider]="control.alimento"
+        [formControlName]="control.alimento.params!.controlName"></cw-control-cva>
+
+      <div class="col-12">
+        <mat-form-field style="width: 100%;">
+          <mat-label>Capacidade</mat-label>
+          <mat-select formControlName='capacidade'>
+            @for (capacidade of capacidades; track capacidade) {
+            <mat-option [value]="capacidade.value">{{capacidade.viewValue}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+          <mat-label>Precisa de ajudante</mat-label>
+          <mat-select formControlName='precisaAjudante'>
+            @for (opcao of opcaoSimNao; track opcao) {
+            <mat-option [value]="opcao.value">{{opcao.viewValue}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+
+        <mat-form-field style="width: 100%;">
+          <mat-label>Precisa de alimento</mat-label>
+          <mat-select formControlName='precisaAlimento'>
+            @for (opcao of opcaoSimNao; track opcao) {
+            <mat-option [value]="opcao.value">{{opcao.viewValue}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <div class='cw-button' style="width: 100%;" (click)="pesquisar()">
+          <div class="cw-button-content">
+            <div class="cw-button-content-item">
+              <mat-icon>search</mat-icon>
+            </div>
+            <div class="cw-button-content-item">Pesquisar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

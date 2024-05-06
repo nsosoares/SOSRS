@@ -1,0 +1,23 @@
+@if (params()) {
+<div style="max-height: 90vh; overflow-y: auto;">
+  <form [formGroup]="form" (submit)="save()">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <br />
+          <h1>{{params()!.label}}</h1>
+        </div>
+      </div>
+    </div>
+    <cw-form-cva-viwer [cvaControls]="params()!.controlsCvaProvider!" [form]="form!"></cw-form-cva-viwer>
+    <div class="container-fluid">
+      <div class="col-12 alert alert-danger" *ngIf="errorOnSave">
+        Não foi possivel salvar os dados. Tente novamente ou entre em contato com o suporte técnico.
+      </div>
+      <div class="col-12">
+        <cw-btn-save [form]="form"></cw-btn-save>
+      </div>
+    </div>
+  </form>
+</div>
+}

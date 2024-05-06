@@ -1,0 +1,18 @@
+<div [formGroup]="form">
+  @if (!params?.isHidden()) {
+  <mat-form-field *ngIf="params" [color]="colorControl.value!" appearance="outline" style="width: 100%;">
+
+    <mat-label>{{params.label}}</mat-label>
+    <input formControlName='currentValue' matInput [placeholder]="params.placeholder">
+
+    <mat-hint *ngIf="(control.touched || control.dirty) && control.valid"> <mat-icon
+        style="color: green;">check_circle</mat-icon> </mat-hint>
+    @for (validation of params.validations; track validation.validationErrorCode){
+    <mat-error *ngIf="control.hasError(validation.validationErrorCode)"><mat-icon>error</mat-icon>
+      {{validation.message}}</mat-error>
+    }
+  </mat-form-field>
+  } @else {
+  <input type="hidden" formControlName="currentValue">
+  }
+</div>

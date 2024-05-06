@@ -1,0 +1,23 @@
+
+<div [formGroup]="form" *ngIf="comboboxService.params">
+  <mat-form-field appearance="outline">
+    <mat-label>{{comboboxService.params.label}}</mat-label>
+    <input type="text"
+           [placeholder]="comboboxService.params.placeholder ?? ''"
+           [attr.aria-label]="comboboxService.params.label"
+           matInput
+           [formControl]="searchControl"
+           (focus)="forceSearch()"
+           (blur)="validDisplayValueOnFocusOut()"
+           [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      @for (option of comboboxService.options; track option) {
+        <mat-option [value]="option.name">{{option.name}}</mat-option>
+      }
+    </mat-autocomplete>
+    <mat-hint *ngIf="(searchControl.touched || searchControl.dirty) && currentValueControl.valid"> <mat-icon style="color: green;">check_circle</mat-icon> </mat-hint>
+    @for (validation of comboboxService.params.validations; track validation.validationErrorCode){
+      <mat-error *ngIf="currentValueControl.hasError(validation.validationErrorCode)"><mat-icon>error</mat-icon> {{validation.message}}</mat-error>
+    }
+  </mat-form-field>
+</div>

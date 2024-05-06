@@ -1,0 +1,146 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@200&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700&display=swap');
+
+* {
+  font-family: "Open Sans", sans-serif ;
+  font-weight: 400;
+}
+h1,
+h2,
+h3,
+h4{
+  font-family: "Open Sans", sans-serif !important;
+
+}
+html, body { height: 100%; }
+body { margin: 0; background-color: #bdcad5; }
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: green !important;
+ }
+
+ ::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: green !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: green !important;
+}
+.section {
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  margin: 5px 0;
+  transition: 0.3s;
+  padding: 10px 0;
+}
+.section-painel {
+  display: block;
+  border-radius: 10px;
+  margin: 10px 0;
+  transition: 0.3s;
+  padding: 10px 15px;
+  background-color: #fff;
+  float: left;
+  width: 100%;
+  box-shadow: 0 0 8px -1px #00579a;
+
+  &:hover {
+    box-shadow: 0 0 10px -1px #00579a;
+  }
+}
+.cw-table-around {
+  margin: 5px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #aaa;
+  transition: 0.3s;
+  box-shadow: 0 0 5px -2px #555;
+
+  &:hover{
+    box-shadow: 0 0 6px -1px #ccc;
+  }
+}
+.cw-table{
+  border-radius: 15px !important;
+  transition: 0.3s;
+  width: 100%;
+
+  tr {
+    border-bottom:1px solid #aaa;
+    text-align: left;
+    transition: 0.3s;
+    th {
+      font-weight: 700;
+      text-align: center;
+    }
+    td, th {
+      padding: 10px;
+      border-left: 1px solid #aaa;
+
+    }
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+.section-error {
+  border: 1px solid #ca1414;
+}
+
+.section:hover {
+  border: 1px solid #fff;
+  box-shadow: 0 0 10px -1px #00579a;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 18px;
+  padding: 10px 0;
+}
+
+.divider {
+  border-bottom: 1px solid #aaa;
+  margin: 10px 0;
+}
+
+.space-left-right {
+  margin: 0 10px;
+}
+.cw-button {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #00579a;
+  color: #555;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 25px;
+  transition: 0.6s;
+  padding: 5px 20px;
+  height: 36px;
+  width: auto;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #00508e;
+    color: #eee;
+  }
+}
+.cw-button-content {
+  display: block;
+  width: 100%;
+  .cw-button-content-item{
+    display: block;
+    float: left;
+    width: auto;
+    padding: 0px 5px;
+    text-align: center;
+  }
+}
+
+.cw-icon{
+  position: relative;
+  top: 6px;
+}

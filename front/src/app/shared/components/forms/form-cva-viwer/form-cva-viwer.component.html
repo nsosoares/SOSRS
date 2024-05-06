@@ -1,0 +1,12 @@
+<div class="container-fluid" *ngIf="form() && cvaControls" [formGroup]="form()!">
+  <div class="row">
+    @for (cvaControl of cvaControls(); track cvaControl) {
+    <div [class]="cvaControl.params?.cssClass">
+      <cw-control-cva [formControlName]="cvaControl.params!.controlName" [controlProvider]="cvaControl"></cw-control-cva>
+    </div>
+    }
+  </div>
+</div>
+<div>
+
+</div>

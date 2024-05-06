@@ -1,0 +1,10 @@
+
+@if(logado) {
+  <cw-crud [params]="params"></cw-crud>
+} @if (!logado) {
+  <form [formGroup]="form">
+    digite o codigo de acesso para logar:
+    <input type="text" formControlName="codAcesso" />
+    <button (click)="logar()">Logar</button>
+  </form>
+}
