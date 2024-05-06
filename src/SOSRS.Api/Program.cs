@@ -39,6 +39,7 @@ app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseCors();
+app.MapControllers();
 
 //app.MapAbrigoEndpoints();
 
