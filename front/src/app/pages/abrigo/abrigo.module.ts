@@ -6,6 +6,7 @@ import { AbrigoRoutingModule } from './abrigo-routing.module';
 import { AbrigoComponent } from './abrigo.component';
 import { AbrigoAjudaComponent } from './abrigo-ajuda/abrigo-ajuda.component';
 import { AbrigoAjudaPesquisaAvancadaComponent } from './abrigo-ajuda/abrigo-ajuda-pesquisa-avancada/abrigo-ajuda-pesquisa-avancada.component';
+import { AbrigoAjudaSobreComponent } from './abrigo-ajuda/abrigo-ajuda-sobre/abrigo-ajuda-sobre.component';
 
 
 
@@ -13,7 +14,8 @@ import { AbrigoAjudaPesquisaAvancadaComponent } from './abrigo-ajuda/abrigo-ajud
   declarations: [
     AbrigoComponent,
     AbrigoAjudaComponent,
-    AbrigoAjudaPesquisaAvancadaComponent
+    AbrigoAjudaPesquisaAvancadaComponent,
+    AbrigoAjudaSobreComponent
   ],
   imports: [
     CoreModule,

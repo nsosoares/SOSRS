@@ -16,6 +16,7 @@ import {
   AbrigoAjudaPesquisaAvancadaComponent,
 } from './abrigo-ajuda-pesquisa-avancada/abrigo-ajuda-pesquisa-avancada.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AbrigoAjudaSobreComponent } from './abrigo-ajuda-sobre/abrigo-ajuda-sobre.component';
 
 @Component({
   selector: 'cw-abrigo-ajuda',
@@ -119,6 +120,11 @@ export class AbrigoAjudaComponent {
         this.pesquisa();
       }
 
+    });
+  }
+  abrirSobre(): void {
+    this.dialog.open(AbrigoAjudaSobreComponent, {
+      width: '800px',
     });
   }
 }
