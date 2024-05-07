@@ -21,7 +21,6 @@ const routes: Routes = [
   },
   {
     path: 'abrigos',
-    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./pages/abrigo/abrigo.module').then((m) => m.AbrigoModule),
   },
