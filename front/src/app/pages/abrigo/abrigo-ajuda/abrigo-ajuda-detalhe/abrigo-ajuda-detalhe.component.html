@@ -33,6 +33,16 @@
           <td>{{recurso.quantidadeNecessaria}}</td>
         </tr>
       </table>
+      <br/>
+      <table class="cw-table">
+        <tr>
+          <th>Pessoas Desaparecidas</th>
+          <th>Quantidade</th>
+        </tr>
+        <tr *ngFor="let pessoasDesaparecidas of abrigo.pessoasDesaparecidas">
+          <td>{{pessoasDesaparecidas.nome}}</td>
+        </tr>
+      </table>
     </div>
     <div class="col-12"></div>
   </div>

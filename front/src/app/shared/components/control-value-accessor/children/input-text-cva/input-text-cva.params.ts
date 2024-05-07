@@ -44,6 +44,11 @@ export class InputTextCvaParams extends BaseControlCvaParams {
   static number(name: any, label: string): InputTextCvaParams {
     return new InputTextCvaParams(name, label, 'number');
   }
+
+  static date(name: any, label: string): InputTextCvaParams {
+    return new InputTextCvaParams(name, label, 'date')
+  }
+
   static email(name: any, label: string): InputTextCvaParams {
     const validations: ControlCvaValidation[] = [];
 

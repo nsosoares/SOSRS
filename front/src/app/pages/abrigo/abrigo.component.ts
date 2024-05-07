@@ -31,7 +31,7 @@ export class AbrigoComponent {
   env = environment.env;
   form: FormGroup;
 
-  constructor(private abrigoService: AbrigoService, fb: FormBuilder, private _snackBar: MatSnackBar ) {
+  constructor(private abrigoService: AbrigoService, fb: FormBuilder, private _snackBar: MatSnackBar) {
     const control = {
       codAcesso: ControlCvaProvider.inputText(() => InputTextCvaParams.text('codAcesso', 'Codigo de acesso')),
       id: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('id')),
@@ -56,6 +56,11 @@ export class AbrigoComponent {
         ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeNecessaria', 'Quantidade Necessaria').withCssClass(RESPONSIVE_SIZE_6)),
       ])),
 
+      pessoasDesaparecidas: ControlCvaProvider.subforms(() => new SubformCvaParams('pessoasDesaparecidas', 'Pessoas Desaparecidas', [
+        ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Nome', 50, 5).asRequired().withPlaceholder('Digite o Nome da Pessoa').withCssClass(RESPONSIVE_SIZE_6)),
+        ControlCvaProvider.inputText(() => InputTextCvaParams.number('idade', 'Idade').withCssClass(RESPONSIVE_SIZE_6)),
+        ControlCvaProvider.inputText(() => InputTextCvaParams.text('informacaoAdicional', 'Informações Adicionais', 500).withPlaceholder('Digite informações adicionais sobre essa pessoa').withCssClass(RESPONSIVE_SIZE_12))
+      ]))
     };
     this.form = fb.group({
       codAcesso: control.codAcesso.formControl,
@@ -69,7 +74,8 @@ export class AbrigoComponent {
       control.quantidadeVagasDisponiveis,
       control.endereco,
       control.alimentos,
-      control.observacao,
+      control.pessoasDesaparecidas,
+      control.observacao
     ]);
     const listParams = new CrudListParams(
       [
@@ -89,9 +95,9 @@ export class AbrigoComponent {
       if (usuario) {
         this.logado = true;
         this.abrigoService.codAcesso = usuario.id;
-        this._snackBar.open('logado com sucesso - usuário: ' + usuario.nome, '', {duration: 1800})
+        this._snackBar.open('logado com sucesso - usuário: ' + usuario.nome, '', { duration: 1800 })
       } else {
-        this._snackBar.open('login inválido', '', {duration: 1800})
+        this._snackBar.open('login inválido', '', { duration: 1800 })
 
       }
     });
@@ -102,7 +108,7 @@ export class AbrigoComponent {
     }
   }
 
-  onlogin = new  Subject<number>();
+  onlogin = new Subject<number>();
   logar(): void {
     this.onlogin.next(this.form.value.codAcesso);
   }

@@ -17,7 +17,7 @@ export class AbrigoAjudaDetalheComponent {
     private service: AbrigoService,
     public dialogRef: MatDialogRef<AbrigoAjudaDetalheComponent>,
     @Inject(MAT_DIALOG_DATA) params: any
-  ){
+  ) {
     this.abrigoId = params.abrigoId;
 
     service.getById(this.abrigoId).subscribe(abrigo => {

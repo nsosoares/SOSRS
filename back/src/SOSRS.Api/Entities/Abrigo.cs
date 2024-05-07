@@ -15,7 +15,8 @@ public class Abrigo : Entity
         string telefone,
         string? observacao, 
         EnderecoVO endereco, 
-        List<Alimento> alimentos)
+        List<Alimento> alimentos,
+        List<PessoaDesaparecida> pessoasDesaparecidas)
         : base(id)
     {
         Id = id;
@@ -29,6 +30,7 @@ public class Abrigo : Entity
         Telefone = telefone;
         Endereco = endereco;
         Alimentos = alimentos;
+        PessoasDesaparecidas = pessoasDesaparecidas;
         Lotado = quantidadeVagasDisponiveis == 0;
     }
 
@@ -45,6 +47,7 @@ public class Abrigo : Entity
     public EnderecoVO Endereco { get; private set; } = default!;
     public string? Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
+    public List<PessoaDesaparecida> PessoasDesaparecidas { get; private set; } = default!;
     public bool Lotado { get; private set; } = default!;
 
     public void AddAlimento(Alimento alimento)
@@ -55,6 +58,16 @@ public class Abrigo : Entity
     public void RemoverAlimento(int alimentoId)
     {
         Alimentos.Remove(Alimentos.FirstOrDefault(x => x.Id == alimentoId)!);
+    }
+
+    public void AddPessoaDesaparecida(PessoaDesaparecida pessoaDesaparecida)
+    {
+        PessoasDesaparecidas.Add(pessoaDesaparecida);
+    }
+
+    public void RemoverPessoaDesaparecida(int pessoaDesaparecidaId)
+    {
+        PessoasDesaparecidas.Remove(PessoasDesaparecidas.FirstOrDefault(x => x.Id == pessoaDesaparecidaId)!);
     }
 
     public void AumentarQuantidadeVagasDisponiveis(int quantidadeVagasDisponiveis)

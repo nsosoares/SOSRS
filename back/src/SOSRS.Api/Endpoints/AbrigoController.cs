@@ -112,6 +112,14 @@ public class AbrigoController : ControllerBase
                     AbrigoId = a.AbrigoId,
                     QuantidadeNecessaria = a.QuantidadeNecessaria,
                     Nome = a.Nome.Value
+                }).ToList(),
+                PessoasDesaparecidas = x.PessoasDesaparecidas.Select(p => new PessoaDesaparecidaViewModel
+                {
+                    Id = p.Id,
+                    AbrigoId = p.AbrigoId,
+                    Idade = p.Idade,
+                    InformacaoAdicional = p.InformacaoAdicional,
+                    Nome = p.Nome.Value
                 }).ToList()
             })
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -121,7 +129,7 @@ public class AbrigoController : ControllerBase
             : Results.NotFound();
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpPost]
     public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest, [FromHeader(Name = "codAcesso")] int codAcesso)
     {
@@ -139,6 +147,9 @@ public class AbrigoController : ControllerBase
         var alimentos = abrigoRequest.Alimentos == null ? new List<Alimento>()
             : abrigoRequest.Alimentos.Select(x => new Alimento(x.Id, x.AbrigoId, x.Nome, x.QuantidadeNecessaria)).ToList();
 
+        var pessoasDesaparecidas = abrigoRequest.PessoasDesaparecidas == null ? new List<PessoaDesaparecida>()
+            : abrigoRequest.PessoasDesaparecidas.Select(x => new PessoaDesaparecida(x.Id, x.AbrigoId, x.Nome, x.Idade, x.InformacaoAdicional, x.Foto)).ToList();
+
         var abrigo = new Abrigo(
             abrigoRequest.Id,
             abrigoRequest.Nome,
@@ -150,7 +161,8 @@ public class AbrigoController : ControllerBase
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
             endereco,
-            alimentos);
+            alimentos,
+            pessoasDesaparecidas);
 
         var result = _validadorService.Validar(abrigo, new AbrigoValidador());
         if (!result.IsValid)
@@ -185,6 +197,9 @@ public class AbrigoController : ControllerBase
         var alimentos = abrigoRequest.Alimentos == null ? new List<Alimento>()
             : abrigoRequest.Alimentos.Select(x => new Alimento(x.Id, x.AbrigoId, x.Nome, x.QuantidadeNecessaria)).ToList();
 
+        var pessoasDesaparecidas = abrigoRequest.PessoasDesaparecidas == null ? new List<PessoaDesaparecida>()
+            : abrigoRequest.PessoasDesaparecidas.Select(x => new PessoaDesaparecida(x.Id, x.AbrigoId, x.Nome, x.Idade, x.InformacaoAdicional, x.Foto)).ToList();
+
         var abrigo = new Abrigo(
             id,
             abrigoRequest.Nome,
@@ -196,7 +211,8 @@ public class AbrigoController : ControllerBase
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
             endereco,
-            alimentos);
+            alimentos,
+            pessoasDesaparecidas);
 
         var result = _validadorService.Validar(abrigo, new AbrigoValidador());
         if (!result.IsValid)
