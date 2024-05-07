@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SOSRS.Api.Data;
 
@@ -11,9 +12,11 @@ using SOSRS.Api.Data;
 namespace SOSRS.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240507000144_AddUsuarioId")]
+    partial class AddUsuarioId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,12 +62,10 @@ namespace SOSRS.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<Guid?>("UsuarioId")
+                    b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Abrigos", (string)null);
                 });
@@ -113,35 +114,8 @@ namespace SOSRS.Api.Migrations
                     b.ToTable("Logs", (string)null);
                 });
 
-            modelBuilder.Entity("SOSRS.Api.Entities.Usuario", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("User")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Usuario");
-                });
-
             modelBuilder.Entity("SOSRS.Api.Entities.Abrigo", b =>
                 {
-                    b.HasOne("SOSRS.Api.Entities.Usuario", "Usuario")
-                        .WithMany("Abrigos")
-                        .HasForeignKey("UsuarioId");
-
                     b.OwnsOne("SOSRS.Api.ValueObjects.SearchableStringVO", "Nome", b1 =>
                         {
                             b1.Property<int>("AbrigoId")
@@ -307,8 +281,6 @@ namespace SOSRS.Api.Migrations
 
                     b.Navigation("Nome")
                         .IsRequired();
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("SOSRS.Api.Entities.Alimento", b =>
@@ -353,11 +325,6 @@ namespace SOSRS.Api.Migrations
             modelBuilder.Entity("SOSRS.Api.Entities.Abrigo", b =>
                 {
                     b.Navigation("Alimentos");
-                });
-
-            modelBuilder.Entity("SOSRS.Api.Entities.Usuario", b =>
-                {
-                    b.Navigation("Abrigos");
                 });
 #pragma warning restore 612, 618
         }

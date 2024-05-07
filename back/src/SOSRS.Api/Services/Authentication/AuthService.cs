@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SOSRS.Api.Configuration;
+using SOSRS.Api.Data;
+using SOSRS.Api.Entities;
 using SOSRS.Api.ViewModels.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,12 +13,14 @@ namespace SOSRS.Api.Services.Authentication
     public class AuthService : IAuthService
     {
         private readonly JWTConfiguration _configuration;
+        private readonly AppDbContext _db;
 
         public AuthService(JWTConfiguration configuration)
         {
             _configuration =
                 configuration
                 ?? throw new ArgumentNullException(nameof(configuration));
+            //_db = db;
         }
 
         public string GenerateJWTToken(UserAuthJWTClaims userClaims)
@@ -46,6 +50,7 @@ namespace SOSRS.Api.Services.Authentication
 
         public Task<bool> RegisterUserAsync(string email, string password, string cpf)
         {
+            //_db.Usuario.Add(new Usuario(Guid.NewGuid(), email, password, cpf));
             throw new NotImplementedException();
         }
 

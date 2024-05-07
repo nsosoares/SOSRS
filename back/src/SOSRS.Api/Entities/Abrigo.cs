@@ -13,7 +13,8 @@ public class Abrigo : Entity
         string tipoChavePix, 
         string chavePix, 
         string telefone,
-        string? observacao, 
+        string? observacao,
+        Guid usuarioId,
         EnderecoVO endereco, 
         List<Alimento> alimentos,
         List<PessoaDesaparecida> pessoasDesaparecidas)
@@ -28,6 +29,7 @@ public class Abrigo : Entity
         Observacao = observacao;
         ChavePix = chavePix;
         Telefone = telefone;
+        UsuarioId = usuarioId;
         Endereco = endereco;
         Alimentos = alimentos;
         PessoasDesaparecidas = pessoasDesaparecidas;
@@ -49,6 +51,9 @@ public class Abrigo : Entity
     public List<Alimento> Alimentos { get; private set; } = default!;
     public List<PessoaDesaparecida> PessoasDesaparecidas { get; private set; } = default!;
     public bool Lotado { get; private set; } = default!;
+    public Guid? UsuarioId { get; private set; } = default!;
+
+    public Usuario? Usuario { get; private set; } = default!;
 
     public void AddAlimento(Alimento alimento)
     {

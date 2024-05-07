@@ -72,7 +72,9 @@ public class AbrigoController : ControllerBase
                 PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
                 PrecisaAlimento = x.Alimentos.Count > 0
             })
-        .ToListAsync();
+            .OrderBy(x => x.Cidade)
+            .ThenBy(x => x.Nome)
+            .ToListAsync();
 
         if (abrigos == null)
         {
@@ -131,9 +133,11 @@ public class AbrigoController : ControllerBase
 
     //[Authorize]
     [HttpPost]
-    public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest, [FromHeader(Name = "codAcesso")] int codAcesso)
+    public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest)
     {
-        var abrigoId = HttpContext.GetAbrigos();
+        //var abrigoId = HttpContext.GetAbrigos();
+        var usuarioId = Guid.Empty;
+        //var usuarioId = HttpContext.GetUsuarioId();
 
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
@@ -160,6 +164,7 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix,
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
+            usuarioId,
             endereco,
             alimentos,
             pessoasDesaparecidas);
@@ -171,15 +176,18 @@ public class AbrigoController : ControllerBase
         }
 
         await _dbContext.AddAsync(abrigo);
-        _dbContext.Logs.Add(new Log(0, codAcesso, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
+        //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
 
+    [Authorize]
     [HttpPut("{id:int}")]
-    public async Task<IResult> Put([FromRoute] int id, [FromBody] AbrigoRequestViewModel abrigoRequest, [FromHeader(Name = "codAcesso")] int codAcesso)
+    public async Task<IResult> Put([FromRoute] int id, [FromBody] AbrigoRequestViewModel abrigoRequest)
     {
-        var abrigoExiste = _dbContext.Abrigos.Any(x => x.Id == id);
+        var usuarioId = Guid.Empty;
+        //var usuarioId = HttpContext.GetUsuarioId();
+        var abrigoExiste = _dbContext.Abrigos.Any(x => x.Id == id && x.UsuarioId == usuarioId);
         if (!abrigoExiste)
         {
             return Results.NotFound();
@@ -210,6 +218,7 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix,
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
+            usuarioId,
             endereco,
             alimentos,
             pessoasDesaparecidas);
@@ -223,22 +232,25 @@ public class AbrigoController : ControllerBase
         var alimentosAnteriores = await _dbContext.Alimentos.AsNoTracking().Where(x => x.AbrigoId == id && !abrigo.Alimentos.Select(x => x.Id).Contains(x.Id)).ToListAsync();
         _dbContext.RemoveRange(alimentosAnteriores);
         _dbContext.Update(abrigo);
-        _dbContext.Logs.Add(new Log(0, codAcesso, ETipoOperacao.Atualizar, JsonConvert.SerializeObject(abrigoRequest)));
+        _dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Atualizar, JsonConvert.SerializeObject(abrigoRequest)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
 
+    [Authorize]
     [HttpDelete]
-    public async Task<IResult> Delete([FromRoute] int id, [FromHeader(Name = "codAcesso")] int codAcesso)
+    public async Task<IResult> Delete([FromRoute] int id)
     {
-        var abrigo = await _dbContext.Abrigos.FirstOrDefaultAsync(x => x.Id == id);
+        var usuarioId = Guid.Empty;
+        //var usuarioId = HttpContext.GetUsuarioId();
+        var abrigo = await _dbContext.Abrigos.FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == usuarioId);
         if (abrigo == null)
         {
             return Results.NotFound();
         }
 
         _dbContext.Remove(abrigo);
-        _dbContext.Logs.Add(new Log(0, codAcesso, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
+        _dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok();
     }
