@@ -131,7 +131,7 @@ public class AbrigoController : ControllerBase
             : Results.NotFound();
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPost]
     public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest)
     {
