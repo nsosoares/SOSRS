@@ -5,7 +5,7 @@ using SOSRS.Api.ViewModels.Auth;
 namespace SOSRS.Api.Endpoints
 {
     [ApiController]
-    [Route("auth")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
