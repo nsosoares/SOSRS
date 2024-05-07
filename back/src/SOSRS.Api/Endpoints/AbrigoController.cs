@@ -136,8 +136,8 @@ public class AbrigoController : ControllerBase
     public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest)
     {
         //var abrigoId = HttpContext.GetAbrigos();
-        var usuarioId = Guid.Empty;
-        //var usuarioId = HttpContext.GetUsuarioId();
+        //var usuarioId = Guid.Empty;
+        var usuarioId = HttpContext.GetUsuarioId();
 
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
@@ -194,13 +194,13 @@ public class AbrigoController : ControllerBase
         }
 
         var endereco = new EnderecoVO(
-            abrigoRequest.Endereco.Rua,
+            abrigoRequest.Endereco.Rua ?? "",
             abrigoRequest.Endereco.Numero,
-            abrigoRequest.Endereco.Bairro,
+            abrigoRequest.Endereco.Bairro ?? "",
             abrigoRequest.Endereco.Cidade,
             "RS",
-            abrigoRequest.Endereco.Complemento,
-            abrigoRequest.Endereco.Cep);
+            abrigoRequest.Endereco.Complemento ?? "",
+            abrigoRequest.Endereco.Cep ?? "");
 
         var alimentos = abrigoRequest.Alimentos == null ? new List<Alimento>()
             : abrigoRequest.Alimentos.Select(x => new Alimento(x.Id, x.AbrigoId, x.Nome, x.QuantidadeNecessaria)).ToList();
@@ -214,9 +214,9 @@ public class AbrigoController : ControllerBase
             abrigoRequest.QuantidadeNecessariaVoluntarios,
             abrigoRequest.QuantidadeVagasDisponiveis,
             abrigoRequest.CapacidadeTotalPessoas,
-            abrigoRequest.TipoChavePix,
-            abrigoRequest.ChavePix,
-            abrigoRequest.Telefone,
+            abrigoRequest.TipoChavePix ?? "",
+            abrigoRequest.ChavePix ?? "",
+            abrigoRequest.Telefone ?? "",
             abrigoRequest.Observacao ?? "",
             usuarioId,
             endereco,

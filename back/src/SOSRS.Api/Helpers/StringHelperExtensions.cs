@@ -5,7 +5,7 @@ namespace SOSRS.Api.Helpers;
 
 public static class StringHelperExtensions
 {
-    public static string ToSerachable(this string value)
+    public static string ToSearchable(this string value)
     {
         if (string.IsNullOrEmpty(value))
             return value;
@@ -41,6 +41,10 @@ public static class StringHelperExtensions
         return stringBuilder
             .ToString()
             .Normalize(NormalizationForm.FormC);
+    }
 
+    public static bool ContainsValue(this string value)
+    {
+        return !string.IsNullOrEmpty(value.Trim());
     }
 }

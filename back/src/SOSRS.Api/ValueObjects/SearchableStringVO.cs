@@ -7,7 +7,7 @@ public class SearchableStringVO
     public SearchableStringVO(string value)
     {
         Value = value;
-        SearchableValue = value.ToSerachable();
+        SearchableValue = value.ToSearchable();
     }
 
     public string? Value { get; private set; }
