@@ -216,7 +216,7 @@ public class AbrigoController : ControllerBase
         var alimentosAnteriores = await _dbContext.Alimentos.AsNoTracking().Where(x => x.AbrigoId == id && !abrigo.Alimentos.Select(x => x.Id).Contains(x.Id)).ToListAsync();
         _dbContext.RemoveRange(alimentosAnteriores);
         _dbContext.Update(abrigo);
-        _dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Atualizar, JsonConvert.SerializeObject(abrigoRequest)));
+        //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Atualizar, JsonConvert.SerializeObject(abrigoRequest)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
@@ -234,7 +234,7 @@ public class AbrigoController : ControllerBase
         }
 
         _dbContext.Remove(abrigo);
-        _dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
+        //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok();
     }
