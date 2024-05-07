@@ -36,6 +36,7 @@ export class AbrigoComponent {
       codAcesso: ControlCvaProvider.inputText(() => InputTextCvaParams.text('codAcesso', 'Codigo de acesso')),
       id: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('id')),
       nome: ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Nome', 50, 5).asRequired().withPlaceholder('Digite o nome do abrigo').withCssClass(RESPONSIVE_SIZE_6)),
+      chavePix: ControlCvaProvider.inputText(() => InputTextCvaParams.text('chavePix', 'Chave Pix', 50, 3).withPlaceholder('Digite a chave pix').withCssClass(RESPONSIVE_SIZE_6)),
       telefone: ControlCvaProvider.inputText(() => InputTextCvaParams.text('telefone', 'telefone para contato', 50, 3).asRequired().withPlaceholder('digite o número').withCssClass(RESPONSIVE_SIZE_6)),
       quantidadeNecessariaVoluntarios: ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeNecessariaVoluntarios', 'Precisa de quantos voluntarios?').withCssClass(RESPONSIVE_SIZE_6)),
       capacidadeTotalPessoas: ControlCvaProvider.inputText(() => InputTextCvaParams.number('capacidadeTotalPessoas', 'Quantas pessoas o local pode suportar?').withCssClass(RESPONSIVE_SIZE_6)),
@@ -63,6 +64,7 @@ export class AbrigoComponent {
     this.controls.push(...[
       control.id,
       control.nome,
+      control.chavePix,
       control.telefone,
       control.quantidadeNecessariaVoluntarios,
       control.capacidadeTotalPessoas,
