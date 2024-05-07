@@ -8,12 +8,14 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from './core/core.module';
 import { NavComponent } from './template/nav/nav.component';
 import { LoginComponent } from './pages/login/login.component';
+import { CadastrarUsuarioComponent } from './pages/cadastrar-usuario/cadastrar-usuario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     LoginComponent,
+    CadastrarUsuarioComponent
   ],
   imports: [
     BrowserModule,

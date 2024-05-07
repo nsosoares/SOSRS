@@ -51,6 +51,11 @@ namespace SOSRS.Api.Services.Authentication
 
         public async Task<bool> RegisterUserAsync(string email, string password, string cpf, string telefone)
         {
+            var existenteUser = await _db.Usuario.FirstOrDefaultAsync(u => u.User == email);
+            if (existenteUser != null)
+            {
+                return false;
+            }
             _db.Usuario.Add(new Usuario(Guid.NewGuid(), email, password, cpf, telefone));
             await _db.SaveChangesAsync();
             return true;
