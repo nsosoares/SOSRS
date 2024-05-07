@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SOSRS.Api.Configuration;
 using SOSRS.Api.Data;
@@ -15,12 +16,12 @@ namespace SOSRS.Api.Services.Authentication
         private readonly JWTConfiguration _configuration;
         private readonly AppDbContext _db;
 
-        public AuthService(JWTConfiguration configuration)
+        public AuthService(JWTConfiguration configuration, AppDbContext db)
         {
             _configuration =
                 configuration
                 ?? throw new ArgumentNullException(nameof(configuration));
-            //_db = db;
+            _db = db;
         }
 
         public string GenerateJWTToken(UserAuthJWTClaims userClaims)
@@ -29,7 +30,7 @@ namespace SOSRS.Api.Services.Authentication
             {
                 new Claim("id", userClaims.UserId.ToString()),
                 new Claim("nome", userClaims.Nome),
-                new Claim("email", userClaims.Email),
+                new Claim("email", userClaims.User),
                 new Claim("cpf", userClaims.CPF),
                 new Claim("abrigos", string.Join('|', userClaims.UserAbrigosId))
             };
@@ -48,48 +49,56 @@ namespace SOSRS.Api.Services.Authentication
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public Task<bool> RegisterUserAsync(string email, string password, string cpf)
+        public async Task<bool> RegisterUserAsync(string email, string password, string cpf, string telefone)
         {
-            //_db.Usuario.Add(new Usuario(Guid.NewGuid(), email, password, cpf));
-            throw new NotImplementedException();
+            var existenteUser = await _db.Usuario.FirstOrDefaultAsync(u => u.User == email);
+            if (existenteUser != null)
+            {
+                return false;
+            }
+            _db.Usuario.Add(new Usuario(Guid.NewGuid(), email, password, cpf, telefone));
+            await _db.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<UserLoginResponse> SignInUserAsync(string email, string password)
+        public async Task<UserLoginResponse> SignInUserAsync(string user, string password)
         {
-            await Task.CompletedTask;
-
-            var user = new UserAuthJWTClaims
-            {
-                UserId = Guid.NewGuid(),
-                Nome = "Teste",
-                Email = "teste@teste.com.br",
-                CPF = "999.999.999-99"
-            };
-
-            if (user.UserId != Guid.Empty)
-            {
-                var token = GenerateJWTToken(user);
-                var response = new UserLoginResponse()
-                {
-                    Token = token,
-                    UserInfo = new UserAuthJWTClaims
-                    {
-                        UserId = Guid.NewGuid(),
-                        Nome = user.Nome,
-                        Email = user.Email,
-                        CPF = user.CPF,
-                        UserAbrigosId = [Guid.NewGuid()]
-                    }
-                };
-
-                return response;
-            }
-            else
+            var userExistent = await _db.Usuario.FirstOrDefaultAsync(u => u.User == user && u.Password == password);
+            if (userExistent == null)
             {
                 return new UserLoginResponse();
             }
 
-            throw new NotImplementedException();
-        }
+            var abrigosIds = await _db.Abrigos
+                .Where(a => a.UsuarioId == userExistent.Id)
+                .Select(a => a.Id)
+                .ToListAsync();
+            var userJwt = new UserAuthJWTClaims
+            {
+                UserId = userExistent.Id,
+                Nome = userExistent.User,
+                CPF = userExistent.Cpf,
+                Telefone = userExistent.Telefone,
+            };
+
+
+            var token = GenerateJWTToken(userJwt);
+            var response = new UserLoginResponse()
+            {
+                Token = token,
+                UserInfo = new UserAuthJWTClaims
+                {
+                    UserId = Guid.NewGuid(),
+                    Nome = userJwt.Nome,
+                    User = userJwt.User,
+                    CPF = userJwt.CPF,
+                    UserAbrigosId = abrigosIds
+                }
+            };
+
+            return response;
+          
+
     }
+}
 }
