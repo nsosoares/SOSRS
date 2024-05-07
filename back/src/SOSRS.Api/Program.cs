@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using SOSRS.Api.Configuration;
 using SOSRS.Api.Extensions;
 using SOSRS.Api.Middleware;
@@ -21,7 +22,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(); ;
 //builder.Services.AddEndpointsApiExplorer();]
 builder.Services.ConfigureDependencies();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
 
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
 builder.Services.ConfigureServices(builder.Configuration);

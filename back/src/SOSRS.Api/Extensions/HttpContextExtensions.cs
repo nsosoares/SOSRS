@@ -24,5 +24,10 @@
 
             return [];
         }
+
+        public static Guid GetUsuarioId(this HttpContext context)
+        {
+            return Guid.Parse(context.User.Claims.First(x => x.Type == "id").Value);
+        }
     }
 }
