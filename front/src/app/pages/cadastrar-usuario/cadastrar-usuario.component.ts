@@ -42,8 +42,7 @@ export class CadastrarUsuarioComponent implements OnInit {
             this.router.navigate(['/login']);
           }
         }, erro => {
-          console.log(erro)
-          this._authService.message('nao cadastrado');
+          this._authService.message(erro.error);
 
         });
     }
