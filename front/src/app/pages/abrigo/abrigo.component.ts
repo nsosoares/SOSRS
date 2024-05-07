@@ -31,7 +31,7 @@ export class AbrigoComponent {
   env = environment.env;
   form: FormGroup;
 
-  constructor(private abrigoService: AbrigoService, fb: FormBuilder, private _snackBar: MatSnackBar ) {
+  constructor(private abrigoService: AbrigoService, fb: FormBuilder, private _snackBar: MatSnackBar) {
     const control = {
       codAcesso: ControlCvaProvider.inputText(() => InputTextCvaParams.text('codAcesso', 'Codigo de acesso')),
       id: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('id')),
@@ -89,20 +89,18 @@ export class AbrigoComponent {
       if (usuario) {
         this.logado = true;
         this.abrigoService.codAcesso = usuario.id;
-        this._snackBar.open('logado com sucesso - usuário: ' + usuario.nome, '', {duration: 1800})
+        this._snackBar.open('logado com sucesso - usuário: ' + usuario.nome, '', { duration: 1800 })
       } else {
-        this._snackBar.open('login inválido', '', {duration: 1800})
+        this._snackBar.open('login inválido', '', { duration: 1800 })
 
       }
     });
 
-    if (environment.env === 'dev') {
-      this.logado = true;
-      this.abrigoService.codAcesso = 1;
-    }
+    this.logado = true;
+    this.abrigoService.codAcesso = 1;
   }
 
-  onlogin = new  Subject<number>();
+  onlogin = new Subject<number>();
   logar(): void {
     this.onlogin.next(this.form.value.codAcesso);
   }
