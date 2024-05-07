@@ -57,7 +57,7 @@ namespace SOSRS.Api.Endpoints
                 return Ok(response);
             }
 
-            return BadRequest("Usuario já existedeixa isso");
+            return BadRequest("Usuario já existe");
         }
 
         public static bool ValidarCpf(string cpf)
