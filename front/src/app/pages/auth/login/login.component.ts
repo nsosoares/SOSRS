@@ -32,8 +32,8 @@ export class LoginComponent {
                 .subscribe((success) => {
                     if (success) {
                         this.loginValid = true;
-                        this.authService.message('Login com relizado com sucesso');
-                        this.router.navigate(['/']);
+                        this.authService.message('Login relizado com sucesso');
+                        this.router.navigate(['/abrigos/abrigo-adm-hash']);
                     }
                     this.loginValid = false;
                 });

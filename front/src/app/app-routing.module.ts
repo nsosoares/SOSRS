@@ -16,19 +16,12 @@ const routes: Routes = [
       import('./pages/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'properties',
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./pages/properties/property.module').then((m) => m.PropertyModule),
-  },
-  {
     path: 'abrigos',
     loadChildren: () =>
       import('./pages/abrigo/abrigo.module').then((m) => m.AbrigoModule),
   },
 
   { path: '', redirectTo: 'abrigos/abrigo-ajuda', pathMatch: 'full' },
-  { path: 'properties', loadChildren: () => import('./pages/properties/property.module').then(m => m.PropertyModule) },
   { path: 'abrigos', loadChildren: () => import('./pages/abrigo/abrigo.module').then(m => m.AbrigoModule) },
   { path: 'cadastrar-usuario', component: CadastrarUsuarioComponent}
 ];
