@@ -25,7 +25,7 @@ export class AuthService {
   ) { }
 
   login(user: { user: string; password: string }): Observable<boolean> {
-    return this.http.post<any>(`${this.url}api/auth/login`, user, httpOptions).pipe(
+    return this.http.post<any>(`${this.url}auth/login`, user, httpOptions).pipe(
       tap((res) => {
         this.storeToken(res.body.token);
       }),
