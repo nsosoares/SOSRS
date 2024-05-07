@@ -7,11 +7,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { RouterModule } from '@angular/router';
 import { CoreModule } from './core/core.module';
 import { NavComponent } from './template/nav/nav.component';
+import { CadastrarUsuarioComponent } from './pages/cadastrar-usuario/cadastrar-usuario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
+    CadastrarUsuarioComponent
   ],
   imports: [
     BrowserModule,

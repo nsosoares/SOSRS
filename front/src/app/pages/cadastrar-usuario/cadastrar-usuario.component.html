@@ -1,0 +1,41 @@
+
+<div class="card-center">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2>S.O.S RS</h2>
+        <h3>Cadastro de Usuário</h3>
+
+        <mat-form-field>
+          <input matInput type="text" placeholder="Nome" formControlName="user" name="user" required>
+          <mat-error>
+            Nome obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="password" formControlName="password" placeholder="Senha" name="password" required>
+          <mat-error>
+           Senha obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="text" formControlName="cpf" placeholder="Cpf" name="cpf" required>
+          <mat-error *ngIf="form.get('cpf').hasError('cpfInvalido')">
+            CPF inválido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="text" formControlName="telefone" placeholder="Telefone" name="telefone" required>
+          <mat-error>
+            Telefone obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" [disabled]="form.invalid">cadastrar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  </div>
