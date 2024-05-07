@@ -1,4 +1,3 @@
-
 <div class="card-center">
   <mat-card>
     <mat-card-content>
@@ -16,7 +15,7 @@
         <mat-form-field>
           <input matInput type="password" formControlName="password" placeholder="Senha" name="password" required>
           <mat-error>
-           Senha obrigatória
+            Senha obrigatória
           </mat-error>
         </mat-form-field>
 
@@ -35,7 +34,16 @@
         </mat-form-field>
 
         <button mat-raised-button color="primary" [disabled]="form.invalid">cadastrar</button>
+        <br/>
+        <br/>
+        <a class="cw-button" [routerLink]="'/auth/login'">Voltar para página de login</a>
+        <br/>
+        <br/>
+        <a class="cw-button" [routerLink]="''">Voltar para o início</a>
+        <br/>
+
+
       </form>
     </mat-card-content>
   </mat-card>
-  </div>
+</div>
