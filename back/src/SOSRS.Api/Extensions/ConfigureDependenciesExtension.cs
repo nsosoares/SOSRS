@@ -16,6 +16,7 @@ namespace SOSRS.Api.Extensions
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<IAbrigoRepository, AbrigoRepository>();
 
             return services;
         }

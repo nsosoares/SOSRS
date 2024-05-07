@@ -2,7 +2,6 @@
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
 using SOSRS.Api.Helpers;
-using SOSRS.Api.ViewModels;
 
 namespace SOSRS.Api.Repositories
 {

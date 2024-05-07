@@ -8,6 +8,7 @@ using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
 using SOSRS.Api.Extensions;
 using SOSRS.Api.Helpers;
+using SOSRS.Api.Repositories;
 using SOSRS.Api.Services;
 using SOSRS.Api.Validations;
 using SOSRS.Api.ValueObjects;
@@ -22,12 +23,14 @@ public class AbrigoController : ControllerBase
     private readonly AppDbContext _dbContext;
     private readonly IHttpContextAccessor _httpContext;
     private readonly IValidadorService _validadorService;
+    private readonly IAbrigoRepository _abrigoRepository;
 
-    public AbrigoController(AppDbContext dbContext, IHttpContextAccessor httpContext, IValidadorService validadorService)
+    public AbrigoController(AppDbContext dbContext, IHttpContextAccessor httpContext, IValidadorService validadorService, IAbrigoRepository abrigoRepository)
     {
-        _dbContext = dbContext;
-        _httpContext = httpContext;
-        _validadorService = validadorService;
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
+        _validadorService = validadorService ?? throw new ArgumentNullException(nameof(validadorService));
+        _abrigoRepository = abrigoRepository ?? throw new ArgumentNullException(nameof(abrigoRepository));
     }
 
     [HttpGet("version")]
@@ -54,41 +57,7 @@ public class AbrigoController : ControllerBase
     {
         const int TEMPO_ARMAZENAMENTO_CACHE = 10;
         _httpContext.HttpContext!.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
-        var abrigos = await _dbContext.Abrigos
-                    .When(usuarioId.HasValue, x => x.UsuarioId == usuarioId.Value)
-                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
-                        , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
-                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Cidade) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Cidade)
-                        , x => x.Endereco.Cidade.SearchableValue.Contains(filtroAbrigoViewModel.Cidade!.ToSerachable()))
-                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Bairro) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Bairro)
-                        , x => x.Endereco.Bairro.SearchableValue.Contains(filtroAbrigoViewModel.Bairro!.ToSerachable()))
-                    .When(filtroAbrigoViewModel.Capacidade != EFiltroStatusCapacidade.Todos && filtroAbrigoViewModel.Capacidade.HasValue
-                        , x => (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Lotado && x.Lotado)
-                            || (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Disponivel && !x.Lotado))
-                    .When(filtroAbrigoViewModel.PrecisaAlimento.HasValue
-                        , x => x.Alimentos.Count > 0 == filtroAbrigoViewModel.PrecisaAlimento)
-                    .When(filtroAbrigoViewModel.PrecisaAjudante.HasValue
-                        , x => (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0) == filtroAbrigoViewModel.PrecisaAjudante)
-                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Alimento) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Alimento)
-                        , x => !x.Alimentos.Any(a => a.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Alimento!.ToSerachable())))
-                    .Select(x => new AbrigoResponseViewModel
-                    {
-                        Id = x.Id,
-                        Nome = x.Nome.Value,
-                        Cidade = x.Endereco.Cidade.Value,
-                        Bairro = x.Endereco.Bairro.Value,
-                        Numero = x.Endereco.Numero,
-                        Complemento = x.Endereco.Complemento,
-                        TipoChavePix = x.TipoChavePix,
-                        ChavePix = x.ChavePix,
-                        Telefone = x.Telefone,
-                        Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
-                        PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
-                        PrecisaAlimento = x.Alimentos.Count > 0
-                    })
-                    .OrderBy(x => x.Cidade)
-                    .ThenBy(x => x.Nome)
-                    .ToListAsync();
+        var abrigos = await _abrigoRepository.GetAbrigos(filtroAbrigoViewModel, usuarioId);
 
         if (abrigos == null)
         {

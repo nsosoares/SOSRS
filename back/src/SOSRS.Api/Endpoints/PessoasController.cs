@@ -14,13 +14,18 @@ namespace SOSRS.Api.Endpoints
     public class PessoasController : Controller
     {
         private readonly IPessoaRepository _pessoaRepository;
+        private readonly IAbrigoRepository _abrigoRepository;
 
-        public PessoasController(IPessoaRepository pessoaRepository)
+        public PessoasController(IPessoaRepository pessoaRepository, IAbrigoRepository abrigoRepository)
         {
             _pessoaRepository =
                 pessoaRepository
                 ?? throw new ArgumentNullException(nameof(pessoaRepository));
+            _abrigoRepository = 
+                abrigoRepository 
+                ?? throw new ArgumentNullException(nameof(abrigoRepository));
         }
+
 
         // /pessoas?q={criterioDeBuscaAqui}
         [HttpGet]
@@ -38,20 +43,34 @@ namespace SOSRS.Api.Endpoints
                 return NotFound();
             }
 
-            var abrigosMencionados = new List<Abrigo>();
+            var abrigosMencionados = new List<int>();
 
             foreach (var resultado in resultados)
             {
-                if (!abrigosMencionados.Contains(resultado.Abrigo))
+                if (!abrigosMencionados.Contains(resultado.AbrigoId))
                 {
-                    abrigosMencionados.Add(resultado.Abrigo);
+                    abrigosMencionados.Add(resultado.AbrigoId);
                 }
             }
 
+            var abrigos = (await _abrigoRepository.GetAbrigosPorIdsAsync(abrigosMencionados)).Select(s => new
+            {
+                s.Id,
+                Nome = s.Nome.Value,
+                Endereco = s.Endereco.ToString(),
+            });
+
             var response = new
             {
-                abrigos = abrigosMencionados,
-                pessoas = resultados
+                abrigos,
+                pessoas = resultados.Select(p => new
+                {
+                    p.Id,
+                    p.Nome.Value,
+                    p.Idade,
+                    p.InformacaoAdicional,
+                    p.AbrigoId
+                })
             };
 
             return Ok(response);
