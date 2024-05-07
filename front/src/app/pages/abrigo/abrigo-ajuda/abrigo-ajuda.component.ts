@@ -62,7 +62,7 @@ export class AbrigoAjudaComponent {
   pesquisa(): void {
     console.log(this.form.value);
     this.carregando = true;
-    this.abrigoService.pesquisar(this.form.value).pipe(
+    this.abrigoService.pesquisar(this.form.value, false).pipe(
       debounceTime(500),
     ).subscribe(result => {
       this.abrigos = result.abrigos.map(abrigoResult => {

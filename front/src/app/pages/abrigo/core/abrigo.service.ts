@@ -3,6 +3,7 @@ import { Abrigo, AbrigosResult, EStatusCapacidade, abrigos } from './abrigo.mode
 import { Observable, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AbrigoService {
   baseUrlLocal = environment.api;
   baseUrl = this.baseUrlLocal;
 
-  constructor(private _httpClient: HttpClient) {
+  constructor(private _httpClient: HttpClient, private _authService: AuthService) {
     this.updateByVersion();
   }
 
@@ -28,11 +29,11 @@ export class AbrigoService {
     { id: 89016, nome: 'user8' },
     { id: 90123, nome: 'user9' },
     { id: 52342, nome: 'user10' },
-    { id: 23458, nome: 'user11'}
+    { id: 23458, nome: 'user11' }
 
   ];
   codAcesso?: number;
-  pesquisar(value: any): Observable<AbrigosResult> {
+  pesquisar(value: any, auth: boolean): Observable<AbrigosResult> {
     const finalValue = {
       nome: value.nome ? value.nome : undefined,
       cidade: value.cidade ? value.cidade : undefined,
@@ -42,57 +43,69 @@ export class AbrigoService {
       precisaAjudante: value.precisaAjudante ? value.precisaAjudante : undefined,
       precisaAlimento: value.precisaAlimento ? value.precisaAlimento : undefined
     }
-let httpParams = new HttpParams();
-if (finalValue.nome) {
-  httpParams = httpParams.set('nome', finalValue.nome);
-}
+    let httpParams = new HttpParams();
+    if (finalValue.nome) {
+      httpParams = httpParams.set('nome', finalValue.nome);
+    }
 
-if (finalValue.cidade) {
-  httpParams = httpParams.set('cidade', finalValue.cidade);
-}
+    if (finalValue.cidade) {
+      httpParams = httpParams.set('cidade', finalValue.cidade);
+    }
 
-if (finalValue.bairro) {
-  httpParams = httpParams.set('bairro', finalValue.bairro);
-}
+    if (finalValue.bairro) {
+      httpParams = httpParams.set('bairro', finalValue.bairro);
+    }
 
-if (finalValue.alimento) {
-  httpParams = httpParams.set('alimento', finalValue.alimento);
-}
+    if (finalValue.alimento) {
+      httpParams = httpParams.set('alimento', finalValue.alimento);
+    }
 
-if (finalValue.capacidade) {
-  httpParams = httpParams.set('capacidade', finalValue.capacidade);
-}
+    if (finalValue.capacidade) {
+      httpParams = httpParams.set('capacidade', finalValue.capacidade);
+    }
 
-if (finalValue.precisaAjudante) {
-  httpParams = httpParams.set('precisaAjudante', finalValue.precisaAjudante);
-}
+    if (finalValue.precisaAjudante) {
+      httpParams = httpParams.set('precisaAjudante', finalValue.precisaAjudante);
+    }
 
-if (finalValue.precisaAlimento) {
-  httpParams = httpParams.set('precisaAlimento', finalValue.precisaAlimento);
-}
-      return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos', { params: httpParams });
+    if (finalValue.precisaAlimento) {
+      httpParams = httpParams.set('precisaAlimento', finalValue.precisaAlimento);
+    }
+
+    if (auth) {
+      return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos/GetByUserId', { params: httpParams, headers: this.getHeaderWithToken() });
+    }
+    return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos', { params: httpParams});
   }
   getById = (id: any): Observable<Abrigo> => {
     return this._httpClient.get<any>(this.baseUrl + 'api/abrigos/' + id);
   }
   searchByName = (data: any): Observable<any[]> => {
-    return this.pesquisar(data).pipe(
+    return this.pesquisar(data, true).pipe(
       map(result => result.abrigos),
       map(abrigosResult =>
         abrigosResult.map(abrigoResult => {
           return {
-          ...abrigoResult,
-          capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado  ? 'Lotado' : 'Disponível',
-          precisaAjudanteDesc: abrigoResult.precisaAjudante ? 'Sim' : 'Não',
-          precisaAlimentoDesc: abrigoResult.precisaAlimento ? 'Sim' : 'Não',
-          capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
-          precisaAjudanteCssClass: abrigoResult.precisaAjudante ? 'alerta-perigo' : 'alerta-sucesso',
-          precisaAlimentoCssClass: abrigoResult.precisaAlimento ? 'alerta-perigo' : 'alerta-sucesso',
-        }}
-      ))
+            ...abrigoResult,
+            capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'Lotado' : 'Disponível',
+            precisaAjudanteDesc: abrigoResult.precisaAjudante ? 'Sim' : 'Não',
+            precisaAlimentoDesc: abrigoResult.precisaAlimento ? 'Sim' : 'Não',
+            capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
+            precisaAjudanteCssClass: abrigoResult.precisaAjudante ? 'alerta-perigo' : 'alerta-sucesso',
+            precisaAlimentoCssClass: abrigoResult.precisaAlimento ? 'alerta-perigo' : 'alerta-sucesso',
+          }
+        }
+        ))
     );
   }
 
+  private getHeaderWithToken(): any {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this._authService.getToken()
+    });
+    return headers;
+  }
   getEntities = (): Observable<Abrigo[]> => {
     return of(this.entities);
   }
@@ -103,16 +116,14 @@ if (finalValue.precisaAlimento) {
       entity.alimentos = [];
     }
     this.entities.push(entity);
-    return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, this.getHeader());
+    return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, {headers: this.getHeaderWithToken()});
   }
   update = (entity: Abrigo): Observable<any> => {
-    return this._httpClient.put<any[]>(this.baseUrl + 'api/abrigos/' + entity.id, entity, this.getHeader());
+    return this._httpClient.put<any[]>(this.baseUrl + 'api/abrigos/' + entity.id, entity, {headers: this.getHeaderWithToken()});
   }
 
   delete = (id: string): Observable<any> => {
-    const index = this.entities.findIndex(x => x.id === id);
-    this.entities.splice(index, 1);
-    return of(null);
+    return this._httpClient.delete<any>(this.baseUrl + 'api/abrigos/' + id, {headers: this.getHeaderWithToken()});
   }
 
   getHeader(): any {
