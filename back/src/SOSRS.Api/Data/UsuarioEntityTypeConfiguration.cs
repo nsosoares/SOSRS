@@ -12,7 +12,7 @@ namespace SOSRS.Api.Data
 
             builder.HasKey(u => u.Id);
 
-        
+
             builder.Property(u => u.User)
                 .HasColumnName("User")
                 .HasMaxLength(150)
@@ -31,6 +31,7 @@ namespace SOSRS.Api.Data
             builder.HasMany(u => u.Abrigos)
                 .WithOne(a => a.Usuario)
                 .HasForeignKey(a => a.UsuarioId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

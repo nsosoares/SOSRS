@@ -50,7 +50,7 @@ public class Abrigo : Entity
     public bool Lotado { get; private set; } = default!;
     public Guid? UsuarioId { get; private set; } = default!;
 
-    public Usuario Usuario { get; private set; } = default!;
+    public Usuario? Usuario { get; private set; } = default!;
 
     public void AddAlimento(Alimento alimento)
     {

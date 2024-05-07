@@ -6,17 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SOSRS.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Usuario : Migration
+    public partial class UsuarioNovo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "UsuarioId",
-                table: "Abrigos",
-                type: "uniqueidentifier",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Usuario",
                 columns: table => new
@@ -56,10 +50,6 @@ namespace SOSRS.Api.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_Abrigos_UsuarioId",
-                table: "Abrigos");
-
-            migrationBuilder.DropColumn(
-                name: "UsuarioId",
                 table: "Abrigos");
         }
     }

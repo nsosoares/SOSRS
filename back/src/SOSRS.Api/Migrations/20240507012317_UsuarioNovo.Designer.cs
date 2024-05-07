@@ -12,8 +12,8 @@ using SOSRS.Api.Data;
 namespace SOSRS.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240507002301_Usuario")]
-    partial class Usuario
+    [Migration("20240507012317_UsuarioNovo")]
+    partial class UsuarioNovo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,15 +101,15 @@ namespace SOSRS.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CodAcesso")
-                        .HasColumnType("int");
-
                     b.Property<string>("Json")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TipoOperacao")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

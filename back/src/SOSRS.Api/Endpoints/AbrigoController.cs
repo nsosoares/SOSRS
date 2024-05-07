@@ -128,7 +128,8 @@ public class AbrigoController : ControllerBase
     public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest)
     {
         //var abrigoId = HttpContext.GetAbrigos();
-        var usuarioId = HttpContext.GetUsuarioId();
+        var usuarioId = Guid.Empty;
+        //var usuarioId = HttpContext.GetUsuarioId();
 
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
@@ -163,7 +164,7 @@ public class AbrigoController : ControllerBase
         }
 
         await _dbContext.AddAsync(abrigo);
-        _dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
+        //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
@@ -172,7 +173,8 @@ public class AbrigoController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IResult> Put([FromRoute] int id, [FromBody] AbrigoRequestViewModel abrigoRequest)
     {
-        var usuarioId = HttpContext.GetUsuarioId();
+        var usuarioId = Guid.Empty;
+        //var usuarioId = HttpContext.GetUsuarioId();
         var abrigoExiste = _dbContext.Abrigos.Any(x => x.Id == id && x.UsuarioId == usuarioId);
         if (!abrigoExiste)
         {
@@ -223,7 +225,8 @@ public class AbrigoController : ControllerBase
     [HttpDelete]
     public async Task<IResult> Delete([FromRoute] int id)
     {
-        var usuarioId = HttpContext.GetUsuarioId();
+        var usuarioId = Guid.Empty;
+        //var usuarioId = HttpContext.GetUsuarioId();
         var abrigo = await _dbContext.Abrigos.FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == usuarioId);
         if (abrigo == null)
         {
