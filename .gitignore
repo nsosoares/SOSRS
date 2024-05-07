@@ -360,4 +360,11 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
+.vscode/
 FodyWeavers.xsd
+.vscode/settings.json
+.sqlserver.env
+init.sh
+back/.env-file
+front/.vscode/settings.json
+front/.vscode/settings.json

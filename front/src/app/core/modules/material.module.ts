@@ -6,10 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSelectModule} from '@angular/material/select';
-import { MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
 
 export const CORE_APP_MATERIAL_MODULES: Array<Type<any> | ModuleWithProviders<{}> | any[]> = [
   MatFormFieldModule,
@@ -23,5 +24,6 @@ export const CORE_APP_MATERIAL_MODULES: Array<Type<any> | ModuleWithProviders<{}
   MatSelectModule,
   MatSnackBarModule,
   MatTooltipModule,
+  MatCardModule,
 ]
 
