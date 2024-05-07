@@ -39,42 +39,56 @@ public class AbrigoController : ControllerBase
     [HttpGet()]
     public async Task<IResult> Get([FromQuery] FiltroAbrigoViewModel filtroAbrigoViewModel)
     {
+        return await GetAbrigos(filtroAbrigoViewModel);
+    }
+
+    [HttpGet("GetByUserId")]
+    [Authorize]
+    public async Task<IResult> GetByUserId([FromQuery] FiltroAbrigoViewModel filtroAbrigoViewModel)
+    {
+        var usuarioId = HttpContext.GetUsuarioId();
+        return await GetAbrigos(filtroAbrigoViewModel, usuarioId);
+    }
+
+    private async Task<IResult> GetAbrigos(FiltroAbrigoViewModel filtroAbrigoViewModel, Guid? usuarioId = null)
+    {
         const int TEMPO_ARMAZENAMENTO_CACHE = 10;
         _httpContext.HttpContext!.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
         var abrigos = await _dbContext.Abrigos
-            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
-                , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
-            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Cidade) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Cidade)
-                , x => x.Endereco.Cidade.SearchableValue.Contains(filtroAbrigoViewModel.Cidade!.ToSerachable()))
-            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Bairro) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Bairro)
-                , x => x.Endereco.Bairro.SearchableValue.Contains(filtroAbrigoViewModel.Bairro!.ToSerachable()))
-            .When(filtroAbrigoViewModel.Capacidade != EFiltroStatusCapacidade.Todos && filtroAbrigoViewModel.Capacidade.HasValue
-                , x => (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Lotado && x.Lotado)
-                    || (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Disponivel && !x.Lotado))
-            .When(filtroAbrigoViewModel.PrecisaAlimento.HasValue
-                , x => x.Alimentos.Count > 0 == filtroAbrigoViewModel.PrecisaAlimento)
-            .When(filtroAbrigoViewModel.PrecisaAjudante.HasValue
-                , x => (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0) == filtroAbrigoViewModel.PrecisaAjudante)
-            .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Alimento) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Alimento)
-                , x => !x.Alimentos.Any(a => a.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Alimento!.ToSerachable())))
-            .Select(x => new AbrigoResponseViewModel
-            {
-                Id = x.Id,
-                Nome = x.Nome.Value,
-                Cidade = x.Endereco.Cidade.Value,
-                Bairro = x.Endereco.Bairro.Value,
-                Numero = x.Endereco.Numero,
-                Complemento = x.Endereco.Complemento,
-                TipoChavePix = x.TipoChavePix,
-                ChavePix = x.ChavePix,
-                Telefone = x.Telefone,
-                Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
-                PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
-                PrecisaAlimento = x.Alimentos.Count > 0
-            })
-            .OrderBy(x => x.Cidade)
-            .ThenBy(x => x.Nome)
-            .ToListAsync();
+                    .When(usuarioId.HasValue, x => x.UsuarioId == usuarioId.Value)
+                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
+                        , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSerachable()))
+                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Cidade) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Cidade)
+                        , x => x.Endereco.Cidade.SearchableValue.Contains(filtroAbrigoViewModel.Cidade!.ToSerachable()))
+                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Bairro) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Bairro)
+                        , x => x.Endereco.Bairro.SearchableValue.Contains(filtroAbrigoViewModel.Bairro!.ToSerachable()))
+                    .When(filtroAbrigoViewModel.Capacidade != EFiltroStatusCapacidade.Todos && filtroAbrigoViewModel.Capacidade.HasValue
+                        , x => (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Lotado && x.Lotado)
+                            || (filtroAbrigoViewModel.Capacidade == EFiltroStatusCapacidade.Disponivel && !x.Lotado))
+                    .When(filtroAbrigoViewModel.PrecisaAlimento.HasValue
+                        , x => x.Alimentos.Count > 0 == filtroAbrigoViewModel.PrecisaAlimento)
+                    .When(filtroAbrigoViewModel.PrecisaAjudante.HasValue
+                        , x => (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0) == filtroAbrigoViewModel.PrecisaAjudante)
+                    .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Alimento) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Alimento)
+                        , x => !x.Alimentos.Any(a => a.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Alimento!.ToSerachable())))
+                    .Select(x => new AbrigoResponseViewModel
+                    {
+                        Id = x.Id,
+                        Nome = x.Nome.Value,
+                        Cidade = x.Endereco.Cidade.Value,
+                        Bairro = x.Endereco.Bairro.Value,
+                        Numero = x.Endereco.Numero,
+                        Complemento = x.Endereco.Complemento,
+                        TipoChavePix = x.TipoChavePix,
+                        ChavePix = x.ChavePix,
+                        Telefone = x.Telefone,
+                        Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
+                        PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
+                        PrecisaAlimento = x.Alimentos.Count > 0
+                    })
+                    .OrderBy(x => x.Cidade)
+                    .ThenBy(x => x.Nome)
+                    .ToListAsync();
 
         if (abrigos == null)
         {
@@ -128,8 +142,7 @@ public class AbrigoController : ControllerBase
     public async Task<IResult> Post([FromBody] AbrigoRequestViewModel abrigoRequest)
     {
         //var abrigoId = HttpContext.GetAbrigos();
-        var usuarioId = Guid.Empty;
-        //var usuarioId = HttpContext.GetUsuarioId();
+        var usuarioId = HttpContext.GetUsuarioId();
 
         var endereco = new EnderecoVO(
             abrigoRequest.Endereco.Rua,
@@ -164,7 +177,7 @@ public class AbrigoController : ControllerBase
         }
 
         await _dbContext.AddAsync(abrigo);
-        //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
+        _dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Registrar, JsonConvert.SerializeObject(abrigoRequest)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok(abrigoRequest);
     }
@@ -173,8 +186,7 @@ public class AbrigoController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IResult> Put([FromRoute] int id, [FromBody] AbrigoRequestViewModel abrigoRequest)
     {
-        var usuarioId = Guid.Empty;
-        //var usuarioId = HttpContext.GetUsuarioId();
+        var usuarioId = HttpContext.GetUsuarioId();
         var abrigoExiste = _dbContext.Abrigos.Any(x => x.Id == id && x.UsuarioId == usuarioId);
         if (!abrigoExiste)
         {
@@ -225,8 +237,7 @@ public class AbrigoController : ControllerBase
     [HttpDelete]
     public async Task<IResult> Delete([FromRoute] int id)
     {
-        var usuarioId = Guid.Empty;
-        //var usuarioId = HttpContext.GetUsuarioId();
+        var usuarioId = HttpContext.GetUsuarioId();
         var abrigo = await _dbContext.Abrigos.FirstOrDefaultAsync(x => x.Id == id && x.UsuarioId == usuarioId);
         if (abrigo == null)
         {
