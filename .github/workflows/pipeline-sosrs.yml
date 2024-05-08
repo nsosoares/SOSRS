@@ -19,8 +19,6 @@ env:
   WORKING_DIRECTORY: back/src/SOSRS.Api
 
 jobs:
-
-##############################################################
   build:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +40,6 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-##############################################################
   deploy:
     runs-on: ubuntu-latest
     needs: build
