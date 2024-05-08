@@ -15,5 +15,13 @@ namespace SOSRS.Api.Entities
 
         public int AbrigoId { get; set; }
         public virtual Abrigo Abrigo { get; set; }
+
+        public Animal WithId(int id)
+        {
+            var animal = this;
+            animal.Id = id;
+
+            return animal;
+        }
     }
 }

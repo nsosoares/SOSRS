@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
+using SOSRS.Api.Enums;
 
 namespace SOSRS.Api.Repositories
 {
@@ -32,6 +33,8 @@ namespace SOSRS.Api.Repositories
             {
                 var result = db.Animais.Remove(animal);
 
+                await db.SaveChangesAsync();
+
                 return result.State == EntityState.Detached;
             }
 
@@ -49,7 +52,15 @@ namespace SOSRS.Api.Repositories
 
             if (animal != null)
             {
-                animal = entity;
+                animal.Nome = entity.Nome;
+                animal.Tipo = entity.Tipo;
+                animal.IdadeAproximada = entity.IdadeAproximada;
+                animal.Raca = entity.Raca;
+                animal.Cor = entity.Cor;
+                animal.Peso = entity.Peso;
+                animal.Genero = entity.Genero;
+                animal.DataDeEntrada = entity.DataDeEntrada;
+
                 await db.SaveChangesAsync();
 
                 return animal;

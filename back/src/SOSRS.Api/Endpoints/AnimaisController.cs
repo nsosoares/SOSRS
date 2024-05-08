@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SOSRS.Api.Entities;
 using SOSRS.Api.Mappings;
 using SOSRS.Api.Repositories;
@@ -38,6 +39,7 @@ namespace SOSRS.Api.Endpoints
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost()]
         public async Task<IActionResult> CriarAnimal([FromBody] CreateAnimalRequest animal)
         {
@@ -56,10 +58,13 @@ namespace SOSRS.Api.Endpoints
             });
         }
 
+        [Authorize]
         [HttpPut()]
-        public async Task<IActionResult> AtualizaAnimal([FromBody] Animal animais)
+        public async Task<IActionResult> AtualizaAnimal([FromBody] EditAnimalRequest animais)
         {
-            var editedEntity = await _animalRepository.EditAsync(animais);
+            var mappedAnimal = animais.MapToAnimal();
+
+            var editedEntity = await _animalRepository.EditAsync(mappedAnimal);
 
             if (editedEntity.Id >= 0)
             {
@@ -72,6 +77,7 @@ namespace SOSRS.Api.Endpoints
             });
         }
 
+        [Authorize]
         [HttpDelete()]
         public async Task<IActionResult> DeletarAnimal([FromBody] int animalId)
         {

@@ -7,7 +7,40 @@ namespace SOSRS.Api.Mappings
     {
         public static Animal MapToAnimal(this CreateAnimalRequest value)
         {
-            return new Animal();
+            var animal = new Animal
+            {
+                Nome = value.Nome,
+                Tipo = value.Tipo,
+                IdadeAproximada = value.IdadeAproximada,
+                Raca = value.Raca,
+                Cor = value.Cor,
+                Peso = value.Peso,
+                Genero = value.Genero,
+                DataDeEntrada = value.DataDeEntrada,
+                AbrigoId = value.AbrigoId,
+            };
+
+            return animal;
         }
+        
+        public static Animal MapToAnimal(this EditAnimalRequest value)
+        {
+            var animal = new Animal
+            {
+                Nome = value.Nome,
+                Tipo = value.Tipo,
+                IdadeAproximada = value.IdadeAproximada,
+                Raca = value.Raca,
+                Cor = value.Cor,
+                Peso = value.Peso,
+                Genero = value.Genero,
+                DataDeEntrada = value.DataDeEntrada,
+                AbrigoId = value.AbrigoId,
+            }.WithId(value.Id);
+
+            return animal;
+        }
+
+
     }
 }

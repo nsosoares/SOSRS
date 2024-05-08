@@ -6,5 +6,6 @@
         Animais = 1,
         Idosos = 2,
         Orfanato = 3,
+        Especiais = 4
     }
 }
