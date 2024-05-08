@@ -24,10 +24,9 @@ namespace SOSRS.Api.Repositories
             return abrigos;
         }
 
-        public async Task<List<AbrigoResponseViewModel>> GetAbrigos(FiltroAbrigoViewModel filtroAbrigoViewModel, Guid? usuarioId = null)
+        public async Task<List<AbrigoResponseViewModel>> GetAbrigos(FiltroAbrigoViewModel filtroAbrigoViewModel)
         {
             var abrigos = await _database.Abrigos
-            .When(usuarioId.HasValue, x => x.UsuarioId == usuarioId.Value)
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
                         , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSearchable()))
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Cidade) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Cidade)
@@ -56,7 +55,8 @@ namespace SOSRS.Api.Repositories
                         Telefone = x.Telefone,
                         Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
                         PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
-                        PrecisaAlimento = x.Alimentos.Count > 0
+                        PrecisaAlimento = x.Alimentos.Count > 0,
+                        UltimaAtualizacao = x.UltimaAtualizacao
                     })
                     .OrderBy(x => x.Cidade)
                     .ThenBy(x => x.Nome)

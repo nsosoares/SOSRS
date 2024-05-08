@@ -1,4 +1,6 @@
 ﻿
+using System.Text;
+
 namespace SOSRS.Api.ViewModels;
 
 public class FiltroAbrigoResponseViewModel
@@ -21,6 +23,46 @@ public class AbrigoResponseViewModel
     public EStatusCapacidade Capacidade { get; set; } = default!;
     public bool PrecisaAjudante { get; set; } = default!;
     public bool PrecisaAlimento { get; set; } = default!;
+    public DateTime? UltimaAtualizacao { get; set; } = default!;
+    public string UltimaAtualizacaoTxt
+    {
+        get
+        {
+            if (!UltimaAtualizacao.HasValue)
+                return "não coletada";
+
+            var stringbuilder = new StringBuilder(4);
+            var data = UltimaAtualizacao.Value;
+            var dataAtual = DateTime.Now;
+
+            var diferenca = dataAtual - data;
+            if (diferenca.Minutes < 60)
+            {
+                stringbuilder.Append(diferenca.Minutes);
+                stringbuilder.Append(" minutos");
+
+                return stringbuilder.ToString();
+            }
+
+            if (diferenca.Hours < 24)
+            {
+                stringbuilder.Append(diferenca.Hours);
+                stringbuilder.Append(" horas");
+
+                return stringbuilder.ToString();
+            }
+
+
+            stringbuilder.Append(diferenca.Days);
+            stringbuilder.Append(" dias e ");
+            var horasPorDia = diferenca.Hours - (diferenca.Days * 24);
+
+            stringbuilder.Append(horasPorDia);
+            stringbuilder.Append(" horas");
+
+            return stringbuilder.ToString();
+        }
+    }
 }
 
 public enum EStatusCapacidade

@@ -57,7 +57,7 @@ public class AbrigoController : ControllerBase
     {
         const int TEMPO_ARMAZENAMENTO_CACHE = 10;
         _httpContext.HttpContext!.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + TEMPO_ARMAZENAMENTO_CACHE;
-        var abrigos = await _abrigoRepository.GetAbrigos(filtroAbrigoViewModel, usuarioId);
+        var abrigos = await _abrigoRepository.GetAbrigos(filtroAbrigoViewModel);
 
         if (abrigos == null)
         {
@@ -81,6 +81,7 @@ public class AbrigoController : ControllerBase
                 QuantidadeNecessariaVoluntarios = x.QuantidadeNecessariaVoluntarios,
                 TipoChavePix = x.TipoChavePix,
                 QuantidadeVagasDisponiveis = x.QuantidadeVagasDisponiveis,
+                
                 Telefone = x.Telefone,
                 Endereco = new EnderecoViewModel
                 {
@@ -168,7 +169,7 @@ public class AbrigoController : ControllerBase
     public async Task<IResult> Put([FromRoute] int id, [FromBody] AbrigoRequestViewModel abrigoRequest)
     {
         var usuarioId = HttpContext.GetUsuarioId();
-        var abrigoExiste = _dbContext.Abrigos.Any(x => x.Id == id && x.UsuarioId == usuarioId);
+        var abrigoExiste = _dbContext.Abrigos.Any(x => x.Id == id);
         if (!abrigoExiste)
         {
             return Results.NotFound();

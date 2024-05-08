@@ -63,8 +63,7 @@ namespace SOSRS.Api.Services.Authentication
 
         public async Task<UserLoginResponse> SignInUserAsync(string user, string password)
         {
-            var passHash = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{user}:{password}"));
-            var userExistent = await _db.Usuario.FirstOrDefaultAsync(u => u.User == user && u.Password == passHash);
+            var userExistent = await _db.Usuario.FirstOrDefaultAsync(u => u.User == user && u.Password == password);
 
             if (userExistent == null)
             {

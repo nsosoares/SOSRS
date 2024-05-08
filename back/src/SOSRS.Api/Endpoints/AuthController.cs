@@ -6,7 +6,7 @@ using SOSRS.Api.ViewModels.Auth;
 namespace SOSRS.Api.Endpoints
 {
     [ApiController]
-    [Route("api/auth")]
+    [Route("auth")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -33,7 +33,7 @@ namespace SOSRS.Api.Endpoints
 
             if (string.IsNullOrEmpty(response.Token))
             {
-                return NotFound();
+                return NotFound("");
             }
 
             return Ok(response);

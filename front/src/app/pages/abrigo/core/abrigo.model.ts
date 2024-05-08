@@ -81,6 +81,7 @@ export interface AbrigoPesquisa {
   precisaAjudanteCssClass?: string;
   precisaAlimentoCssClass?: string;
   enderecoDesc?: string;
+  ultimaAtualizacaoTxt?: string;
 }
 
 export interface AbrigosResult {

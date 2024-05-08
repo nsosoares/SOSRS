@@ -5,17 +5,17 @@ namespace SOSRS.Api.Entities;
 public class Abrigo : Entity
 {
     public Abrigo(
-        int id, 
-        string nome, 
-        int? quantidadeNecessariaVoluntarios, 
+        int id,
+        string nome,
+        int? quantidadeNecessariaVoluntarios,
         int? quantidadeVagasDisponiveis,
         int? capacidadeTotalPessoas,
-        string tipoChavePix, 
-        string chavePix, 
+        string tipoChavePix,
+        string chavePix,
         string telefone,
         string? observacao,
         Guid usuarioId,
-        EnderecoVO endereco, 
+        EnderecoVO endereco,
         List<Alimento> alimentos,
         List<PessoaDesaparecida> pessoasDesaparecidas)
         : base(id)
@@ -34,6 +34,7 @@ public class Abrigo : Entity
         Alimentos = alimentos;
         PessoasDesaparecidas = pessoasDesaparecidas;
         Lotado = quantidadeVagasDisponiveis == 0;
+        UltimaAtualizacao = DateTime.Now;
     }
 
     //Ef
@@ -53,6 +54,7 @@ public class Abrigo : Entity
     public List<PessoaDesaparecida> PessoasDesaparecidas { get; private set; } = default!;
     public bool Lotado { get; private set; } = default!;
     public Guid UsuarioId { get; private set; } = default!;
+    public DateTime? UltimaAtualizacao { get; private set; }
 
     public Usuario? Usuario { get; private set; } = default!;
 

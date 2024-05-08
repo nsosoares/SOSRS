@@ -6,6 +6,6 @@ namespace SOSRS.Api.Repositories
     public interface IAbrigoRepository
     {
         Task<List<Abrigo>> GetAbrigosPorIdsAsync(List<int> ids);
-        Task<List<AbrigoResponseViewModel>> GetAbrigos(FiltroAbrigoViewModel filtroAbrigoViewModel, Guid? usuarioId = null);
+        Task<List<AbrigoResponseViewModel>> GetAbrigos(FiltroAbrigoViewModel filtroAbrigoViewModel);
     }
 }

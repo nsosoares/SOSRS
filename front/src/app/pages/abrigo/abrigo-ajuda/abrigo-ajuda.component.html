@@ -25,6 +25,11 @@
           <a style="padding: 5px;"target="_blank" href="https://abrigars.com.br/">abrigars - gerenciar abrigos</a>
           <br/>
           <a style="padding: 5px;"target="_blank" href="https://sos-rs.vercel.app/">sos-rs.vercel.app - pedido de s.o.s</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="https://airtable.com/appfQT2vfWc6sZRAx/shrqtkYNgKFay2XJg/tblJ5UvIdVmYeTb8s/">airtable - lista de abrigos e informações</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="http://sos-rs.com">sos - lista de abrigos e informações</a>
+
           <br>
           faltou algum? entra em contato com a gente! <a style="padding: 5px;"target="_blank" href="https://contate.me/51985722752"> clicando aqui</a>
         </div>
@@ -71,6 +76,7 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title"><b>{{abrigo.nome}}</b> </h3>
+          <b>Ultima atualização: {{abrigo.ultimaAtualizacaoTxt}}</b>
           <p class="card-text">
             <b>Endereço</b>: {{abrigo.enderecoDesc}} <br />
             <ng-container *ngIf="abrigo.chavePix">
