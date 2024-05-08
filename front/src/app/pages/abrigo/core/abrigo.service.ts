@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Abrigo, AbrigosResult, EStatusCapacidade, abrigos } from './abrigo.model';
-import { Observable, map, of } from 'rxjs';
+import { Observable, Subject, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../auth/auth.service';
@@ -10,28 +10,42 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class AbrigoService {
   readonly entities: Abrigo[] = abrigos;
+  readonly longitudeKey = 'longitude';
+  readonly latitudeKey = 'latitude';
+  readonly baseUrl = environment.api;
 
-  baseUrlLocal = environment.api;
-  baseUrl = this.baseUrlLocal;
+  enderecoPorGps: {
+    cidade?: string;
+    preenchido: boolean;
+  } = { preenchido: false};
 
+  aoEncontrarEnderecpPorGps = new Subject<any>();
   constructor(private _httpClient: HttpClient, private _authService: AuthService) {
     this.updateByVersion();
+    // navigator.geolocation.getCurrentPosition(this.aoObterPosicao)
   }
 
-  codigosDeAcesso = [
-    { id: 20704, nome: 'user1' },
-    { id: 24505, nome: 'user2' },
-    { id: 34598, nome: 'user3' },
-    { id: 45674, nome: 'user4' },
-    { id: 56782, nome: 'user5' },
-    { id: 67893, nome: 'user6' },
-    { id: 78904, nome: 'user7' },
-    { id: 89016, nome: 'user8' },
-    { id: 90123, nome: 'user9' },
-    { id: 52342, nome: 'user10' },
-    { id: 23458, nome: 'user11' }
+  aoObterPosicao = (data: any) => {
+    const valoresSalvos = {
+      longitudeKey: localStorage.getItem(this.longitudeKey),
+      latitudeKey: localStorage.getItem(this.latitudeKey)
+    }
+    const saoMesmosValores = valoresSalvos.longitudeKey === data.coords.longitude.toString() && valoresSalvos.latitudeKey === data.coords.latitude.toString();
+    if (saoMesmosValores) {
+      this.aoEncontrarEnderecpPorGps.next({ cidade: localStorage.getItem('cidade'), longitude: data.coords.longitude, latitude: data.coords.latitude });
+      return;
+    }
+    this.getGeoLocation(data.coords.latitude, data.coords.longitude);
+}
 
-  ];
+
+
+
+getGeoLocation(lat: number, lng: number){
+
+}
+
+
   codAcesso?: number;
   pesquisar(value: any, auth: boolean): Observable<AbrigosResult> {
     const finalValue = {

@@ -92,25 +92,10 @@ export class AbrigoComponent {
       ]);
     this.params = new CrudParams('Abrigos', listParams, this.controls, abrigoService.searchByName, abrigoService.getById, abrigoService.create, abrigoService.update, abrigoService.delete);
 
-    this.onlogin.pipe(debounceTime(500)).subscribe((codAcesso) => {
-      const usuario = abrigoService.codigosDeAcesso.find(x => x.id === parseInt(codAcesso.toString(), 10));
-      if (usuario) {
-        this.logado = true;
-        this.abrigoService.codAcesso = usuario.id;
-        this._snackBar.open('logado com sucesso - usuário: ' + usuario.nome, '', { duration: 1800 })
-      } else {
-        this._snackBar.open('login inválido', '', { duration: 1800 })
-
-      }
-    });
 
     this.logado = true;
     this.abrigoService.codAcesso = 1;
   }
 
-  onlogin = new Subject<number>();
-  logar(): void {
-    this.onlogin.next(this.form.value.codAcesso);
-  }
 }
 
