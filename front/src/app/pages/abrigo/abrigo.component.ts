@@ -47,8 +47,8 @@ export class AbrigoComponent {
         // ControlCvaProvider.inputText(() => InputTextCvaParams.text('cep', 'CEP', 50, 1).withPlaceholder('Digite o CEP').withCssClass(RESPONSIVE_SIZE_6)),
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('cidade', 'Cidade', 50, 1).asRequired().withPlaceholder('Digite a cidade').withCssClass(RESPONSIVE_SIZE_6)),
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('bairro', 'Bairro', 50, 1).asRequired().withPlaceholder('Digite o bairro').withCssClass(RESPONSIVE_SIZE_4)),
-        ControlCvaProvider.inputText(() => InputTextCvaParams.text('rua', 'Rua', 50, 1).withPlaceholder('Digite a rua').withCssClass(RESPONSIVE_SIZE_6)),
-        ControlCvaProvider.inputText(() => InputTextCvaParams.number('numero', 'Número').withCssClass(RESPONSIVE_SIZE_2)),
+        ControlCvaProvider.inputText(() => InputTextCvaParams.text('rua', 'Rua', 50, 1).asRequired().withPlaceholder('Digite a rua').withCssClass(RESPONSIVE_SIZE_6)),
+        ControlCvaProvider.inputText(() => InputTextCvaParams.number('numero', 'Número').asRequired().withCssClass(RESPONSIVE_SIZE_2)),
         ControlCvaProvider.inputText(() => InputTextCvaParams.text('complemento', 'Complemento', 50, 1).withPlaceholder('Digite o complemento').withCssClass(RESPONSIVE_SIZE_12)),
       ]).asRequired()),
 
