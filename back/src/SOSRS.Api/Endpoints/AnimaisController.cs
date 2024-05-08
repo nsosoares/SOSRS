@@ -12,12 +12,18 @@ namespace SOSRS.Api.Endpoints
     public class AnimaisController : ControllerBase
     {
         private readonly IAnimalRepository _animalRepository;
+        private readonly IAbrigoRepository _abrigoRepository;
 
-        public AnimaisController(IAnimalRepository animalRepository)
+
+        public AnimaisController(IAnimalRepository animalRepository, IAbrigoRepository abrigoRepository)
         {
             _animalRepository =
                 animalRepository
                 ?? throw new ArgumentNullException(nameof(animalRepository));
+
+            _abrigoRepository =
+                abrigoRepository
+                ?? throw new ArgumentNullException(nameof(abrigoRepository));
         }
 
         [HttpGet()]
@@ -43,18 +49,30 @@ namespace SOSRS.Api.Endpoints
         [HttpPost()]
         public async Task<IActionResult> CriarAnimal([FromBody] CreateAnimalRequest animal)
         {
+            var abrigo = await _abrigoRepository.GetAbrigoPorIdAsync(animal.AbrigoId);
+
+            if(abrigo is null)
+            {
+                return BadRequest("Abrigo inválido");
+            }
+
+            if(!abrigo.AbrigoDeAnimais)
+            {
+                return BadRequest("Abrigo não permite animais");
+            }
+
             var animalEntity = animal.MapToAnimal();
 
             var createdEntity = await _animalRepository.CreateAsync(animalEntity);
 
-            if (createdEntity.Id >= 0)
+            if (createdEntity.Id > 0)
             {
                 return Created();
             }
 
             return StatusCode(500, new
             {
-                message = "Falha ao registrar animal"
+                message = "Falha ao cadastrar animal"
             });
         }
 
@@ -79,7 +97,7 @@ namespace SOSRS.Api.Endpoints
 
         [Authorize]
         [HttpDelete()]
-        public async Task<IActionResult> DeletarAnimal([FromBody] int animalId)
+        public async Task<IActionResult> DeletarAnimal([FromRoute(Name = "id")] int animalId)
         {
             var deletedAnimal = await _animalRepository.DeleteAsync(animalId);
 

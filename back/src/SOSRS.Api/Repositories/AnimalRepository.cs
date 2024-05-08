@@ -11,8 +11,8 @@ namespace SOSRS.Api.Repositories
 
         public AnimalRepository(AppDbContext appDbContext)
         {
-            db = 
-                appDbContext 
+            db =
+                appDbContext
                 ?? throw new ArgumentNullException(nameof(appDbContext));
         }
 
@@ -29,7 +29,7 @@ namespace SOSRS.Api.Repositories
         {
             var animal = await db.Animais.FirstOrDefaultAsync(s => s.Id == id);
 
-            if(animal != null)
+            if (animal != null)
             {
                 var result = db.Animais.Remove(animal);
 

@@ -17,6 +17,20 @@ namespace SOSRS.Api.Repositories
                 ?? throw new ArgumentNullException(nameof(database));
         }
 
+        public async Task<Abrigo?> GetAbrigoPorIdAsync(int id)
+        {
+            try
+            {
+                var abrigo = await _database.Abrigos.FirstAsync(s => s.Id == id);
+
+                return abrigo;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<List<Abrigo>> GetAbrigosPorIdsAsync(List<int> ids)
         {
             var abrigos = await _database.Abrigos.Where(s => ids.Contains(s.Id)).ToListAsync();
