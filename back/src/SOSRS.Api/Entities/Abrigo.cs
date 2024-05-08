@@ -16,7 +16,8 @@ public class Abrigo : Entity
         string? observacao,
         Guid usuarioId,
         EnderecoVO endereco, 
-        List<Alimento> alimentos)
+        List<Alimento> alimentos,
+        List<PessoaDesaparecida> pessoasDesaparecidas)
         : base(id)
     {
         Id = id;
@@ -31,6 +32,7 @@ public class Abrigo : Entity
         UsuarioId = usuarioId;
         Endereco = endereco;
         Alimentos = alimentos;
+        PessoasDesaparecidas = pessoasDesaparecidas;
         Lotado = quantidadeVagasDisponiveis == 0;
     }
 
@@ -38,6 +40,7 @@ public class Abrigo : Entity
     private Abrigo() { }
 
     public SearchableStringVO Nome { get; private set; } = default!;
+    public Guid GuidId { get; private set; } = Guid.NewGuid();
     public int? QuantidadeNecessariaVoluntarios { get; private set; } = default!;
     public int? QuantidadeVagasDisponiveis { get; private set; } = default!;
     public int? CapacidadeTotalPessoas { get; private set; } = default!;
@@ -47,8 +50,9 @@ public class Abrigo : Entity
     public EnderecoVO Endereco { get; private set; } = default!;
     public string? Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
+    public List<PessoaDesaparecida> PessoasDesaparecidas { get; private set; } = default!;
     public bool Lotado { get; private set; } = default!;
-    public Guid? UsuarioId { get; private set; } = default!;
+    public Guid UsuarioId { get; private set; } = default!;
 
     public Usuario? Usuario { get; private set; } = default!;
 
@@ -60,6 +64,16 @@ public class Abrigo : Entity
     public void RemoverAlimento(int alimentoId)
     {
         Alimentos.Remove(Alimentos.FirstOrDefault(x => x.Id == alimentoId)!);
+    }
+
+    public void AddPessoaDesaparecida(PessoaDesaparecida pessoaDesaparecida)
+    {
+        PessoasDesaparecidas.Add(pessoaDesaparecida);
+    }
+
+    public void RemoverPessoaDesaparecida(int pessoaDesaparecidaId)
+    {
+        PessoasDesaparecidas.Remove(PessoasDesaparecidas.FirstOrDefault(x => x.Id == pessoaDesaparecidaId)!);
     }
 
     public void AumentarQuantidadeVagasDisponiveis(int quantidadeVagasDisponiveis)

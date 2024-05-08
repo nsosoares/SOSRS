@@ -1,4 +1,5 @@
-﻿using SOSRS.Api.Services;
+﻿using SOSRS.Api.Repositories;
+using SOSRS.Api.Services;
 using SOSRS.Api.Services.Authentication;
 
 namespace SOSRS.Api.Extensions
@@ -14,6 +15,8 @@ namespace SOSRS.Api.Extensions
 
             services.AddScoped<IAuthService, AuthService>();
 
+            services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<IAbrigoRepository, AbrigoRepository>();
 
             return services;
         }

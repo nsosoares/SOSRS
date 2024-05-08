@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SOSRS.Api.Configuration;
 using SOSRS.Api.Data;
@@ -52,18 +51,21 @@ namespace SOSRS.Api.Services.Authentication
         public async Task<bool> RegisterUserAsync(string email, string password, string cpf, string telefone)
         {
             var existenteUser = await _db.Usuario.FirstOrDefaultAsync(u => u.User == email);
+            var hashPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{email}:{password}"));
             if (existenteUser != null)
             {
                 return false;
             }
-            _db.Usuario.Add(new Usuario(Guid.NewGuid(), email, password, cpf, telefone));
+            _db.Usuario.Add(new Usuario(Guid.NewGuid(), email, hashPassword, cpf, telefone));
             await _db.SaveChangesAsync();
             return true;
         }
 
         public async Task<UserLoginResponse> SignInUserAsync(string user, string password)
         {
-            var userExistent = await _db.Usuario.FirstOrDefaultAsync(u => u.User == user && u.Password == password);
+            var passHash = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{user}:{password}"));
+            var userExistent = await _db.Usuario.FirstOrDefaultAsync(u => u.User == user && u.Password == passHash);
+
             if (userExistent == null)
             {
                 return new UserLoginResponse();
@@ -71,14 +73,16 @@ namespace SOSRS.Api.Services.Authentication
 
             var abrigosIds = await _db.Abrigos
                 .Where(a => a.UsuarioId == userExistent.Id)
-                .Select(a => a.Id)
+                .Select(a => a.GuidId)
                 .ToListAsync();
+
             var userJwt = new UserAuthJWTClaims
             {
                 UserId = userExistent.Id,
                 Nome = userExistent.User,
                 CPF = userExistent.Cpf,
                 Telefone = userExistent.Telefone,
+                UserAbrigosId = abrigosIds
             };
 
 
@@ -88,7 +92,7 @@ namespace SOSRS.Api.Services.Authentication
                 Token = token,
                 UserInfo = new UserAuthJWTClaims
                 {
-                    UserId = Guid.NewGuid(),
+                    UserId = userJwt.UserId,
                     Nome = userJwt.Nome,
                     User = userJwt.User,
                     CPF = userJwt.CPF,
@@ -97,8 +101,6 @@ namespace SOSRS.Api.Services.Authentication
             };
 
             return response;
-          
-
     }
 }
 }

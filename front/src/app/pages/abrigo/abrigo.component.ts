@@ -57,6 +57,11 @@ export class AbrigoComponent {
         ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeNecessaria', 'Quantidade Necessaria').withCssClass(RESPONSIVE_SIZE_6)),
       ])),
 
+      pessoasDesaparecidas: ControlCvaProvider.subforms(() => new SubformCvaParams('pessoasDesaparecidas', 'Pessoas Desaparecidas', [
+        ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Nome', 50, 5).asRequired().withPlaceholder('Digite o Nome da Pessoa').withCssClass(RESPONSIVE_SIZE_6)),
+        ControlCvaProvider.inputText(() => InputTextCvaParams.number('idade', 'Idade').withCssClass(RESPONSIVE_SIZE_6)),
+        ControlCvaProvider.inputText(() => InputTextCvaParams.text('informacaoAdicional', 'Informações Adicionais', 500).withPlaceholder('Digite informações adicionais sobre essa pessoa').withCssClass(RESPONSIVE_SIZE_12))
+      ]))
     };
     this.form = fb.group({
       codAcesso: control.codAcesso.formControl,
@@ -71,7 +76,8 @@ export class AbrigoComponent {
       control.quantidadeVagasDisponiveis,
       control.endereco,
       control.alimentos,
-      control.observacao,
+      control.pessoasDesaparecidas,
+      control.observacao
     ]);
     const listParams = new CrudListParams(
       [

@@ -14,4 +14,5 @@ public class AbrigoRequestViewModel
     public string? Observacao { get; set; } = ""!;
     public EnderecoViewModel Endereco { get; set; } = default!;
     public List<AlimentoViewModel>? Alimentos { get; set; } = default!;
+    public List<PessoaDesaparecidaViewModel>? PessoasDesaparecidas { get; set; } = default!;
 }

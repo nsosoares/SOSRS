@@ -7,6 +7,6 @@
         public string User { get; set; } = string.Empty;
         public string Telefone { get; set; } = string.Empty;
         public string CPF { get; set; } = string.Empty;
-        public List<int> UserAbrigosId { get; set; } = [];
+        public List<Guid> UserAbrigosId { get; set; } = [];
     }
 }
