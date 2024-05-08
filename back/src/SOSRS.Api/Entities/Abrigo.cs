@@ -48,9 +48,11 @@ public class Abrigo : Entity
     public string? TipoChavePix { get; private set; } = default!;
     public string? ChavePix { get; private set; } = default!;
     public string Telefone { get; private set; } = default!;
+    public bool AbrigoDeAnimais { get; private set; } = false!;
     public EnderecoVO Endereco { get; private set; } = default!;
     public string? Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
+    public List<Animal> Animais { get; private set; } = default!;
     public List<PessoaDesaparecida> PessoasDesaparecidas { get; private set; } = default!;
     public bool Lotado { get; private set; } = default!;
     public Guid UsuarioId { get; private set; } = default!;

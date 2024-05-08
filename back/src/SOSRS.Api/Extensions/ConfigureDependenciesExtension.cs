@@ -17,6 +17,7 @@ namespace SOSRS.Api.Extensions
 
             services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<IAbrigoRepository, AbrigoRepository>();
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
 
             return services;
         }
