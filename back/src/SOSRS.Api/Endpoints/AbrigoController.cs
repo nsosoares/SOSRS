@@ -13,6 +13,8 @@ using SOSRS.Api.Services;
 using SOSRS.Api.Validations;
 using SOSRS.Api.ValueObjects;
 using SOSRS.Api.ViewModels;
+using SOSRS.Api.ViewModels.Location;
+using System.Web;
 
 namespace SOSRS.Api.Endpoints;
 
@@ -138,6 +140,8 @@ public class AbrigoController : ControllerBase
         var pessoasDesaparecidas = abrigoRequest.PessoasDesaparecidas == null ? new List<PessoaDesaparecida>()
             : abrigoRequest.PessoasDesaparecidas.Select(x => new PessoaDesaparecida(x.Id, x.AbrigoId, x.Nome, x.Idade, x.InformacaoAdicional, x.Foto)).ToList();
 
+        var (latitude, longitude) = await GetCoordinates(endereco.ToString());
+
         var abrigo = new Abrigo(
             abrigoRequest.Id,
             abrigoRequest.Nome,
@@ -148,6 +152,9 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix,
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
+            
+            latitude,
+            longitude,
 
             usuarioId,
             endereco,
@@ -194,6 +201,8 @@ public class AbrigoController : ControllerBase
         var pessoasDesaparecidas = abrigoRequest.PessoasDesaparecidas == null ? new List<PessoaDesaparecida>()
             : abrigoRequest.PessoasDesaparecidas.Select(x => new PessoaDesaparecida(x.Id, x.AbrigoId, x.Nome, x.Idade, x.InformacaoAdicional, x.Foto)).ToList();
 
+        var (latitude, longitude) = await GetCoordinates(endereco.ToString());
+
         var abrigo = new Abrigo(
             id,
             abrigoRequest.Nome,
@@ -204,6 +213,9 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix ?? "",
             abrigoRequest.Telefone ?? "",
             abrigoRequest.Observacao ?? "",
+            latitude, 
+            longitude,
+
             usuarioId,
             endereco,
             alimentos,
@@ -239,5 +251,26 @@ public class AbrigoController : ControllerBase
         //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok();
+    }
+
+    private async Task<(string, string)> GetCoordinates(string address)
+    {
+        var apiUrl = $"https://api.opencagedata.com/geocode/v1/json?q={HttpUtility.UrlEncode(address)}&key=b6d741d3a59548f48071226ee27bf0fc";
+
+        var httpClient = new HttpClient();
+        var response = await httpClient.GetStringAsync(apiUrl);
+        var objectResponse = JsonConvert.DeserializeObject<LocationApiResponse>(response);
+
+        var results = objectResponse?.results?.FirstOrDefault();
+
+        if(results == null)
+        {
+            return ("", "");
+        }
+
+        var latitude = (results?.geometry?.lat).ToString() ?? "";
+        var longitude = (results?.geometry?.lng).ToString() ?? "";
+
+        return (latitude, longitude);
     }
 }
