@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Abrigo, AbrigosResult, EStatusCapacidade, abrigos } from './abrigo.model';
+import { Abrigo, AbrigosResult, EStatusCapacidade, ETipoDeAbrigo, abrigos } from './abrigo.model';
 import { Observable, Subject, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -107,6 +107,10 @@ getGeoLocation(lat: number, lng: number){
             capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
             precisaAjudanteCssClass: abrigoResult.precisaAjudante ? 'alerta-perigo' : 'alerta-sucesso',
             precisaAlimentoCssClass: abrigoResult.precisaAlimento ? 'alerta-perigo' : 'alerta-sucesso',
+            tipoDeAbrigo: ETipoDeAbrigo.Animais,
+            // tipoDeAbrigo: abrigoResult.tipoAbrigo,
+            // tipoAbrigoDescricao: obterDescricao(abrigoResult.tipoAbrigo)
+            tipoAbrigoDescricao: this.obterDescricao(ETipoDeAbrigo.Animais)
           }
         }
         ))
@@ -158,4 +162,13 @@ getGeoLocation(lat: number, lng: number){
       }
     });
   }
+  obterDescricao(tipoAbrigo: ETipoDeAbrigo): any {
+    if (tipoAbrigo === ETipoDeAbrigo.Animais)
+      return 'animal';
+    if (tipoAbrigo === ETipoDeAbrigo.Idosos){
+      return 'idoso'
+    }
+  }
 }
+
+

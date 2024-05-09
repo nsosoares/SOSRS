@@ -9,7 +9,15 @@ export interface Abrigo extends NamedEntity {
   chavePix: string;
   tipoChavePix: string;
   endereco: Endereco;
+  tipoDeAbrigo: ETipoDeAbrigo;
 }
+export enum ETipoDeAbrigo {
+  Geral = 0,
+  Animais = 1,
+  Idosos = 2,
+  Orfanato = 3
+}
+
 export interface Alimento {
   nome: string;
   quantidadeNecessaria: number;
@@ -32,6 +40,7 @@ export const abrigos: Abrigo[] = [
   {
     chavePix: '123456789', tipoChavePix: 'CPF',
     endereco: { rua: 'Rua 1', numero: '1', bairro: 'Bairro 1', cidade: 'Cidade 1', cep: '12345678', complemento: 'Complemento 1' },
+    tipoDeAbrigo: ETipoDeAbrigo.Geral,
     quantidadeNecessariaVoluntarios: 10, capacidadeTotalPessoas: 100, quantidadeVagasDisponiveis: 90,
     pessoasDesaparecidas: [
       { nome: "Fulano", idade: 18, informacaoAdicional: "" },
@@ -48,10 +57,10 @@ export const abrigos: Abrigo[] = [
     id: '1',
     name: 'Abrigo 1'
   },
-  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 2', numero: '2', bairro: 'Bairro 2', cidade: 'Cidade 2', cep: '12345678', complemento: 'teste' }, quantidadeNecessariaVoluntarios: 20, capacidadeTotalPessoas: 200, quantidadeVagasDisponiveis: 190, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 20 }, { nome: 'Feijão', quantidadeNecessaria: 20 }], id: '2', name: 'Abrigo 2' },
-  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 3', numero: '3', bairro: 'Bairro 3', cidade: 'Cidade 3', cep: '12345678', complemento: 'teste' }, quantidadeNecessariaVoluntarios: 30, capacidadeTotalPessoas: 300, quantidadeVagasDisponiveis: 290, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 30 }, { nome: 'Feijão', quantidadeNecessaria: 30 }], id: '3', name: 'Abrigo 3' },
-  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 4', numero: '4', bairro: 'Bairro 4', cidade: 'Cidade 4', cep: '12345678', complemento: 'teste' }, quantidadeNecessariaVoluntarios: 40, capacidadeTotalPessoas: 400, quantidadeVagasDisponiveis: 390, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 40 }, { nome: 'Feijão', quantidadeNecessaria: 40 }], id: '4', name: 'Abrigo 4' },
-  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 5', numero: '5', bairro: 'Bairro 5', cidade: 'Cidade 5', cep: '12345678', complemento: 'teste' }, quantidadeNecessariaVoluntarios: 50, capacidadeTotalPessoas: 500, quantidadeVagasDisponiveis: 490, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 50 }, { nome: 'Feijão', quantidadeNecessaria: 50 }], id: '5', name: 'Abrigo 5' },
+  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 2', numero: '2', bairro: 'Bairro 2', cidade: 'Cidade 2', cep: '12345678', complemento: 'teste' },tipoDeAbrigo: ETipoDeAbrigo.Geral, quantidadeNecessariaVoluntarios: 20, capacidadeTotalPessoas: 200, quantidadeVagasDisponiveis: 190, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 20 }, { nome: 'Feijão', quantidadeNecessaria: 20 }], id: '2', name: 'Abrigo 2' },
+  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 3', numero: '3', bairro: 'Bairro 3', cidade: 'Cidade 3', cep: '12345678', complemento: 'teste' },tipoDeAbrigo: ETipoDeAbrigo.Geral, quantidadeNecessariaVoluntarios: 30, capacidadeTotalPessoas: 300, quantidadeVagasDisponiveis: 290, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 30 }, { nome: 'Feijão', quantidadeNecessaria: 30 }], id: '3', name: 'Abrigo 3' },
+  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 4', numero: '4', bairro: 'Bairro 4', cidade: 'Cidade 4', cep: '12345678', complemento: 'teste' },tipoDeAbrigo: ETipoDeAbrigo.Geral, quantidadeNecessariaVoluntarios: 40, capacidadeTotalPessoas: 400, quantidadeVagasDisponiveis: 390, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 40 }, { nome: 'Feijão', quantidadeNecessaria: 40 }], id: '4', name: 'Abrigo 4' },
+  { chavePix: '123456789', tipoChavePix: 'CPF', endereco: { rua: 'Rua 5', numero: '5', bairro: 'Bairro 5', cidade: 'Cidade 5', cep: '12345678', complemento: 'teste' },tipoDeAbrigo: ETipoDeAbrigo.Geral, quantidadeNecessariaVoluntarios: 50, capacidadeTotalPessoas: 500, quantidadeVagasDisponiveis: 490, pessoasDesaparecidas: [{ nome: 'Fulano', idade: 18, informacaoAdicional: '' }, { nome: 'Ciclano', idade: 18, informacaoAdicional: '' }], alimentos: [{ nome: 'Arroz', quantidadeNecessaria: 50 }, { nome: 'Feijão', quantidadeNecessaria: 50 }], id: '5', name: 'Abrigo 5' },
 
 ];
 export enum EStatusCapacidade {
@@ -82,6 +91,8 @@ export interface AbrigoPesquisa {
   precisaAlimentoCssClass?: string;
   enderecoDesc?: string;
   ultimaAtualizacaoTxt?: string;
+  tipoDeAbrigo?: ETipoDeAbrigo;
+  tipoAbrigoDescricao?: ETipoDeAbrigo;
 }
 
 export interface AbrigosResult {
@@ -103,7 +114,7 @@ export const abrigosData: AbrigosResult = {
       chavePix: "123456789",
       capacidade: EStatusCapacidade.Disponivel,
       precisaAjudante: true,
-      precisaAlimento: false
+      precisaAlimento: false,
     },
     {
       id: 2,
@@ -117,7 +128,7 @@ export const abrigosData: AbrigosResult = {
       chavePix: "abrigo2@email.com",
       capacidade: EStatusCapacidade.Disponivel,
       precisaAjudante: false,
-      precisaAlimento: true
+      precisaAlimento: true,
     },
     {
       id: 3,

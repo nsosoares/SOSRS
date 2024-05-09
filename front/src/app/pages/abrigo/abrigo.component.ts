@@ -18,6 +18,7 @@ import { AbrigoService } from './core/abrigo.service';
 import { Subject, debounce, debounceTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
+import { ETipoDeAbrigo } from './core/abrigo.model';
 
 @Component({
   selector: 'cw-abrigo',
@@ -37,10 +38,11 @@ export class AbrigoComponent {
       id: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('id')),
       nome: ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Nome', 50, 5).asRequired().withPlaceholder('Digite o nome do abrigo').withCssClass(RESPONSIVE_SIZE_6)),
       chavePix: ControlCvaProvider.inputText(() => InputTextCvaParams.text('chavePix', 'Chave Pix', 50, 3).withPlaceholder('Digite a chave pix').withCssClass(RESPONSIVE_SIZE_6)),
-      telefone: ControlCvaProvider.inputText(() => InputTextCvaParams.text('telefone', 'telefone para contato', 50, 3).asRequired().withPlaceholder('digite o número').withCssClass(RESPONSIVE_SIZE_6)),
+      telefone: ControlCvaProvider.inputText(() => InputTextCvaParams.text('telefone', 'Telefone para contato', 50, 3).asRequired().withPlaceholder('digite o número').withCssClass(RESPONSIVE_SIZE_6)),
       quantidadeNecessariaVoluntarios: ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeNecessariaVoluntarios', 'Precisa de quantos voluntarios?').withCssClass(RESPONSIVE_SIZE_6)),
-      capacidadeTotalPessoas: ControlCvaProvider.inputText(() => InputTextCvaParams.number('capacidadeTotalPessoas', 'Quantas pessoas o local pode suportar?').withCssClass(RESPONSIVE_SIZE_6)),
+      capacidadeTotalPessoas: ControlCvaProvider.inputText(() => InputTextCvaParams.number('capacidadeTotalPessoas', 'Capacidade de acolhimento?').withCssClass(RESPONSIVE_SIZE_6)),
       quantidadeVagasDisponiveis: ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeVagasDisponiveis', 'Quantas vagas estão sobrando no momento?').withCssClass(RESPONSIVE_SIZE_6)),
+      tipoDeAbrigo: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('tipoDeAbrigo').withCssClass(RESPONSIVE_SIZE_6)),
       observacao: ControlCvaProvider.inputText(() => InputTextCvaParams.text('observacao', 'Observação').withCssClass(RESPONSIVE_SIZE_12)),
 
       endereco: ControlCvaProvider.subform(() => new SubformCvaParams('endereco', 'Endereço', [
@@ -77,6 +79,7 @@ export class AbrigoComponent {
       control.endereco,
       control.alimentos,
       control.pessoasDesaparecidas,
+      control.tipoDeAbrigo,
       control.observacao
     ]);
     const listParams = new CrudListParams(
@@ -88,7 +91,7 @@ export class AbrigoComponent {
         new CrudListColumn('precisaAjudanteDesc', 'Quer ajuda'),
         new CrudListColumn('precisaAlimentoDesc', 'Quer alimento'),
         new CrudListColumn('capacidadeDesc', 'Capacidade'),
-
+        new CrudListColumn('tipoAbrigoDescricao', 'Tipo de abrigo'),
       ]);
     this.params = new CrudParams('Abrigos', listParams, this.controls, abrigoService.searchByName, abrigoService.getById, abrigoService.create, abrigoService.update, abrigoService.delete);
 

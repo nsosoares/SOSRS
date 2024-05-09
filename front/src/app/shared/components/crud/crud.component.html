@@ -6,7 +6,10 @@
       </div>
       <div class="col-12">
         <br />
-        <cw-btn-add (click)="openCreate()" [describe]="'Novo'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('default')" [describe]="'Novo'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('animals')" [describe]="'Animais'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('idosos')" [describe]="'Idosos'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('orfanato')" [describe]="'Orfanato'"></cw-btn-add>
       </div>
 
       <cw-control-cva [class]="controls.id.params!.cssClass" [controlProvider]="controls.id"
