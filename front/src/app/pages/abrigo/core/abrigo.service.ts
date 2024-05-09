@@ -75,7 +75,7 @@ export class AbrigoService {
     if (auth) {
       return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos/GetByUserId', { params: httpParams, headers: this.getHeaderWithToken() });
     }
-    return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos', { params: httpParams});
+    return this._httpClient.get<AbrigosResult>(this.baseUrl + 'api/abrigos', { params: httpParams });
   }
   getById = (id: any): Observable<Abrigo> => {
     return this._httpClient.get<any>(this.baseUrl + 'api/abrigos/' + id);
@@ -116,14 +116,14 @@ export class AbrigoService {
       entity.alimentos = [];
     }
     this.entities.push(entity);
-    return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, {headers: this.getHeaderWithToken()});
+    return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, { headers: this.getHeaderWithToken() });
   }
   update = (entity: Abrigo): Observable<any> => {
-    return this._httpClient.put<any[]>(this.baseUrl + 'api/abrigos/' + entity.id, entity, {headers: this.getHeaderWithToken()});
+    return this._httpClient.put<any[]>(this.baseUrl + 'api/abrigos/' + entity.id, entity, { headers: this.getHeaderWithToken() });
   }
 
   delete = (id: string): Observable<any> => {
-    return this._httpClient.delete<any>(this.baseUrl + 'api/abrigos/' + id, {headers: this.getHeaderWithToken()});
+    return this._httpClient.delete<any>(this.baseUrl + 'api/abrigos/' + id, { headers: this.getHeaderWithToken() });
   }
 
   getHeader(): any {
@@ -143,5 +143,9 @@ export class AbrigoService {
         window.location.href = currentUrl + '?eraseCache=' + Date.now();
       }
     });
+  }
+
+  getLocation(lat: string, long: string): any {
+    return this._httpClient.get<any>(`${this.baseUrl}api/Location?latitude=${lat}&longitude=${long}`);
   }
 }
