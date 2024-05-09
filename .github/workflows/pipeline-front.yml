@@ -17,8 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: back
+        working-directory: front
     steps:
+      - uses: actions/checkout@v4
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
