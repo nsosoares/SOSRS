@@ -8,6 +8,7 @@ const routes: Routes = [
 
   {path: 'abrigo-adm-hash', component: AbrigoComponent, data: {title: 'Abrigo'}, canActivate: [AuthGuard],},
   {path: 'abrigo-ajuda', component: AbrigoAjudaComponent, data: {title: 'Abrigo'}},
+  {path: 'abrigo-ajuda/animais', component: AbrigoAjudaComponent, data: {title: 'Abrigo'}},
 ];
 
 @NgModule({

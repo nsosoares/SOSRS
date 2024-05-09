@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Abrigo, AbrigosResult, EStatusCapacidade, abrigos } from './abrigo.model';
+import { Abrigo, AbrigosResult, EStatusCapacidade, ETipoDeAbrigo } from './abrigo.model';
 import { Observable, Subject, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -9,7 +9,6 @@ import { AuthService } from '../../auth/auth.service';
   providedIn: 'root'
 })
 export class AbrigoService {
-  readonly entities: Abrigo[] = abrigos;
   readonly longitudeKey = 'longitude';
   readonly latitudeKey = 'latitude';
   readonly baseUrl = environment.api;
@@ -17,7 +16,7 @@ export class AbrigoService {
   enderecoPorGps: {
     cidade?: string;
     preenchido: boolean;
-  } = { preenchido: false};
+  } = { preenchido: false };
 
   aoEncontrarEnderecpPorGps = new Subject<any>();
   constructor(private _httpClient: HttpClient, private _authService: AuthService) {
@@ -36,14 +35,14 @@ export class AbrigoService {
       return;
     }
     this.getGeoLocation(data.coords.latitude, data.coords.longitude);
-}
+  }
 
 
 
 
-getGeoLocation(lat: number, lng: number){
+  getGeoLocation(lat: number, lng: number) {
 
-}
+  }
 
 
   codAcesso?: number;
@@ -55,11 +54,15 @@ getGeoLocation(lat: number, lng: number){
       alimento: value.alimento ? value.alimento : undefined,
       capacidade: value.capacidade ? value.capacidade : undefined,
       precisaAjudante: value.precisaAjudante ? value.precisaAjudante : undefined,
-      precisaAlimento: value.precisaAlimento ? value.precisaAlimento : undefined
+      precisaAlimento: value.precisaAlimento ? value.precisaAlimento : undefined,
+      tipoAbrigo: value.tipoAbrigo ? value.tipoAbrigo : undefined
     }
     let httpParams = new HttpParams();
     if (finalValue.nome) {
       httpParams = httpParams.set('nome', finalValue.nome);
+    }
+    if (finalValue.tipoAbrigo) {
+      httpParams = httpParams.set('tipoAbrigo', finalValue.tipoAbrigo);
     }
 
     if (finalValue.cidade) {
@@ -99,6 +102,7 @@ getGeoLocation(lat: number, lng: number){
       map(result => result.abrigos),
       map(abrigosResult =>
         abrigosResult.map(abrigoResult => {
+          console.log(abrigoResult);
           return {
             ...abrigoResult,
             capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'Lotado' : 'Disponível',
@@ -107,6 +111,8 @@ getGeoLocation(lat: number, lng: number){
             capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
             precisaAjudanteCssClass: abrigoResult.precisaAjudante ? 'alerta-perigo' : 'alerta-sucesso',
             precisaAlimentoCssClass: abrigoResult.precisaAlimento ? 'alerta-perigo' : 'alerta-sucesso',
+            tipoDeAbrigo: abrigoResult.tipoAbrigo,
+            tipoAbrigoDescricao: this.obterDescricao(abrigoResult.tipoAbrigo)
           }
         }
         ))
@@ -120,16 +126,12 @@ getGeoLocation(lat: number, lng: number){
     });
     return headers;
   }
-  getEntities = (): Observable<Abrigo[]> => {
-    return of(this.entities);
-  }
 
   create = (entity: Abrigo): Observable<any> => {
     entity.id = 0;
     if ((entity.alimentos as any) === "") {
       entity.alimentos = [];
     }
-    this.entities.push(entity);
     return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, { headers: this.getHeaderWithToken() });
   }
   update = (entity: Abrigo): Observable<any> => {
@@ -162,4 +164,18 @@ getGeoLocation(lat: number, lng: number){
   getLocation(lat: string, long: string): any {
     return this._httpClient.get<any>(`${this.baseUrl}api/Location?latitude=${lat}&longitude=${long}`);
   }
+  obterDescricao(tipoAbrigo: ETipoDeAbrigo): any {
+    if (tipoAbrigo === ETipoDeAbrigo.Animais)
+      return 'Animal';
+    if (tipoAbrigo === ETipoDeAbrigo.Idosos) {
+      return 'Lar de idosos'
+    }
+    if (tipoAbrigo === ETipoDeAbrigo.Orfanato) {
+      return 'Orfanato'
+    }
+
+    return 'Pessoas';
+  }
 }
+
+

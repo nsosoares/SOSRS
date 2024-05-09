@@ -50,12 +50,23 @@
             [formControlName]="control.nome.params!.controlName"></cw-control-cva>
           <cw-control-cva [controlProvider]="control.cidade"
             [formControlName]="control.cidade.params!.controlName"></cw-control-cva>
+
+            <mat-form-field  appearance="outline" style="width: 100%;">
+              <mat-select formControlName="tipoAbrigo">
+                  <mat-option [value]="'0'">Pessoas</mat-option>
+                  <mat-option [value]="'1'">Animais</mat-option>
+                  <mat-option [value]="'2'">Idoso</mat-option>
+                  <mat-option [value]="'3'">Orfanato</mat-option>
+              </mat-select>
+            </mat-form-field>
+
           <div class="col-12">
             <div class='cw-button' style="width: 100%;" (click)="abrirPesquisaAvancada()">
               <div class="cw-button-content">
                 <div class="cw-button-content-item">
                   <mat-icon>search</mat-icon>
                 </div>
+                <mat-label>Tipo de abrigo</mat-label>
                 <div class="cw-button-content-item">Filtro avançado</div>
               </div>
             </div>

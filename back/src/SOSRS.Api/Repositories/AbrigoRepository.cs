@@ -40,7 +40,7 @@ namespace SOSRS.Api.Repositories
 
         public async Task<List<AbrigoResponseViewModel>> GetAbrigos(FiltroAbrigoViewModel filtroAbrigoViewModel)
         {
-            var abrigos = await _database.Abrigos
+            var abrigos = await _database.Abrigos.Where(x => x.TipoAbrigo == filtroAbrigoViewModel.TipoAbrigo )
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Nome) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Nome)
                         , x => x.Nome.SearchableValue.Contains(filtroAbrigoViewModel.Nome!.ToSearchable()))
             .When(!string.IsNullOrEmpty(filtroAbrigoViewModel.Cidade) && !string.IsNullOrWhiteSpace(filtroAbrigoViewModel.Cidade)
@@ -70,7 +70,9 @@ namespace SOSRS.Api.Repositories
                         Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
                         PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
                         PrecisaAlimento = x.Alimentos.Count > 0,
-                        UltimaAtualizacao = x.UltimaAtualizacao
+                        UltimaAtualizacao = x.UltimaAtualizacao,
+                        TipoAbrigo = x.TipoAbrigo,
+
                     })
                     .OrderBy(x => x.Cidade)
                     .ThenBy(x => x.Nome)

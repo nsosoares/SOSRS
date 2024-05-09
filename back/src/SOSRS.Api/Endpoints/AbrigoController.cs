@@ -81,6 +81,7 @@ public class AbrigoController : ControllerBase
                 QuantidadeNecessariaVoluntarios = x.QuantidadeNecessariaVoluntarios,
                 TipoChavePix = x.TipoChavePix,
                 QuantidadeVagasDisponiveis = x.QuantidadeVagasDisponiveis,
+                TipoAbrigo = x.TipoAbrigo,
                 
                 Telefone = x.Telefone,
                 Endereco = new EnderecoViewModel
@@ -147,10 +148,13 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix,
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
+
             usuarioId,
             endereco,
             alimentos,
-            pessoasDesaparecidas);
+            pessoasDesaparecidas,
+            abrigoRequest.TipoAbrigo
+            );
 
         var result = _validadorService.Validar(abrigo, new AbrigoValidador());
         if (!result.IsValid)
@@ -203,7 +207,8 @@ public class AbrigoController : ControllerBase
             usuarioId,
             endereco,
             alimentos,
-            pessoasDesaparecidas);
+            pessoasDesaparecidas,
+            abrigoRequest.TipoAbrigo);
 
         var result = _validadorService.Validar(abrigo, new AbrigoValidador());
         if (!result.IsValid)

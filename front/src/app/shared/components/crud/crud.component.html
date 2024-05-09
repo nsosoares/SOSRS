@@ -1,12 +1,16 @@
 <div [formGroup]="form">
-  <div class="section-painel-crud " style="background-color: #fff; margin: 10px 0; padding: 0 5px; border-radius: 5px; display: block;">
-    <div class="row" >
+  <div class="section-painel-crud "
+    style="background-color: #fff; margin: 10px 0; padding: 0 5px; border-radius: 5px; display: block;">
+    <div class="row">
       <div class="col-12">
         <div class="crud-title"><b>{{params()?.title}} </b></div>
       </div>
       <div class="col-12">
         <br />
-        <cw-btn-add (click)="openCreate()" [describe]="'Novo'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('default')" [describe]="'Novo'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('animals')" [describe]="'Animais'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('idosos')" [describe]="'Idosos'"></cw-btn-add>
+        <cw-btn-add (click)="openCreate('orfanato')" [describe]="'Orfanato'"></cw-btn-add>
       </div>
 
       <cw-control-cva [class]="controls.id.params!.cssClass" [controlProvider]="controls.id"
@@ -15,6 +19,19 @@
         formControlName="nome"></cw-control-cva>
       <cw-control-cva [class]="controls.cidade.params!.cssClass" [controlProvider]="controls.cidade"
         formControlName="cidade"></cw-control-cva>
+      <div class="col-12">
+
+        <mat-form-field  appearance="outline" style="width: 100%;">
+          <mat-label>Tipo de abrigo</mat-label>
+          <mat-select formControlName="tipoAbrigo">
+              <mat-option [value]="'0'">Pessoas</mat-option>
+              <mat-option [value]="'1'">Animais</mat-option>
+              <mat-option [value]="'2'">Idoso</mat-option>
+              <mat-option [value]="'3'">Orfanato</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
 
     </div>
   </div>

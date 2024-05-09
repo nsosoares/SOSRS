@@ -1,5 +1,6 @@
+import { ETipoDeAbrigo } from './../../../pages/abrigo/core/abrigo.model';
 import { Component, input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, debounceTime, switchMap, tap } from 'rxjs';
 
@@ -16,6 +17,7 @@ import { UpdateFormComponent } from '../forms/update-form/update-form.component'
 import { UpdateFormParams } from '../forms/update-form/update-form.params';
 import { CrudParams } from './crud.params';
 import { INamedEntity } from '../../../core/entities/i-named-entity';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cw-crud',
@@ -35,12 +37,13 @@ export class CrudComponent {
 
   }
 
-  constructor(private _dialog: MatDialog) {
+  constructor(private _dialog: MatDialog, private router: Router) {
     this.form = new FormGroup({
       search: this.controls.search.formControl,
       id: this.controls.id.formControl,
       nome: this.controls.nome.formControl,
-      cidade: this.controls.cidade.formControl
+      cidade: this.controls.cidade.formControl,
+      tipoAbrigo: new FormControl('0')
     });
 
     this.form.valueChanges
@@ -62,8 +65,27 @@ export class CrudComponent {
 
   }
 
-  openCreate(): void {
-    console.log('this.params()');
+  openCreate(category: 'default' | 'animals' | 'idosos' | 'orfanato'): void {
+    let categoriaEnum: ETipoDeAbrigo;
+    if (category === 'default') {
+      categoriaEnum = ETipoDeAbrigo.Geral;
+    } else if (category === 'animals') {
+      categoriaEnum = ETipoDeAbrigo.Animais;
+    } else if (category === 'idosos') {
+      categoriaEnum = ETipoDeAbrigo.Idosos;
+    }
+    else if (category === 'orfanato') {
+      categoriaEnum = ETipoDeAbrigo.Orfanato;
+    }
+
+    const control = this.params().controls.find(controlItem => controlItem.params.controlName =='tipoAbrigo');
+    setTimeout(() => {
+
+      control.formControl.setValue(categoriaEnum)
+      console.log(control);
+
+    }, 1000);
+
     const ref = this._dialog.open(CreateFormComponent, {
       data: {
         formParams: new CreateFormParams(this.params()?.title!, this.params()!.controls, this.params()!.funcCreateEntity)
