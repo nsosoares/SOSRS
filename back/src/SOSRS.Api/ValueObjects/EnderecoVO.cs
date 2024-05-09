@@ -35,6 +35,6 @@ public class EnderecoVO
 
     public override string ToString()
     {
-        return $"{Rua.Value}, {Numero} - {Bairro.Value} - {Cidade.Value}, {Estado.Value}";
+        return $"{Rua.Value}, {Numero} - {Bairro.Value} - {Cidade.Value}, {Estado.Value} - {Cep}";
     }
 }

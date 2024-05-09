@@ -15,6 +15,8 @@ public class Abrigo : Entity
         string chavePix,
         string telefone,
         string? observacao,
+        string lat,
+        string lon,
         Guid usuarioId,
         EnderecoVO endereco,
         List<Alimento> alimentos,
@@ -38,6 +40,8 @@ public class Abrigo : Entity
         Lotado = quantidadeVagasDisponiveis == 0;
         UltimaAtualizacao = DateTime.Now;
         TipoAbrigo = tipoAbrigo;
+        Latitude = lat;
+        Longitude = lon;
     }
 
     //Ef
@@ -55,6 +59,8 @@ public class Abrigo : Entity
     public TipoAbrigoEnum TipoAbrigo { get; private set; } = TipoAbrigoEnum.Geral;
     public EnderecoVO Endereco { get; private set; } = default!;
     public string? Observacao { get; private set; } = default!;
+    public string Latitude { get; private set; } = default!;
+    public string Longitude { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
     public List<Animal> Animais { get; private set; } = default!;
     public List<PessoaDesaparecida> PessoasDesaparecidas { get; private set; } = default!;
