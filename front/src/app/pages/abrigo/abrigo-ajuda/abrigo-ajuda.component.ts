@@ -11,13 +11,14 @@ import {
 import { ControlCvaProvider } from '../../../shared/components/control-value-accessor/control-cva/control-cva.provider';
 import { TemplateService } from '../../../template/template.service';
 import { AbrigoService } from '../core/abrigo.service';
-import { AbrigoPesquisa, EStatusCapacidade } from './../core/abrigo.model';
+import { AbrigoPesquisa, EStatusCapacidade, ETipoDeAbrigo } from './../core/abrigo.model';
 import {
   AbrigoAjudaPesquisaAvancadaComponent,
 } from './abrigo-ajuda-pesquisa-avancada/abrigo-ajuda-pesquisa-avancada.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbrigoAjudaSobreComponent } from './abrigo-ajuda-sobre/abrigo-ajuda-sobre.component';
 import { AbrigoAjudaDetalheComponent } from './abrigo-ajuda-detalhe/abrigo-ajuda-detalhe.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cw-abrigo-ajuda',
@@ -32,6 +33,7 @@ export class AbrigoAjudaComponent {
   abrigos: AbrigoPesquisa[] = [];
   quantidade?: number;
   carregando = false;
+  priorizaAnimais = false;
 
   control = {
     nome: ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Nome do local', 50, 0).withCssClass(RESPONSIVE_SIZE_6)),
@@ -40,8 +42,16 @@ export class AbrigoAjudaComponent {
     alimento: ControlCvaProvider.inputText(() => InputTextCvaParams.text('alimento', 'Alimento', 50, 0).asRequired().withCssClass(RESPONSIVE_SIZE_6)),
   }
 
-  constructor(private _snackBar: MatSnackBar, templateService: TemplateService, fb: FormBuilder, private abrigoService: AbrigoService, private dialog: MatDialog) {
+  constructor(private _snackBar: MatSnackBar, templateService: TemplateService, fb: FormBuilder, private abrigoService: AbrigoService, private dialog: MatDialog, private rotaCorrente: ActivatedRoute) {
+
+    try {
+      this.priorizaAnimais = rotaCorrente.snapshot.url.some(urlTxt => urlTxt.path.toLowerCase() === 'animais')
+    }
+    catch {
+      console.log('nao foi possivel identificar a roda de animais ou pessoa')
+    }
     templateService.exibeMenu = false;
+    const tipoAbrigoPadrao = this.priorizaAnimais ? ETipoDeAbrigo.Animais : ETipoDeAbrigo.Geral;
     this.form = fb.group({
       nome: '',
       cidade: '',
@@ -50,7 +60,7 @@ export class AbrigoAjudaComponent {
       capacidade: '',
       precisaAjudante: '',
       precisaAlimento: '',
-      tipoAbrigo: new FormControl('0')
+      tipoAbrigo: new FormControl(tipoAbrigoPadrao.toString())
     });
 
     this.form.valueChanges.pipe(

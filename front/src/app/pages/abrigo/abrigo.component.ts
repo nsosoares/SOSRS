@@ -19,6 +19,7 @@ import { Subject, debounce, debounceTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../environments/environment';
 import { ETipoDeAbrigo } from './core/abrigo.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cw-abrigo',
