@@ -3,6 +3,7 @@ using SOSRS.Api.Configuration;
 using SOSRS.Api.Extensions;
 using SOSRS.Api.Middleware;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>

@@ -41,8 +41,20 @@ export class AbrigoService {
 
 
 
-getGeoLocation(lat: number, lng: number){
 
+
+
+
+getGeoLocation(lat: number, lng: number){
+      return this._httpClient.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDwiF50yxPNIWFrh8wloXmqnF_ugZeUtO4`)
+    .subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
 }
 
 
