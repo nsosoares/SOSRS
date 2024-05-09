@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
@@ -7,12 +6,14 @@ using Newtonsoft.Json;
 using SOSRS.Api.Data;
 using SOSRS.Api.Entities;
 using SOSRS.Api.Extensions;
-using SOSRS.Api.Helpers;
 using SOSRS.Api.Repositories;
 using SOSRS.Api.Services;
 using SOSRS.Api.Validations;
 using SOSRS.Api.ValueObjects;
 using SOSRS.Api.ViewModels;
+using SOSRS.Api.ViewModels.Abrigo;
+using SOSRS.Api.ViewModels.Location;
+using System.Web;
 
 namespace SOSRS.Api.Endpoints;
 
@@ -239,5 +240,37 @@ public class AbrigoController : ControllerBase
         //_dbContext.Logs.Add(new Log(0, usuarioId, ETipoOperacao.Deletar, JsonConvert.SerializeObject(abrigo)));
         await _dbContext.SaveChangesAsync();
         return Results.Ok();
+    }
+
+    [Authorize]
+    [HttpPost("Relocate")]
+    public async Task<IActionResult> RealocarPessoasDeAbrigo([FromBody] RelocatePeopleRequest relocatePeopleRequest)
+    {
+        await Task.CompletedTask;
+
+        var abrigoOrigem = _abrigoRepository.GetAbrigosPorIdsAsync
+
+        return Ok();
+    }
+
+    private async Task<(string, string)> GetCoordinates(string address)
+    {
+        var apiUrl = $"https://api.opencagedata.com/geocode/v1/json?q={HttpUtility.UrlEncode(address)}&key=b6d741d3a59548f48071226ee27bf0fc";
+
+        var httpClient = new HttpClient();
+        var response = await httpClient.GetStringAsync(apiUrl);
+        var objectResponse = JsonConvert.DeserializeObject<LocationApiResponse>(response);
+
+        var results = objectResponse?.results?.FirstOrDefault();
+
+        if(results == null)
+        {
+            return ("", "");
+        }
+
+        var latitude = (results?.geometry?.lat).ToString() ?? "";
+        var longitude = (results?.geometry?.lng).ToString() ?? "";
+
+        return (latitude, longitude);
     }
 }
