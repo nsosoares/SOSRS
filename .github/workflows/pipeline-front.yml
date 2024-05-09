@@ -1,0 +1,33 @@
+name: Pipeline SOSRS-front
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths: ['front/**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build container image
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Build and push image'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sosrs.api:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sosrs.api:latest
