@@ -246,9 +246,15 @@ public class AbrigoController : ControllerBase
     [HttpPost("Relocate")]
     public async Task<IActionResult> RealocarPessoasDeAbrigo([FromBody] RelocatePeopleRequest relocatePeopleRequest)
     {
-        await Task.CompletedTask;
+        var abrigoOrigem = await _abrigoRepository.GetAbrigoPorIdAsync(relocatePeopleRequest.AbrigoOrigem);
+        var abrigoDestino = await _abrigoRepository.GetAbrigoPorIdAsync(relocatePeopleRequest.AbrigoDestino);
 
-        var abrigoOrigem = _abrigoRepository.GetAbrigosPorIdsAsync
+        var quantidadePessoasAbrigoOrigem = abrigoOrigem?.CapacidadeTotalPessoas - abrigoOrigem?.QuantidadeVagasDisponiveis;
+
+        if(quantidadePessoasAbrigoOrigem < abrigoDestino?.CapacidadeTotalPessoas)
+        {
+            return StatusCode(406, new { message = "O abrigo de destino não tem capacidade para relocação deste abrigo" });
+        }
 
         return Ok();
     }
