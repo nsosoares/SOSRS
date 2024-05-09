@@ -56,7 +56,7 @@ namespace SOSRS.Api.Endpoints
                 return BadRequest("Abrigo inválido");
             }
 
-            if(!abrigo.AbrigoDeAnimais)
+            if(!abrigo.PermiteAnimais)
             {
                 return BadRequest("Abrigo não permite animais");
             }
