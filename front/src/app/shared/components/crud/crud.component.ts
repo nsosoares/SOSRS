@@ -1,6 +1,6 @@
 import { ETipoDeAbrigo } from './../../../pages/abrigo/core/abrigo.model';
 import { Component, input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, debounceTime, switchMap, tap } from 'rxjs';
 
@@ -42,7 +42,8 @@ export class CrudComponent {
       search: this.controls.search.formControl,
       id: this.controls.id.formControl,
       nome: this.controls.nome.formControl,
-      cidade: this.controls.cidade.formControl
+      cidade: this.controls.cidade.formControl,
+      tipoAbrigo: new FormControl('0')
     });
 
     this.form.valueChanges

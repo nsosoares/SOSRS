@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
 
@@ -49,7 +49,8 @@ export class AbrigoAjudaComponent {
       alimento: '',
       capacidade: '',
       precisaAjudante: '',
-      precisaAlimento: ''
+      precisaAlimento: '',
+      tipoAbrigo: new FormControl('0')
     });
 
     this.form.valueChanges.pipe(
@@ -81,6 +82,7 @@ export class AbrigoAjudaComponent {
             this.concatenarSePossuirValor('rua', abrigoResult.rua) + ' - ' +
             this.concatenarSePossuirValor('numero', abrigoResult.numero?.toString()) + ' - ' +
             (abrigoResult.complemento ? `complemento: ${abrigoResult.complemento}` : ''),
+             tipoAbrigoDescricao: this.abrigoService.obterDescricao(abrigoResult.tipoAbrigo)
         };
       });
       this.quantidade = result.quantidadeTotalRegistros;

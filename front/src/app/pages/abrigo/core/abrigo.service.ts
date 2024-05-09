@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Abrigo, AbrigosResult, EStatusCapacidade, ETipoDeAbrigo} from './abrigo.model';
+import { Abrigo, AbrigosResult, EStatusCapacidade, ETipoDeAbrigo } from './abrigo.model';
 import { Observable, Subject, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -16,7 +16,7 @@ export class AbrigoService {
   enderecoPorGps: {
     cidade?: string;
     preenchido: boolean;
-  } = { preenchido: false};
+  } = { preenchido: false };
 
   aoEncontrarEnderecpPorGps = new Subject<any>();
   constructor(private _httpClient: HttpClient, private _authService: AuthService) {
@@ -35,14 +35,14 @@ export class AbrigoService {
       return;
     }
     this.getGeoLocation(data.coords.latitude, data.coords.longitude);
-}
+  }
 
 
 
 
-getGeoLocation(lat: number, lng: number){
+  getGeoLocation(lat: number, lng: number) {
 
-}
+  }
 
 
   codAcesso?: number;
@@ -54,11 +54,15 @@ getGeoLocation(lat: number, lng: number){
       alimento: value.alimento ? value.alimento : undefined,
       capacidade: value.capacidade ? value.capacidade : undefined,
       precisaAjudante: value.precisaAjudante ? value.precisaAjudante : undefined,
-      precisaAlimento: value.precisaAlimento ? value.precisaAlimento : undefined
+      precisaAlimento: value.precisaAlimento ? value.precisaAlimento : undefined,
+      tipoAbrigo: value.tipoAbrigo ? value.tipoAbrigo : undefined
     }
     let httpParams = new HttpParams();
     if (finalValue.nome) {
       httpParams = httpParams.set('nome', finalValue.nome);
+    }
+    if (finalValue.tipoAbrigo) {
+      httpParams = httpParams.set('tipoAbrigo', finalValue.tipoAbrigo);
     }
 
     if (finalValue.cidade) {
@@ -162,9 +166,12 @@ getGeoLocation(lat: number, lng: number){
   }
   obterDescricao(tipoAbrigo: ETipoDeAbrigo): any {
     if (tipoAbrigo === ETipoDeAbrigo.Animais)
-      return 'animal';
-    if (tipoAbrigo === ETipoDeAbrigo.Idosos){
-      return 'idoso'
+      return 'Animal';
+    if (tipoAbrigo === ETipoDeAbrigo.Idosos) {
+      return 'Lar de idosos'
+    }
+    if (tipoAbrigo === ETipoDeAbrigo.Orfanato) {
+      return 'Orfanato'
     }
 
     return 'Pessoas';
