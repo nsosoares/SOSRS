@@ -5,10 +5,7 @@ on:
     branches:
       - main
       - dev
-  pull_request:
-    branches:
-      - main
-      - dev
+    paths: ['front/**']
   workflow_dispatch:
 
 jobs:
@@ -24,10 +21,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: List files in the repository
-        run: |
-            ls ${{ github.workspace }}
 
       - name: 'Build and push image'
         uses: azure/docker-login@v1
