@@ -139,6 +139,8 @@ public class AbrigoController : ControllerBase
         var pessoasDesaparecidas = abrigoRequest.PessoasDesaparecidas == null ? new List<PessoaDesaparecida>()
             : abrigoRequest.PessoasDesaparecidas.Select(x => new PessoaDesaparecida(x.Id, x.AbrigoId, x.Nome, x.Idade, x.InformacaoAdicional, x.Foto)).ToList();
 
+        var (latitude, longitude) = await GetCoordinates(endereco.ToString());
+
         var abrigo = new Abrigo(
             abrigoRequest.Id,
             abrigoRequest.Nome,
@@ -149,6 +151,9 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix,
             abrigoRequest.Telefone,
             abrigoRequest.Observacao ?? "",
+            
+            latitude,
+            longitude,
 
             usuarioId,
             endereco,
@@ -195,6 +200,8 @@ public class AbrigoController : ControllerBase
         var pessoasDesaparecidas = abrigoRequest.PessoasDesaparecidas == null ? new List<PessoaDesaparecida>()
             : abrigoRequest.PessoasDesaparecidas.Select(x => new PessoaDesaparecida(x.Id, x.AbrigoId, x.Nome, x.Idade, x.InformacaoAdicional, x.Foto)).ToList();
 
+        var (latitude, longitude) = await GetCoordinates(endereco.ToString());
+
         var abrigo = new Abrigo(
             id,
             abrigoRequest.Nome,
@@ -205,6 +212,9 @@ public class AbrigoController : ControllerBase
             abrigoRequest.ChavePix ?? "",
             abrigoRequest.Telefone ?? "",
             abrigoRequest.Observacao ?? "",
+            latitude, 
+            longitude,
+
             usuarioId,
             endereco,
             alimentos,
