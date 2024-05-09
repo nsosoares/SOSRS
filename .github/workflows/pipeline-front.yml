@@ -15,14 +15,17 @@ jobs:
   build:
     name: Build container image
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: front
+    defaults:
+      run:
+        working-directory: front/
     steps:
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+      - name: 'lista arquivos do front' 
+        run: dir  
 
       - name: 'Build and push image'
         uses: azure/docker-login@v1
@@ -31,5 +34,5 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t front/${{ secrets.REGISTRY_LOGIN_SERVER }}/sosrs.api:latest
-          docker push front/${{ secrets.REGISTRY_LOGIN_SERVER }}/sosrs.api:latest
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sosrs.api:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sosrs.api:latest

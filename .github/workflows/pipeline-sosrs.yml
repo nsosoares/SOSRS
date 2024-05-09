@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - dev
-  paths: ['back/**']
+    paths: ['back/**']
   workflow_dispatch:
 
 env:
