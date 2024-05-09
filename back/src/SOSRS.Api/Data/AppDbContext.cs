@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Abrigo> Abrigos { get; set; }
     public DbSet<PessoaDesaparecida> PessoasDesaparecidas { get; set; }
     public DbSet<Alimento> Alimentos { get; set; }
+    public DbSet<Animal> Animais { get; set; }
     public DbSet<Usuario> Usuario { get; set; }
     public DbSet<Log> Logs { get; set; }
 
