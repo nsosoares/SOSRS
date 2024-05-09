@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Abrigo, AbrigosResult, EStatusCapacidade, ETipoDeAbrigo, abrigos } from './abrigo.model';
+import { Abrigo, AbrigosResult, EStatusCapacidade, ETipoDeAbrigo} from './abrigo.model';
 import { Observable, Subject, map, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -9,7 +9,6 @@ import { AuthService } from '../../auth/auth.service';
   providedIn: 'root'
 })
 export class AbrigoService {
-  readonly entities: Abrigo[] = abrigos;
   readonly longitudeKey = 'longitude';
   readonly latitudeKey = 'latitude';
   readonly baseUrl = environment.api;
@@ -99,6 +98,7 @@ getGeoLocation(lat: number, lng: number){
       map(result => result.abrigos),
       map(abrigosResult =>
         abrigosResult.map(abrigoResult => {
+          console.log(abrigoResult);
           return {
             ...abrigoResult,
             capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'Lotado' : 'Disponível',
@@ -107,10 +107,8 @@ getGeoLocation(lat: number, lng: number){
             capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
             precisaAjudanteCssClass: abrigoResult.precisaAjudante ? 'alerta-perigo' : 'alerta-sucesso',
             precisaAlimentoCssClass: abrigoResult.precisaAlimento ? 'alerta-perigo' : 'alerta-sucesso',
-            tipoDeAbrigo: ETipoDeAbrigo.Animais,
-            // tipoDeAbrigo: abrigoResult.tipoAbrigo,
-            // tipoAbrigoDescricao: obterDescricao(abrigoResult.tipoAbrigo)
-            tipoAbrigoDescricao: this.obterDescricao(ETipoDeAbrigo.Animais)
+            tipoDeAbrigo: abrigoResult.tipoAbrigo,
+            tipoAbrigoDescricao: this.obterDescricao(abrigoResult.tipoAbrigo)
           }
         }
         ))
@@ -124,16 +122,12 @@ getGeoLocation(lat: number, lng: number){
     });
     return headers;
   }
-  getEntities = (): Observable<Abrigo[]> => {
-    return of(this.entities);
-  }
 
   create = (entity: Abrigo): Observable<any> => {
     entity.id = 0;
     if ((entity.alimentos as any) === "") {
       entity.alimentos = [];
     }
-    this.entities.push(entity);
     return this._httpClient.post<any[]>(this.baseUrl + 'api/abrigos', entity, { headers: this.getHeaderWithToken() });
   }
   update = (entity: Abrigo): Observable<any> => {
@@ -172,6 +166,8 @@ getGeoLocation(lat: number, lng: number){
     if (tipoAbrigo === ETipoDeAbrigo.Idosos){
       return 'idoso'
     }
+
+    return 'Pessoas';
   }
 }
 

@@ -1,4 +1,5 @@
 ﻿
+using SOSRS.Api.Enums;
 using System.Text;
 
 namespace SOSRS.Api.ViewModels;
@@ -21,6 +22,8 @@ public class AbrigoResponseViewModel
     public string TipoChavePix { get; set; } = default!;
     public string ChavePix { get; set; } = default!;
     public EStatusCapacidade Capacidade { get; set; } = default!;
+    public TipoAbrigoEnum TipoAbrigo { get; set; }
+
     public bool PrecisaAjudante { get; set; } = default!;
     public bool PrecisaAlimento { get; set; } = default!;
     public DateTime? UltimaAtualizacao { get; set; } = default!;

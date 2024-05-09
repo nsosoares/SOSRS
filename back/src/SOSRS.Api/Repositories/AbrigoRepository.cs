@@ -70,7 +70,9 @@ namespace SOSRS.Api.Repositories
                         Capacidade = x.Lotado ? EStatusCapacidade.Lotado : EStatusCapacidade.Disponivel,
                         PrecisaAjudante = (x.QuantidadeNecessariaVoluntarios.HasValue && x.QuantidadeNecessariaVoluntarios > 0),
                         PrecisaAlimento = x.Alimentos.Count > 0,
-                        UltimaAtualizacao = x.UltimaAtualizacao
+                        UltimaAtualizacao = x.UltimaAtualizacao,
+                        TipoAbrigo = x.TipoAbrigo,
+
                     })
                     .OrderBy(x => x.Cidade)
                     .ThenBy(x => x.Nome)

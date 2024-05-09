@@ -1,4 +1,6 @@
 ﻿
+using SOSRS.Api.Enums;
+
 namespace SOSRS.Api.ViewModels;
 
 public class AbrigoRequestViewModel
@@ -12,6 +14,8 @@ public class AbrigoRequestViewModel
     public string? TipoChavePix { get; set; } = default!;
     public string? ChavePix { get; set; } = default!;
     public string? Observacao { get; set; } = ""!;
+    public TipoAbrigoEnum TipoAbrigo { get; set; } = TipoAbrigoEnum.Geral;
+
     public EnderecoViewModel Endereco { get; set; } = default!;
     public List<AlimentoViewModel>? Alimentos { get; set; } = default!;
     public List<PessoaDesaparecidaViewModel>? PessoasDesaparecidas { get; set; } = default!;

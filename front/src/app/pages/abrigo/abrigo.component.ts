@@ -42,7 +42,7 @@ export class AbrigoComponent {
       quantidadeNecessariaVoluntarios: ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeNecessariaVoluntarios', 'Precisa de quantos voluntarios?').withCssClass(RESPONSIVE_SIZE_6)),
       capacidadeTotalPessoas: ControlCvaProvider.inputText(() => InputTextCvaParams.number('capacidadeTotalPessoas', 'Capacidade de acolhimento?').withCssClass(RESPONSIVE_SIZE_6)),
       quantidadeVagasDisponiveis: ControlCvaProvider.inputText(() => InputTextCvaParams.number('quantidadeVagasDisponiveis', 'Quantas vagas estão sobrando no momento?').withCssClass(RESPONSIVE_SIZE_6)),
-      tipoDeAbrigo: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('tipoDeAbrigo').withCssClass(RESPONSIVE_SIZE_6)),
+      tipoDeAbrigo: ControlCvaProvider.inputText(() => InputTextCvaParams.hidden('tipoAbrigo').withCssClass(RESPONSIVE_SIZE_6)),
       observacao: ControlCvaProvider.inputText(() => InputTextCvaParams.text('observacao', 'Observação').withCssClass(RESPONSIVE_SIZE_12)),
 
       endereco: ControlCvaProvider.subform(() => new SubformCvaParams('endereco', 'Endereço', [

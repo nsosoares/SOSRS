@@ -18,7 +18,8 @@ public class Abrigo : Entity
         Guid usuarioId,
         EnderecoVO endereco,
         List<Alimento> alimentos,
-        List<PessoaDesaparecida> pessoasDesaparecidas)
+        List<PessoaDesaparecida> pessoasDesaparecidas,
+        TipoAbrigoEnum tipoAbrigo)
         : base(id)
     {
         Id = id;
@@ -36,6 +37,7 @@ public class Abrigo : Entity
         PessoasDesaparecidas = pessoasDesaparecidas;
         Lotado = quantidadeVagasDisponiveis == 0;
         UltimaAtualizacao = DateTime.Now;
+        TipoAbrigo = tipoAbrigo;
     }
 
     //Ef

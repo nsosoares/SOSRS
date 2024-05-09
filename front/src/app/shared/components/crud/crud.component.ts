@@ -77,7 +77,7 @@ export class CrudComponent {
       categoriaEnum = ETipoDeAbrigo.Orfanato;
     }
 
-    const control = this.params().controls.find(controlItem => controlItem.params.controlName =='tipoDeAbrigo');
+    const control = this.params().controls.find(controlItem => controlItem.params.controlName =='tipoAbrigo');
     setTimeout(() => {
 
       control.formControl.setValue(categoriaEnum)
