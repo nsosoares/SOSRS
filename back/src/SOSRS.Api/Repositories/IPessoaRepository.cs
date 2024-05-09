@@ -7,5 +7,6 @@ namespace SOSRS.Api.Repositories
     {
         Task<List<PessoaDesaparecida>> Buscar(string parametroDeBusca);
         Task<bool> Criar(PessoaDesaparecida pessoa);
+        Task<bool> RealocarPessoasDeAbrigo(int abrigoOrigem, int abrigoDestino);
     }
 }

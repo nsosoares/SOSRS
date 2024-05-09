@@ -28,5 +28,10 @@ namespace SOSRS.Api.Entities
         public int? Idade { get; set; } = default!;
         public string InformacaoAdicional { get; set; } = default!;
         public byte[]? Foto { get; set; } = default!;
+
+        public void MoverParaAbrigo(int abrigoDestino)
+        {
+            AbrigoId = abrigoDestino;
+        }
     }
 }

@@ -41,5 +41,27 @@ namespace SOSRS.Api.Repositories
 
             return false;
         }
+
+        public async Task<bool> RealocarPessoasDeAbrigo(int abrigoOrigem, int abrigoDestino)
+        {
+            try
+            {
+                var pessoasDoAbrigoDeOrigem = await _database.PessoasDesaparecidas.Where(s => s.AbrigoId == abrigoOrigem).ToListAsync();
+
+                foreach (var pessoa in pessoasDoAbrigoDeOrigem)
+                {
+                    pessoa.MoverParaAbrigo(abrigoDestino);
+                }
+
+                await _database.SaveChangesAsync();
+
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+            
+        }
     }
 }

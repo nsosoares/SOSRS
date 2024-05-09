@@ -25,13 +25,15 @@ public class AbrigoController : ControllerBase
     private readonly IHttpContextAccessor _httpContext;
     private readonly IValidadorService _validadorService;
     private readonly IAbrigoRepository _abrigoRepository;
+    private readonly IPessoaRepository _pessoaRepository;
 
-    public AbrigoController(AppDbContext dbContext, IHttpContextAccessor httpContext, IValidadorService validadorService, IAbrigoRepository abrigoRepository)
+    public AbrigoController(AppDbContext dbContext, IHttpContextAccessor httpContext, IValidadorService validadorService, IAbrigoRepository abrigoRepository, IPessoaRepository pessoaRepository)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
         _validadorService = validadorService ?? throw new ArgumentNullException(nameof(validadorService));
         _abrigoRepository = abrigoRepository ?? throw new ArgumentNullException(nameof(abrigoRepository));
+        _pessoaRepository = pessoaRepository ?? throw new ArgumentNullException(nameof(pessoaRepository));
     }
 
     [HttpGet("version")]
@@ -253,7 +255,7 @@ public class AbrigoController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("Relocate")]
+    [HttpPost("relocate")]
     public async Task<IActionResult> RealocarPessoasDeAbrigo([FromBody] RelocatePeopleRequest relocatePeopleRequest)
     {
         var abrigoOrigem = await _abrigoRepository.GetAbrigoPorIdAsync(relocatePeopleRequest.AbrigoOrigem);
@@ -266,7 +268,14 @@ public class AbrigoController : ControllerBase
             return StatusCode(406, new { message = "O abrigo de destino não tem capacidade para relocação deste abrigo" });
         }
 
-        return Ok();
+        var isPessoasRealocadas = await _pessoaRepository.RealocarPessoasDeAbrigo(relocatePeopleRequest.AbrigoOrigem, relocatePeopleRequest.AbrigoDestino);
+
+        if(isPessoasRealocadas)
+        {
+            return Ok();
+        }
+
+        return StatusCode(500, new { Message = "Falha ao realocar pessoas de abrigo." });
     }
 
     private async Task<(string, string)> GetCoordinates(string address)
