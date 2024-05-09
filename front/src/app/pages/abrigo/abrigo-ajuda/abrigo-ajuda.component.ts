@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
@@ -39,6 +39,7 @@ export class AbrigoAjudaComponent {
     bairro: ControlCvaProvider.inputText(() => InputTextCvaParams.text('bairro', 'Bairro', 100, 0).withCssClass(RESPONSIVE_SIZE_6)),
     alimento: ControlCvaProvider.inputText(() => InputTextCvaParams.text('alimento', 'Alimento', 50, 0).asRequired().withCssClass(RESPONSIVE_SIZE_6)),
   }
+
   constructor(private _snackBar: MatSnackBar, templateService: TemplateService, fb: FormBuilder, private abrigoService: AbrigoService, private dialog: MatDialog) {
     templateService.exibeMenu = false;
     this.form = fb.group({
@@ -56,6 +57,7 @@ export class AbrigoAjudaComponent {
     ).subscribe(() => {
       this.pesquisa();
     });
+    this.obterGeolocalizacao();
     this.pesquisa();
   }
 
@@ -67,7 +69,7 @@ export class AbrigoAjudaComponent {
       this.abrigos = result.abrigos.map(abrigoResult => {
         return {
           ...abrigoResult,
-          capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado  ? 'Lotado' : 'Disponível',
+          capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'Lotado' : 'Disponível',
           precisaAjudanteDesc: abrigoResult.precisaAjudante ? 'Sim' : 'Não',
           precisaAlimentoDesc: abrigoResult.precisaAlimento ? 'Sim' : 'Não',
           capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
@@ -78,15 +80,15 @@ export class AbrigoAjudaComponent {
             this.concatenarSePossuirValor('bairro', abrigoResult.bairro) + ' - ' +
             this.concatenarSePossuirValor('rua', abrigoResult.rua) + ' - ' +
             this.concatenarSePossuirValor('numero', abrigoResult.numero?.toString()) + ' - ' +
-            (abrigoResult.complemento? `complemento: ${abrigoResult.complemento}` : ''),
+            (abrigoResult.complemento ? `complemento: ${abrigoResult.complemento}` : ''),
         };
       });
       this.quantidade = result.quantidadeTotalRegistros;
       this.carregando = false;
     });
-
   }
-  copyMessage(val: string){
+
+  copyMessage(val: string) {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -98,21 +100,23 @@ export class AbrigoAjudaComponent {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    this._snackBar.open('Copiado para a área de transferência', '', {duration: 1800})
+    this._snackBar.open('Copiado para a área de transferência', '', { duration: 1800 })
   }
+
   copyToClipboard(val: string): void {
     this.copyMessage(val);
   }
+
   concatenarSePossuirValor(display: string, valor?: string): string {
     const valorNulo = valor === null || valor === undefined || valor === '';
-    const valorFinal = valorNulo ? 'Não fornecido' :  valor;
+    const valorFinal = valorNulo ? 'Não fornecido' : valor;
     return `${display}: ${valorFinal}`;
   }
 
   abrirPesquisaAvancada(): void {
     this.dialog.open(AbrigoAjudaPesquisaAvancadaComponent, {
       width: '800px',
-      data:{ form: this.form, control: this.control},
+      data: { form: this.form, control: this.control },
       disableClose: true
     }).afterClosed().subscribe(result => {
       if (result) {
@@ -122,6 +126,7 @@ export class AbrigoAjudaComponent {
 
     });
   }
+
   abrirSobre(): void {
     this.dialog.open(AbrigoAjudaSobreComponent, {
       width: '800px',
@@ -130,8 +135,26 @@ export class AbrigoAjudaComponent {
 
   verDetalhesAbrigo(abrigoId: number): void {
     this.dialog.open(AbrigoAjudaDetalheComponent, {
-      data: {abrigoId: abrigoId },
+      data: { abrigoId: abrigoId },
     });
+  }
+
+  @HostListener('window:load', ['$event'])
+  async obterGeolocalizacao(): Promise<void> {
+    if (!navigator.geolocation) {
+      alert('Não foi possível obter a sua localização')
+    }
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      const coordinates = position.coords;
+
+      this.abrigoService.getLocation(coordinates.latitude.toString(), coordinates.longitude.toString()).subscribe(result => {
+        const location = result?.location
+
+        this.form.get('cidade').setValue(location?.town)
+        this.form.get('bairro').setValue(location?.hamlet)
+      });
+    })
   }
 }
 

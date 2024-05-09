@@ -1,4 +1,5 @@
-﻿using SOSRS.Api.ValueObjects;
+﻿using SOSRS.Api.Enums;
+using SOSRS.Api.ValueObjects;
 
 namespace SOSRS.Api.Entities;
 
@@ -48,7 +49,8 @@ public class Abrigo : Entity
     public string? TipoChavePix { get; private set; } = default!;
     public string? ChavePix { get; private set; } = default!;
     public string Telefone { get; private set; } = default!;
-    public bool AbrigoDeAnimais { get; private set; } = false!;
+    public bool PermiteAnimais { get; private set; } = false!;
+    public TipoAbrigoEnum TipoAbrigo { get; private set; } = TipoAbrigoEnum.Geral;
     public EnderecoVO Endereco { get; private set; } = default!;
     public string? Observacao { get; private set; } = default!;
     public List<Alimento> Alimentos { get; private set; } = default!;
