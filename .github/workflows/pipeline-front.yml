@@ -24,6 +24,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
         
+      - name: 'lista arquivos do front' 
+        run: ls  
       - name: 'Build and push image'
         uses: azure/docker-login@v1
         with:
