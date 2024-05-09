@@ -11,16 +11,13 @@ on:
       - dev
   workflow_dispatch:
 
-env:
-  IMAGE_NAME: sosrs.api
-
 jobs:
   build:
     name: Build container image
     runs-on: ubuntu-latest
     defaults:
-        run:
-          working-directory: front
+      run:
+        working-directory: front
     steps:
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
