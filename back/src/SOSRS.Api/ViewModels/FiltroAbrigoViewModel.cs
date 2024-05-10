@@ -4,6 +4,7 @@ namespace SOSRS.Api.ViewModels;
 
 public class FiltroAbrigoViewModel
 {
+    public int? Id { get; set; } = default!;
     public string? Nome { get; set; } = default!;
     public string? Cidade { get; set; } = default!;
     public string? Bairro { get; set; } = default!;

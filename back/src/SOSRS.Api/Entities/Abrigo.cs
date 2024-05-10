@@ -21,7 +21,8 @@ public class Abrigo : Entity
         EnderecoVO endereco,
         List<Alimento> alimentos,
         List<PessoaDesaparecida> pessoasDesaparecidas,
-        TipoAbrigoEnum tipoAbrigo)
+        TipoAbrigoEnum tipoAbrigo,
+        DateTime? dataEncerramento)
         : base(id)
     {
         Id = id;
@@ -42,6 +43,7 @@ public class Abrigo : Entity
         TipoAbrigo = tipoAbrigo;
         Latitude = lat;
         Longitude = lon;
+        DataEncerramento = dataEncerramento;
     }
 
     //Ef
@@ -67,6 +69,7 @@ public class Abrigo : Entity
     public bool Lotado { get; private set; } = default!;
     public Guid UsuarioId { get; private set; } = default!;
     public DateTime? UltimaAtualizacao { get; private set; }
+    public DateTime? DataEncerramento { get; private set; } = default!;
 
     public Usuario? Usuario { get; private set; } = default!;
 
