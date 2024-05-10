@@ -161,7 +161,8 @@ public class AbrigoController : ControllerBase
             endereco,
             alimentos,
             pessoasDesaparecidas,
-            abrigoRequest.TipoAbrigo
+            abrigoRequest.TipoAbrigo,
+            abrigoRequest.DataEncerramento
             );
 
         var result = _validadorService.Validar(abrigo, new AbrigoValidador());
@@ -221,7 +222,9 @@ public class AbrigoController : ControllerBase
             endereco,
             alimentos,
             pessoasDesaparecidas,
-            abrigoRequest.TipoAbrigo);
+            abrigoRequest.TipoAbrigo,
+            abrigoRequest.DataEncerramento
+            );
 
         var result = _validadorService.Validar(abrigo, new AbrigoValidador());
         if (!result.IsValid)

@@ -15,6 +15,8 @@ public class AbrigoRequestViewModel
     public string? ChavePix { get; set; } = default!;
     public string? Observacao { get; set; } = ""!;
     public TipoAbrigoEnum TipoAbrigo { get; set; } = TipoAbrigoEnum.Geral;
+    public DateTime? DataEncerramento { get; set; } = default!;
+
 
     public EnderecoViewModel Endereco { get; set; } = default!;
     public List<AlimentoViewModel>? Alimentos { get; set; } = default!;

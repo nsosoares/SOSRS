@@ -48,6 +48,7 @@ export class AbrigoService {
   codAcesso?: number;
   pesquisar(value: any, auth: boolean): Observable<AbrigosResult> {
     const finalValue = {
+      id: value.id ? value.id : undefined,
       nome: value.nome ? value.nome : undefined,
       cidade: value.cidade ? value.cidade : undefined,
       bairro: value.bairro ? value.bairro : undefined,
@@ -58,6 +59,9 @@ export class AbrigoService {
       tipoAbrigo: value.tipoAbrigo ? value.tipoAbrigo : undefined
     }
     let httpParams = new HttpParams();
+    if (finalValue.id) {
+      httpParams = httpParams.set('id', finalValue.id);
+    }
     if (finalValue.nome) {
       httpParams = httpParams.set('nome', finalValue.nome);
     }

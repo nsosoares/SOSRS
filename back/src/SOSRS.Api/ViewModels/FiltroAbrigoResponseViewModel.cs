@@ -39,7 +39,7 @@ public class AbrigoResponseViewModel
             var dataAtual = DateTime.Now;
 
             var diferenca = dataAtual - data;
-            if (diferenca.Minutes < 60)
+            if (diferenca.TotalMinutes < 60)
             {
                 stringbuilder.Append(diferenca.Minutes);
                 stringbuilder.Append(" minutos");
@@ -47,7 +47,7 @@ public class AbrigoResponseViewModel
                 return stringbuilder.ToString();
             }
 
-            if (diferenca.Hours < 24)
+            if (diferenca.TotalHours < 24)
             {
                 stringbuilder.Append(diferenca.Hours);
                 stringbuilder.Append(" horas");
@@ -58,9 +58,9 @@ public class AbrigoResponseViewModel
 
             stringbuilder.Append(diferenca.Days);
             stringbuilder.Append(" dias e ");
-            var horasPorDia = diferenca.Hours - (diferenca.Days * 24);
-
-            stringbuilder.Append(horasPorDia);
+            var horasPorDia = diferenca.TotalHours - (diferenca.Days * 24);
+            var horasPorDiaInt = (int)horasPorDia;
+            stringbuilder.Append(horasPorDiaInt);
             stringbuilder.Append(" horas");
 
             return stringbuilder.ToString();
