@@ -186,18 +186,27 @@ body {
 }
 
 .toolbar-gradient{
-  background: linear-gradient(to bottom right, rgb(9 58 100) 40%, rgb(2 58 100) 42%, rgb(9 23 100) 58%) !important;
+  background: linear-gradient(to bottom right, rgb(0, 0, 90) 40%, rgb(0, 0, 90) 42%, rgb(0, 0, 90) 58%) !important;
 }
 
 .sub-bar-gradient{
   height: 10px !important;
   background: linear-gradient(to right, #006400 0%, #006400 33%, #B22222 33%, #B22222 66%, #FFD700 66%, #FFD700 100%) !important;
+  margin-bottom: 15px !important;
 }
 
 /* Estilo para o logo */
 .logo-img {
   max-height: 50px !important; /* Ajuste a altura máxima conforme necessário */
   max-width: 100% !important;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.m-10 {
+  margin: 10px !important;
 }
 
 
