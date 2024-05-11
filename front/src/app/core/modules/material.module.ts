@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 export const CORE_APP_MATERIAL_MODULES: Array<Type<any> | ModuleWithProviders<{}> | any[]> = [
   MatFormFieldModule,
@@ -25,5 +26,6 @@ export const CORE_APP_MATERIAL_MODULES: Array<Type<any> | ModuleWithProviders<{}
   MatSnackBarModule,
   MatTooltipModule,
   MatCardModule,
+  MatToolbarModule,
 ]
 

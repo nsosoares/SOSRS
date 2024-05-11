@@ -167,3 +167,37 @@ body {
   position: relative;
   top: 6px;
 }
+
+
+/* Estilos para a barra de ferramentas personalizada */
+.custom-toolbar {
+  color: white !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Estilo para centralizar o logo */
+.centered-logo {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.toolbar-gradient{
+  background: linear-gradient(to bottom right, rgb(9 58 100) 40%, rgb(2 58 100) 42%, rgb(9 23 100) 58%) !important;
+}
+
+.sub-bar-gradient{
+  height: 10px !important;
+  background: linear-gradient(to right, #006400 0%, #006400 33%, #B22222 33%, #B22222 66%, #FFD700 66%, #FFD700 100%) !important;
+}
+
+/* Estilo para o logo */
+.logo-img {
+  max-height: 50px !important; /* Ajuste a altura máxima conforme necessário */
+  max-width: 100% !important;
+}
+
+
