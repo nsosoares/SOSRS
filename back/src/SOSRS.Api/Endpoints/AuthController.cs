@@ -33,7 +33,7 @@ namespace SOSRS.Api.Endpoints
 
             if (string.IsNullOrEmpty(response.Token))
             {
-                return NotFound();
+                return NotFound("");
             }
 
             return Ok(response);

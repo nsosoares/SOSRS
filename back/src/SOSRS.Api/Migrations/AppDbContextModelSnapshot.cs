@@ -37,12 +37,29 @@ namespace SOSRS.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<DateTime?>("DataEncerramento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GuidId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Lotado")
                         .HasColumnType("bit");
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(800)
                         .HasColumnType("nvarchar(800)");
+
+                    b.Property<bool>("PermiteAnimais")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("QuantidadeNecessariaVoluntarios")
                         .HasColumnType("int");
@@ -55,11 +72,17 @@ namespace SOSRS.Api.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<byte>("TipoAbrigo")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("TipoChavePix")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<Guid?>("UsuarioId")
+                    b.Property<DateTime?>("UltimaAtualizacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -90,6 +113,52 @@ namespace SOSRS.Api.Migrations
                     b.ToTable("Alimentos", (string)null);
                 });
 
+            modelBuilder.Entity("SOSRS.Api.Entities.Animal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AbrigoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataDeEntrada")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdadeAproximada")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Peso")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Raca")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("Tipo")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AbrigoId");
+
+                    b.ToTable("Animais", (string)null);
+                });
+
             modelBuilder.Entity("SOSRS.Api.Entities.Log", b =>
                 {
                     b.Property<int>("Id")
@@ -111,6 +180,34 @@ namespace SOSRS.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Logs", (string)null);
+                });
+
+            modelBuilder.Entity("SOSRS.Api.Entities.PessoaDesaparecida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AbrigoId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Foto")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int?>("Idade")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InformacaoAdicional")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AbrigoId");
+
+                    b.ToTable("PessoasDesaparecidas", (string)null);
                 });
 
             modelBuilder.Entity("SOSRS.Api.Entities.Usuario", b =>
@@ -144,7 +241,9 @@ namespace SOSRS.Api.Migrations
                 {
                     b.HasOne("SOSRS.Api.Entities.Usuario", "Usuario")
                         .WithMany("Abrigos")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("SOSRS.Api.ValueObjects.SearchableStringVO", "Nome", b1 =>
                         {
@@ -354,9 +453,63 @@ namespace SOSRS.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SOSRS.Api.Entities.Animal", b =>
+                {
+                    b.HasOne("SOSRS.Api.Entities.Abrigo", "Abrigo")
+                        .WithMany("Animais")
+                        .HasForeignKey("AbrigoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Abrigo");
+                });
+
+            modelBuilder.Entity("SOSRS.Api.Entities.PessoaDesaparecida", b =>
+                {
+                    b.HasOne("SOSRS.Api.Entities.Abrigo", "Abrigo")
+                        .WithMany("PessoasDesaparecidas")
+                        .HasForeignKey("AbrigoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("SOSRS.Api.ValueObjects.SearchableStringVO", "Nome", b1 =>
+                        {
+                            b1.Property<int>("PessoaDesaparecidaId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("SearchableValue")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("nvarchar(150)")
+                                .HasColumnName("NomeSearchable");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("nvarchar(150)")
+                                .HasColumnName("Nome");
+
+                            b1.HasKey("PessoaDesaparecidaId");
+
+                            b1.ToTable("PessoasDesaparecidas");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PessoaDesaparecidaId");
+                        });
+
+                    b.Navigation("Abrigo");
+
+                    b.Navigation("Nome")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SOSRS.Api.Entities.Abrigo", b =>
                 {
                     b.Navigation("Alimentos");
+
+                    b.Navigation("Animais");
+
+                    b.Navigation("PessoasDesaparecidas");
                 });
 
             modelBuilder.Entity("SOSRS.Api.Entities.Usuario", b =>

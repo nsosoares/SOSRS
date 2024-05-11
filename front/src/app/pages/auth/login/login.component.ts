@@ -26,14 +26,14 @@ export class LoginComponent {
         if (this.form.valid) {
             this.authService
                 .login({
-                    user: this.form.controls['email'].value,
+                    user: this.form.controls['name'].value,
                     password: this.form.controls['password'].value,
                 })
                 .subscribe((success) => {
                     if (success) {
                         this.loginValid = true;
-                        this.authService.message('Login com relizado com sucesso');
-                        this.router.navigate(['/']);
+                        this.authService.message('Login relizado com sucesso');
+                        this.router.navigate(['/abrigos/abrigo-adm-hash']);
                     }
                     this.loginValid = false;
                 });
@@ -46,7 +46,7 @@ export class LoginComponent {
 
     createForm() {
         this.form = this.formBuilder.group({
-            email: [null, Validators.compose([Validators.required, ]),],
+            name: [null, Validators.compose([Validators.required, ]),],
             password: [null, Validators.compose([Validators.required,Validators.minLength(4)]),
             ],
         });

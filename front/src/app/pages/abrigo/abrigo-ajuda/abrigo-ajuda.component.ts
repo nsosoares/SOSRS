@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, HostListener } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
 
@@ -11,13 +11,14 @@ import {
 import { ControlCvaProvider } from '../../../shared/components/control-value-accessor/control-cva/control-cva.provider';
 import { TemplateService } from '../../../template/template.service';
 import { AbrigoService } from '../core/abrigo.service';
-import { AbrigoPesquisa, EStatusCapacidade } from './../core/abrigo.model';
+import { AbrigoPesquisa, EStatusCapacidade, ETipoDeAbrigo } from './../core/abrigo.model';
 import {
   AbrigoAjudaPesquisaAvancadaComponent,
 } from './abrigo-ajuda-pesquisa-avancada/abrigo-ajuda-pesquisa-avancada.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbrigoAjudaSobreComponent } from './abrigo-ajuda-sobre/abrigo-ajuda-sobre.component';
 import { AbrigoAjudaDetalheComponent } from './abrigo-ajuda-detalhe/abrigo-ajuda-detalhe.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cw-abrigo-ajuda',
@@ -32,6 +33,7 @@ export class AbrigoAjudaComponent {
   abrigos: AbrigoPesquisa[] = [];
   quantidade?: number;
   carregando = false;
+  priorizaAnimais = false;
 
   control = {
     nome: ControlCvaProvider.inputText(() => InputTextCvaParams.text('nome', 'Nome do local', 50, 0).withCssClass(RESPONSIVE_SIZE_6)),
@@ -39,8 +41,17 @@ export class AbrigoAjudaComponent {
     bairro: ControlCvaProvider.inputText(() => InputTextCvaParams.text('bairro', 'Bairro', 100, 0).withCssClass(RESPONSIVE_SIZE_6)),
     alimento: ControlCvaProvider.inputText(() => InputTextCvaParams.text('alimento', 'Alimento', 50, 0).asRequired().withCssClass(RESPONSIVE_SIZE_6)),
   }
-  constructor(private _snackBar: MatSnackBar, templateService: TemplateService, fb: FormBuilder, private abrigoService: AbrigoService, private dialog: MatDialog) {
+
+  constructor(private _snackBar: MatSnackBar, templateService: TemplateService, fb: FormBuilder, private abrigoService: AbrigoService, private dialog: MatDialog, private rotaCorrente: ActivatedRoute) {
+
+    try {
+      this.priorizaAnimais = rotaCorrente.snapshot.url.some(urlTxt => urlTxt.path.toLowerCase() === 'animais')
+    }
+    catch {
+      console.log('nao foi possivel identificar a roda de animais ou pessoa')
+    }
     templateService.exibeMenu = false;
+    const tipoAbrigoPadrao = this.priorizaAnimais ? ETipoDeAbrigo.Animais : ETipoDeAbrigo.Geral;
     this.form = fb.group({
       nome: '',
       cidade: '',
@@ -48,7 +59,8 @@ export class AbrigoAjudaComponent {
       alimento: '',
       capacidade: '',
       precisaAjudante: '',
-      precisaAlimento: ''
+      precisaAlimento: '',
+      tipoAbrigo: new FormControl(tipoAbrigoPadrao.toString())
     });
 
     this.form.valueChanges.pipe(
@@ -56,19 +68,19 @@ export class AbrigoAjudaComponent {
     ).subscribe(() => {
       this.pesquisa();
     });
+    this.obterGeolocalizacao();
     this.pesquisa();
   }
 
   pesquisa(): void {
-    console.log(this.form.value);
     this.carregando = true;
-    this.abrigoService.pesquisar(this.form.value).pipe(
+    this.abrigoService.pesquisar(this.form.value, false).pipe(
       debounceTime(500),
     ).subscribe(result => {
       this.abrigos = result.abrigos.map(abrigoResult => {
         return {
           ...abrigoResult,
-          capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado  ? 'Lotado' : 'Disponível',
+          capacidadeDesc: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'Lotado' : 'Disponível',
           precisaAjudanteDesc: abrigoResult.precisaAjudante ? 'Sim' : 'Não',
           precisaAlimentoDesc: abrigoResult.precisaAlimento ? 'Sim' : 'Não',
           capacidadeCssClass: abrigoResult.capacidade === EStatusCapacidade.Lotado ? 'alerta-perigo' : 'alerta-sucesso',
@@ -79,15 +91,16 @@ export class AbrigoAjudaComponent {
             this.concatenarSePossuirValor('bairro', abrigoResult.bairro) + ' - ' +
             this.concatenarSePossuirValor('rua', abrigoResult.rua) + ' - ' +
             this.concatenarSePossuirValor('numero', abrigoResult.numero?.toString()) + ' - ' +
-            (abrigoResult.complemento? `complemento: ${abrigoResult.complemento}` : ''),
+            (abrigoResult.complemento ? `complemento: ${abrigoResult.complemento}` : ''),
+             tipoAbrigoDescricao: this.abrigoService.obterDescricao(abrigoResult.tipoAbrigo)
         };
       });
       this.quantidade = result.quantidadeTotalRegistros;
       this.carregando = false;
     });
-
   }
-  copyMessage(val: string){
+
+  copyMessage(val: string) {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -99,21 +112,23 @@ export class AbrigoAjudaComponent {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    this._snackBar.open('Copiado para a área de transferência', '', {duration: 1800})
+    this._snackBar.open('Copiado para a área de transferência', '', { duration: 1800 })
   }
+
   copyToClipboard(val: string): void {
     this.copyMessage(val);
   }
+
   concatenarSePossuirValor(display: string, valor?: string): string {
     const valorNulo = valor === null || valor === undefined || valor === '';
-    const valorFinal = valorNulo ? 'Não fornecido' :  valor;
+    const valorFinal = valorNulo ? 'Não fornecido' : valor;
     return `${display}: ${valorFinal}`;
   }
 
   abrirPesquisaAvancada(): void {
     this.dialog.open(AbrigoAjudaPesquisaAvancadaComponent, {
       width: '800px',
-      data:{ form: this.form, control: this.control},
+      data: { form: this.form, control: this.control },
       disableClose: true
     }).afterClosed().subscribe(result => {
       if (result) {
@@ -123,6 +138,7 @@ export class AbrigoAjudaComponent {
 
     });
   }
+
   abrirSobre(): void {
     this.dialog.open(AbrigoAjudaSobreComponent, {
       width: '800px',
@@ -131,8 +147,26 @@ export class AbrigoAjudaComponent {
 
   verDetalhesAbrigo(abrigoId: number): void {
     this.dialog.open(AbrigoAjudaDetalheComponent, {
-      data: {abrigoId: abrigoId },
+      data: { abrigoId: abrigoId },
     });
+  }
+
+  @HostListener('window:load', ['$event'])
+  async obterGeolocalizacao(): Promise<void> {
+    if (!navigator.geolocation) {
+      alert('Não foi possível obter a sua localização')
+    }
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      const coordinates = position.coords;
+
+      this.abrigoService.getLocation(coordinates.latitude.toString(), coordinates.longitude.toString()).subscribe(result => {
+        const location = result?.location
+
+        this.form.get('cidade').setValue(location?.town)
+        this.form.get('bairro').setValue(location?.hamlet)
+      });
+    })
   }
 }
 

@@ -10,18 +10,18 @@
         Usuário e/ou senha inválidos
       </mat-error>
       <mat-form-field>
-        <input matInput placeholder="Email" formControlName="email" name="email" required>
+        <input matInput placeholder="Usuario" formControlName="name" name="name" required>
         <mat-error>
-          Por favor insira um e-mail válido
+          Por favor insira o nome
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" formControlName="password" placeholder="Password" name="password" required>
+        <input matInput type="password" formControlName="password" placeholder="Senha" name="password" required>
         <mat-error>
           Por favor insira uma senha
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" [disabled]="form.invalid">Login</button>
+      <button mat-raised-button color="primary" [disabled]="form.invalid">Entrar</button>
       <br/>
       <br/>
       <a class="cw-button" [routerLink]="'/cadastrar-usuario'">Criar novo usuário</a>

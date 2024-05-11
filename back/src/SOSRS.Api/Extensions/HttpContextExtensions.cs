@@ -6,11 +6,11 @@
         {
             var claims = (IDictionary<string, string>?)context.Items["JwtClaims"];
 
-            if (claims != null && !string.IsNullOrEmpty(claims["UserAbrigosId"]))
+            if (claims != null && !string.IsNullOrEmpty(claims["abrigos"]))
             {
                 List<Guid> listaAbrigos = [];
 
-                var abrigos = claims["UserAbrigosId"].Split('|');
+                var abrigos = claims["abrigos"].Split('|');
 
                 foreach(var abrigoGuid in abrigos)
                 {

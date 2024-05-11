@@ -9,10 +9,33 @@
               <div class="cw-button-content-item">
                 <mat-icon>create</mat-icon>
               </div>
-              <div class="cw-button-content-item">Cadastre seu abrigo aqui</div>
+              <div class="cw-button-content-item"><b style="font-weight: bold;">Atualizar abrigos</b></div>
             </div>
           </a>
         </div>
+        <div class="col-12">
+          veja também:
+          <br/>
+          <a style="padding: 5px;"  href="https://www.meulardevolta.com.br/?fbclid=PAZXh0bgNhZW0CMTEAAabJn8-RJCCWjPD4CuUeY1cwja3IW9VatuR_bu4WCbeXWx29ZKfKMQhF0Js_aem_ATFJ7WHkYnX5i1FuXrWCwRd4--mR5Av1LYEhX0rbCLPet6fhMGM3Ldout2tnOsrNfI68-M91tdmKC9eaLdIh483d " target="_blank" rel="noopener noreferrer">
+            meu lar de volta
+          </a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="https://tosalvo.ong.br/">ta salvo - busca de pessoas desaparecidas</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="http://buscaresgatados.com">buscaresgatados - listas publicas uteis</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="https://abrigars.com.br/">abrigars - gerenciar abrigos</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="https://sos-rs.vercel.app/">sos-rs.vercel.app - pedido de s.o.s</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="https://airtable.com/appfQT2vfWc6sZRAx/shrqtkYNgKFay2XJg/tblJ5UvIdVmYeTb8s/">airtable - lista de abrigos e informações</a>
+          <br/>
+          <a style="padding: 5px;"target="_blank" href="http://sos-rs.com">sos - lista de abrigos e informações</a>
+
+          <br>
+          faltou algum? entra em contato com a gente! <a style="padding: 5px;"target="_blank" href="https://contate.me/51985722752"> clicando aqui</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -21,18 +44,29 @@
 <div class="row">
   <div class="col-12 ">
     <div class="section-painel section-painel-crud position-relative" [@startUpward]>
-      <form [formGroup]="form">
+      <form [formGroup]="form" (load)="obterGeolocalizacao">
         <div class="row">
           <cw-control-cva [controlProvider]="control.nome"
             [formControlName]="control.nome.params!.controlName"></cw-control-cva>
           <cw-control-cva [controlProvider]="control.cidade"
             [formControlName]="control.cidade.params!.controlName"></cw-control-cva>
+
+            <mat-form-field  appearance="outline" style="width: 100%;">
+              <mat-select formControlName="tipoAbrigo">
+                  <mat-option [value]="'0'">Pessoas</mat-option>
+                  <mat-option [value]="'1'">Animais</mat-option>
+                  <mat-option [value]="'2'">Idoso</mat-option>
+                  <mat-option [value]="'3'">Orfanato</mat-option>
+              </mat-select>
+            </mat-form-field>
+
           <div class="col-12">
             <div class='cw-button' style="width: 100%;" (click)="abrirPesquisaAvancada()">
               <div class="cw-button-content">
                 <div class="cw-button-content-item">
                   <mat-icon>search</mat-icon>
                 </div>
+                <mat-label>Tipo de abrigo</mat-label>
                 <div class="cw-button-content-item">Filtro avançado</div>
               </div>
             </div>
@@ -55,6 +89,7 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title"><b>{{abrigo.nome}}</b> </h3>
+          <b>Ultima atualização: {{abrigo.ultimaAtualizacaoTxt}}</b>
           <p class="card-text">
             <b>Endereço</b>: {{abrigo.enderecoDesc}} <br />
             <ng-container *ngIf="abrigo.chavePix">

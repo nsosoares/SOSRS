@@ -10,6 +10,7 @@ public class AbrigoValidador : AbstractValidator<Abrigo>
         RuleFor(x => x.Endereco).SetValidator(new EnderecoValidador());
         RuleFor(x => x.Nome).SetValidator(new SearchableStringValidador("Nome do abrigo"));
         RuleForEach(x => x.Alimentos).SetValidator(new AlimentoValidador());
+        RuleForEach(x => x.PessoasDesaparecidas).SetValidator(new PessoaDesaparecidaValidator());
         RuleFor(x => x.Telefone)
              .NotEmpty().WithMessage("O campo Telefone é obrigatório.")
              .NotNull().WithMessage("O campo Telefone é obrigatório.")

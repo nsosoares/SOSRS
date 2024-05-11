@@ -32,4 +32,9 @@ public class EnderecoVO
     public SearchableStringVO Estado { get; private set; } = default!;
     public string? Complemento { get; private set; } = default!;
     public string? Cep { get; private set; } = default!;
+
+    public override string ToString()
+    {
+        return $"{Rua.Value}, {Numero} - {Bairro.Value} - {Cidade.Value}, {Estado.Value} - {Cep}";
+    }
 }
